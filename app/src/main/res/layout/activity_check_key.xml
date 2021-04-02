@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckKey">
+
+    <com.merive.securepass.TypingTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/share_tech_mono"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/green"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07999998" />
+
+    <com.merive.securepass.TypingTextView
+        android:id="@+id/key_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/share_tech_mono"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/green"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.223" />
+
+    <EditText
+        android:id="@+id/key"
+        android:layout_width="206dp"
+        android:layout_height="48dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:fontFamily="@font/share_tech_mono"
+        android:inputType="number"
+        android:maxLength="10"
+        android:textAlignment="center"
+        android:textColor="@color/green"
+        android:textColorHint="@color/green"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.543"
+        tools:ignore="LabelFor" />
+
+    <Button
+        android:id="@+id/check_button"
+        android:layout_width="188dp"
+        android:layout_height="43dp"
+        android:background="@drawable/round_button"
+        android:fontFamily="@font/share_tech_mono"
+        android:onClick="checkKey"
+        android:text="@string/check"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/green"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.777" />
+</androidx.constraintlayout.widget.ConstraintLayout>

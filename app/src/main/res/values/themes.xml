@@ -1,0 +1,26 @@
+<resources>
+    <!--    Base application theme    -->
+    <style name="Theme.SecurePass" parent="Theme.AppCompat.NoActionBar">
+
+        <!--    App Theme   -->
+        <item name="colorPrimary">@color/dark</item>
+        <item name="colorPrimaryDark">@color/gray</item>
+        <item name="colorAccent">@color/green</item>
+        <!--    Set action bar color    -->
+        <item name="android:actionBarStyle">@color/dark</item>
+    </style>
+
+    <!--    Splash theme    -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <!--    Set splash    -->
+        <item name="android:windowBackground">@drawable/splash</item>
+
+        <!--    Theme colors    -->
+        <item name="colorPrimary">@color/dark</item>
+        <item name="colorPrimaryDark">@color/gray</item>
+        <item name="colorAccent">@color/green</item>
+
+        <!--    Hide action bar    -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>
