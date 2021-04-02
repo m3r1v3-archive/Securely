@@ -3,5 +3,5 @@
     <string name="todo">TODO</string>
     <string name="welcome_to_securepass">Welcome to SecurePass</string>
     <string name="check">Check</string>
-    <string name="enter_the_key_in_the_field">Enter the key in the field</string>
+    <string name="enter_the_key_in_the_field">Enter the key in the field.</string>
 </resources>

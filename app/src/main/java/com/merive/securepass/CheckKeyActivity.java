@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CheckKey extends AppCompatActivity {
+public class CheckKeyActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     TypingTextView title, key_hint;
@@ -47,39 +47,41 @@ public class CheckKey extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void checkKeyNullable() {
         if (sharedPreferences.getInt("key", 0) == 0) {
-            typingAnimation(key_hint, "Create a key\nTip: Use more than 4 numbers");
+            typingAnimation(key_hint, "Create a key\nTip: Use more than 4 numbers.");
             check.setText("Create");
         }
     }
 
     @SuppressLint("SetTextI18n")
     public void checkKey(View view) {
-        try {
-            if (sharedPreferences.getInt("key", 0) == 0) {
+        if (!key.getText().toString().equals("")) {
+            if (sharedPreferences.getInt("key", hashKey(0)) == hashKey(0)) {
                 sharedPreferences.edit().putInt("key", Integer.parseInt(key.getText().toString())).apply();
 
                 typingAnimation(key_hint, "Key set. Welcome!");
 
                 new Handler().postDelayed(() -> {
-                    startActivity(new Intent(CheckKey.this, MainActivity.class));
+                    startActivity(new Intent(CheckKeyActivity.this, MainActivity.class));
                     finish();
                 }, 3500);
             } else {
-                if (!key.getText().toString().equals("")) {
-                    if (sharedPreferences.getInt("key", 0) == Integer.parseInt(key.getText().toString())) {
-                        typingAnimation(key_hint, "All right. Welcome!");
+                if (sharedPreferences.getInt("key", hashKey(0)) == hashKey(Integer.parseInt(key.getText().toString()))) {
+                    typingAnimation(key_hint, "All right. Welcome!");
 
-                        new Handler().postDelayed(() -> {
-                            startActivity(new Intent(CheckKey.this, MainActivity.class));
-                            finish();
-                        }, 3500);
-                    } else {
-                        typingAnimation(key_hint, "Invalid key. Try again.");
-                    }
+                    new Handler().postDelayed(() -> {
+                        startActivity(new Intent(CheckKeyActivity.this, MainActivity.class));
+                        finish();
+                    }, 3500);
+                } else {
+                    typingAnimation(key_hint, "Invalid key. Try again.");
                 }
             }
-        } catch (NumberFormatException exp) {
-            typingAnimation(key_hint, "Invalid key. Try again.");
+        } else {
+            typingAnimation(key_hint, "Enter key.");
         }
+    }
+
+    public int hashKey(int key) {
+        return String.valueOf(key).hashCode();
     }
 }
