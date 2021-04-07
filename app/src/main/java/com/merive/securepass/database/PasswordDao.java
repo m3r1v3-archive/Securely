@@ -1,6 +1,5 @@
 package com.merive.securepass.database;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -18,6 +17,12 @@ public interface PasswordDao {
 
     @Delete
     void deleteItem(Password person);
+
+    @Query("SELECT name FROM password WHERE id = :itemId")
+    String getNameById(long itemId);
+
+    @Query("SELECT password FROM password WHERE id = :itemId")
+    String getPasswordById(long itemId);
 
     @Query("DELETE FROM password WHERE id = :itemId")
     void deleteByItemId(long itemId);

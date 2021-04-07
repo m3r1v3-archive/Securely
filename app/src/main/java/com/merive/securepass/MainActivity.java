@@ -1,9 +1,13 @@
 package com.merive.securepass;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -88,8 +92,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecyclerView(List<Password> passwordList) {
         passwords.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PasswordAdapter(passwordList);
+        adapter = new PasswordAdapter(passwordList, position -> addInClipboard(
+                db.passwordDao().getNameById(position + 1),
+                db.passwordDao().getPasswordById(position + 1)));
         passwords.setAdapter(adapter);
+    }
+
+    public void addInClipboard(String label, String value) {
+        ClipboardManager clipboard = (ClipboardManager)
+                getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, value);
+        clipboard.setPrimaryClip(clip);
+        Log.i("", "Copied");
     }
 
     public class GetData extends AsyncTask<Void, Void, List<Password>> {
