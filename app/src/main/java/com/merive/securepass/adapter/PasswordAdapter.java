@@ -1,4 +1,4 @@
-package com.merive.securepass;
+package com.merive.securepass.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.merive.securepass.R;
 import com.merive.securepass.database.Password;
 
 import java.lang.ref.WeakReference;

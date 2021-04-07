@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.merive.securepass.elements.TypingTextView;
+
 public class CheckKeyActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;

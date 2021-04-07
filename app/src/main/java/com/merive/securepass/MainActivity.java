@@ -17,6 +17,8 @@ import androidx.room.Room;
 
 import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
+import com.merive.securepass.adapter.PasswordAdapter;
+import com.merive.securepass.elements.TypingTextView;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.merive.securepass;
+package com.merive.securepass.adapter;
 
 public interface ClickListener {
 

@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
 
-    <com.merive.securepass.TypingTextView
+    <com.merive.securepass.elements.TypingTextView
         android:id="@+id/title_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

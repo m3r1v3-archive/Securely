@@ -1,4 +1,4 @@
-package com.merive.securepass;
+package com.merive.securepass.elements;
 
 import android.content.Context;
 import android.os.Handler;

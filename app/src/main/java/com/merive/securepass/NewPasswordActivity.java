@@ -7,6 +7,9 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.merive.securepass.elements.TypingTextView;
+import com.merive.securepass.generators.PasswordGenerator;
+
 public class NewPasswordActivity extends AppCompatActivity {
 
     TypingTextView title;
@@ -42,6 +45,10 @@ public class NewPasswordActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    public void generatePassword(View view) {
+        passwordEdit.setText(new PasswordGenerator(16).generatePassword());
     }
 
     public boolean checkEdits() {
