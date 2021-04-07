@@ -27,7 +27,7 @@ public class CheckKeyActivity extends AppCompatActivity {
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 
-        title = findViewById(R.id.title);
+        title = findViewById(R.id.title_check);
         typingAnimation(title, getResources().getString(R.string.welcome_to_securepass));
         key_hint = findViewById(R.id.key_hint);
         typingAnimation(key_hint, getResources().getString(R.string.enter_the_key_in_the_field));
@@ -56,7 +56,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     public void checkKey(View view) {
         if (!key.getText().toString().equals("")) {
             if (sharedPreferences.getInt("key", hashKey(0)) == hashKey(0)) {
-                sharedPreferences.edit().putInt("key", Integer.parseInt(key.getText().toString())).apply();
+                sharedPreferences.edit().putInt("key", hashKey(Integer.parseInt(key.getText().toString()))).apply();
 
                 typingAnimation(key_hint, "Key set. Welcome!");
 
