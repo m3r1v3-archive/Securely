@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckKey">
+    android:background="@color/dark"
+    tools:context=".CheckKeyActivity">
 
-    <com.merive.securepass.TypingTextView
-        android:id="@+id/title"
+    <com.merive.securepass.elements.TypingTextView
+        android:id="@+id/title_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"
@@ -19,9 +20,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07999998" />
+        app:layout_constraintVertical_bias="0.089999974" />
 
-    <com.merive.securepass.TypingTextView
+    <com.merive.securepass.elements.TypingTextView
         android:id="@+id/key_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.223" />
+        app:layout_constraintVertical_bias="0.20999998" />
 
     <EditText
         android:id="@+id/key"
@@ -43,7 +44,7 @@
         android:autofillHints=""
         android:ems="10"
         android:fontFamily="@font/share_tech_mono"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:maxLength="10"
         android:textAlignment="center"
         android:textColor="@color/green"
@@ -53,24 +54,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.543"
+        app:layout_constraintVertical_bias="0.6"
         tools:ignore="LabelFor" />
 
-    <Button
+    <ImageView
         android:id="@+id/check_button"
-        android:layout_width="188dp"
-        android:layout_height="43dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:background="@drawable/round_button"
-        android:fontFamily="@font/share_tech_mono"
+        android:contentDescription="@string/todo"
         android:onClick="checkKey"
-        android:text="@string/check"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/green"
-        android:textSize="18sp"
+        android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.777" />
+        app:layout_constraintVertical_bias="0.893"
+        app:srcCompat="@drawable/check"
+        app:tint="@color/green" />
 </androidx.constraintlayout.widget.ConstraintLayout>

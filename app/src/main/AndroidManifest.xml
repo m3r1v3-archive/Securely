@@ -10,26 +10,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SecurePass"
         tools:ignore="AllowBackup">
+        <activity android:name=".EditPasswordActivity"></activity>
+        <activity android:name=".NewPasswordActivity" />
         <activity
-            android:name=".Splash"
+            android:name=".SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
-            android:name=".CheckKey"
+            android:name=".CheckKeyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SecurePass">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
