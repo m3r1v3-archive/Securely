@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.merive.securepass.adapter.PasswordAdapter;
 import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
-import com.merive.securepass.adapter.PasswordAdapter;
 import com.merive.securepass.elements.TypingTextView;
 
 import java.util.List;
@@ -39,15 +39,20 @@ public class MainActivity extends AppCompatActivity {
         typingAnimation(title, getResources().getString(R.string.app_name));
 
         passwords = findViewById(R.id.password_recycle_view);
-        db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords").allowMainThreadQueries().build();
+        db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
+                .allowMainThreadQueries().build();
+
         addPassword();
+        checkChanges();
+        checkDelete();
+
         new GetData().execute();
     }
 
 
     public void typingAnimation(TypingTextView view, String text) {
         view.setText("");
-        view.setCharacterDelay(150);
+        view.setCharacterDelay(125);
         view.animateText(text);
     }
 
@@ -57,34 +62,64 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addPassword() {
-        if (checkEdits(getNameData(), getLoginData(), getPasswordData())) {
+        if (checkNullable(getData("name"), getData("login"),
+                getData("password"))) {
             db.passwordDao().insertItem(
                     new Password(
-                            getNameData(),
-                            getLoginData(),
-                            getPasswordData(),
-                            getDescriptionData()
+                            db.passwordDao().getMaxId() + 1,
+                            getData("name"),
+                            getData("login"),
+                            getData("password"),
+                            getData("description")
                     ));
         }
     }
 
-    public String getNameData() {
-        return getIntent().getStringExtra("name");
+    public void checkChanges() {
+        try {
+            if (!getData("status").isEmpty()) {
+                if (getData("status").equals("edited")) {
+                    if (getId("edited_id") > 0) {
+                        if (checkNullable(getData("edited_name"), getData("edited_login"),
+                                getData("edited_password"))) {
+                            db.passwordDao().updateItem(getId("edited_id"),
+                                    getData("edited_name"),
+                                    getData("edited_login"),
+                                    getData("edited_password"),
+                                    getData("edited_description")
+                            );
+                        }
+                    }
+                }
+            }
+        } catch (NullPointerException exc) {
+            Log.i("Wasn't edit", "Password wasn't edit");
+        }
     }
 
-    public String getLoginData() {
-        return getIntent().getStringExtra("login");
+    public void checkDelete() {
+        try {
+            if (!getData("status").isEmpty()) {
+                if (getData("status").equals("deleted")) {
+                    if (getId("deleted_id") > 0) {
+                        db.passwordDao().deleteByItemId(getId("deleted_id"));
+                    }
+                }
+            }
+        } catch (NullPointerException exp) {
+            Log.i("No deleted items", "Nothing wasn't deleted");
+        }
     }
 
-    public String getPasswordData() {
-        return getIntent().getStringExtra("password");
+    public String getData(String name) {
+        return getIntent().getStringExtra(name);
     }
 
-    public String getDescriptionData() {
-        return getIntent().getStringExtra("description");
+    public int getId(String name) {
+        return getIntent().getIntExtra(name, -1);
     }
 
-    public boolean checkEdits(String name, String login, String password) {
+    public boolean checkNullable(String name, String login, String password) {
         try {
             return !name.isEmpty() || !login.isEmpty() || !password.isEmpty();
         } catch (NullPointerException exc) {
@@ -94,10 +129,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecyclerView(List<Password> passwordList) {
         passwords.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PasswordAdapter(passwordList, position -> addInClipboard(
-                db.passwordDao().getNameById(position + 1),
-                db.passwordDao().getPasswordById(position + 1)));
+        adapter = new PasswordAdapter(passwordList,
+                position -> editPassword(position + 1),
+                position -> addInClipboard(
+                        db.passwordDao().getNameById(position + 1),
+                        db.passwordDao().getPasswordById(position + 1)));
+
         passwords.setAdapter(adapter);
+    }
+
+    public void editPassword(int position) {
+        Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
+
+        intent.putExtra("id_for_edit", position);
+
+        intent.putExtra("name_for_edit",
+                db.passwordDao().getNameById(position));
+        intent.putExtra("login_for_edit",
+                db.passwordDao().getLoginById(position));
+        intent.putExtra("password_for_edit",
+                db.passwordDao().getPasswordById(position));
+        intent.putExtra("description_for_edit",
+                db.passwordDao().getDescriptionById(position));
+
+        startActivity(intent);
+        finish();
     }
 
     public void addInClipboard(String label, String value) {

@@ -17,12 +17,14 @@ import java.util.List;
 
 public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHolder> {
 
-    public final ClickListener listener;
+    public final ClickListener copyListener;
+    public final ClickListener rowListener;
     private final List<Password> mPasswords;
 
-    public PasswordAdapter(List<Password> passwords, ClickListener listener) {
+    public PasswordAdapter(List<Password> passwords, ClickListener rowListener, ClickListener copyListener) {
         mPasswords = passwords;
-        this.listener = listener;
+        this.rowListener = rowListener;
+        this.copyListener = copyListener;
     }
 
     @NonNull
@@ -47,11 +49,15 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
 
         private final TextView name;
         private final ImageButton copy;
-        private final WeakReference<ClickListener> listenerRef;
+        private final WeakReference<ClickListener> copyListenerRef;
+        private final WeakReference<ClickListener> rowListenerRef;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            listenerRef = new WeakReference<>(listener);
+
+            copyListenerRef = new WeakReference<>(copyListener);
+            rowListenerRef = new WeakReference<>(rowListener);
+
             name = itemView.findViewById(R.id.password_name);
             copy = itemView.findViewById(R.id.copy_password);
 
@@ -63,7 +69,8 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
         @Override
         public void onClick(View v) {
             if (v.getId() == copy.getId())
-                listenerRef.get().onPositionClicked(getAdapterPosition());
+                copyListenerRef.get().onPositionClicked(getAdapterPosition());
+            else rowListenerRef.get().onPositionClicked(getAdapterPosition());
         }
     }
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 public class Password implements Serializable {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     private long id;
 
     @ColumnInfo(name = "name")
@@ -26,7 +26,8 @@ public class Password implements Serializable {
 
 
     @Ignore
-    public Password(String name, String login, String password, String description) {
+    public Password(long id, String name, String login, String password, String description) {
+        this.id = id;
         this.name = name;
         this.login = login;
         this.password = password;

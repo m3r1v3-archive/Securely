@@ -31,7 +31,7 @@ public class NewPasswordActivity extends AppCompatActivity {
 
     public void typingAnimation(TypingTextView view, String text) {
         view.setText("");
-        view.setCharacterDelay(150);
+        view.setCharacterDelay(125);
         view.animateText(text);
     }
 
@@ -45,6 +45,12 @@ public class NewPasswordActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    public void cancel(View view) {
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void generatePassword(View view) {

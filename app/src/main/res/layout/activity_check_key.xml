@@ -44,7 +44,7 @@
         android:autofillHints=""
         android:ems="10"
         android:fontFamily="@font/share_tech_mono"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:maxLength="10"
         android:textAlignment="center"
         android:textColor="@color/green"
@@ -57,21 +57,20 @@
         app:layout_constraintVertical_bias="0.6"
         tools:ignore="LabelFor" />
 
-    <Button
+    <ImageView
         android:id="@+id/check_button"
-        android:layout_width="188dp"
-        android:layout_height="43dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:background="@drawable/round_button"
-        android:fontFamily="@font/share_tech_mono"
+        android:contentDescription="@string/todo"
         android:onClick="checkKey"
-        android:text="@string/check"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/green"
-        android:textSize="18sp"
+        android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.893"
+        app:srcCompat="@drawable/check"
+        app:tint="@color/green" />
 </androidx.constraintlayout.widget.ConstraintLayout>

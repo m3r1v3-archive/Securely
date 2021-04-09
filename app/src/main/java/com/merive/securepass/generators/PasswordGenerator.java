@@ -11,20 +11,20 @@ public class PasswordGenerator {
     String[] lowerAlf = "abcdefghijklmnopqrstuvwxyz".split("");
     String[] upperAlf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     String[] numberAlf = "0123456789".split("");
-    String[] symbolsAlf = "!\"#$%&'()*+`-./:;<>=?,{}|~".split("");
+    String[] symbolsAlf = "!#$%&'()*+`-./:;<>=?,{}|~".split("");
 
     public PasswordGenerator(int length) {
         if (length % 2 == 0) {
-            lowerLength = (int) Math.round(0.35 * length);
-            upperLength = (int) Math.round(0.35 * length);
-            numberLength = (int) (0.50 * (lowerLength + upperLength));
-            symbolsLength = (int) (0.50 * (lowerLength + upperLength));
+            lowerLength = (int) Math.round(0.4 * length);
+            upperLength = (int) Math.round(0.4 * length);
+            numberLength = (int) Math.round(0.1 * length);
+            symbolsLength = (int) Math.round(0.1 * length);
         } else {
             length -= 1;
             lowerLength = (int) Math.round(0.4 * length);
             upperLength = (int) Math.round(0.4 * length);
-            numberLength = (int) (0.50 * (lowerLength + upperLength));
-            symbolsLength = (int) (0.50 * (lowerLength + upperLength)) + 1;
+            numberLength = (int) Math.round(0.1 * length);
+            symbolsLength = (int) Math.round(0.1 * length) + 1;
         }
     }
 
@@ -34,9 +34,9 @@ public class PasswordGenerator {
 
     public String generateAlfString(String[] alf, int length) {
         StringBuilder string = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            string.append(alf[new Random().nextInt((length) + 1)]);
-        }
+        while (string.length() != length)
+            string.append(alf[new Random().nextInt(alf.length)]);
+
         return string.toString();
     }
 

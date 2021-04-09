@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +18,6 @@ public class CheckKeyActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     TypingTextView title, key_hint;
     EditText key;
-    Button check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +32,6 @@ public class CheckKeyActivity extends AppCompatActivity {
         key_hint = findViewById(R.id.key_hint);
         typingAnimation(key_hint, getResources().getString(R.string.enter_the_key_in_the_field));
 
-        check = findViewById(R.id.check_button);
         key = findViewById(R.id.key);
 
         checkKeyNullable();
@@ -42,7 +39,7 @@ public class CheckKeyActivity extends AppCompatActivity {
 
     public void typingAnimation(TypingTextView view, String text) {
         view.setText("");
-        view.setCharacterDelay(150);
+        view.setCharacterDelay(125);
         view.animateText(text);
     }
 
@@ -50,7 +47,6 @@ public class CheckKeyActivity extends AppCompatActivity {
     public void checkKeyNullable() {
         if (sharedPreferences.getInt("key", 0) == 0) {
             typingAnimation(key_hint, "Create a key\nTip: Use more than 4 numbers.");
-            check.setText("Create");
         }
     }
 
@@ -65,7 +61,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> {
                     startActivity(new Intent(CheckKeyActivity.this, MainActivity.class));
                     finish();
-                }, 3500);
+                }, 3250);
             } else {
                 if (sharedPreferences.getInt("key", hashKey(0)) == hashKey(Integer.parseInt(key.getText().toString()))) {
                     typingAnimation(key_hint, "All right. Welcome!");
@@ -73,7 +69,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                     new Handler().postDelayed(() -> {
                         startActivity(new Intent(CheckKeyActivity.this, MainActivity.class));
                         finish();
-                    }, 3500);
+                    }, 3250);
                 } else {
                     typingAnimation(key_hint, "Invalid key. Try again.");
                 }
