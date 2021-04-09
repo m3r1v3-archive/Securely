@@ -3,6 +3,21 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        realise {
+            storeFile file('src\\main\\res\\SecurePassKey.jks')
+            keyAlias 'SecurePassKey'
+            storePassword '1[SecurePass]3'
+            keyPassword '1[SecurePass]3'
+        }
+
+        debug {
+            storeFile file('src\\main\\res\\SecurePassKey.jks')
+            keyAlias 'SecurePassKey'
+            storePassword '1[SecurePass]3'
+            keyPassword '1[SecurePass]3'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
