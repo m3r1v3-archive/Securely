@@ -45,7 +45,8 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
     }
 
     public class ViewHolder
-            extends RecyclerView.ViewHolder implements View.OnClickListener {
+            extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
 
         private final TextView name;
         private final ImageButton copy;
@@ -69,8 +70,8 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
         @Override
         public void onClick(View v) {
             if (v.getId() == copy.getId())
-                copyListenerRef.get().onPositionClicked(getAdapterPosition());
-            else rowListenerRef.get().onPositionClicked(getAdapterPosition());
+                copyListenerRef.get().onItemClick(getAdapterPosition());
+            else rowListenerRef.get().onItemClick(getAdapterPosition());
         }
     }
 }

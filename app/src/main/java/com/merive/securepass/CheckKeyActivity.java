@@ -34,9 +34,10 @@ public class CheckKeyActivity extends AppCompatActivity {
 
         key = findViewById(R.id.key);
 
-        checkKeyNullable();
+        checkKeyOnEmpty();
     }
 
+    /* Elements methods */
     public void typingAnimation(TypingTextView view, String text) {
         view.setText("");
         view.setCharacterDelay(125);
@@ -44,12 +45,13 @@ public class CheckKeyActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void checkKeyNullable() {
-        if (sharedPreferences.getInt("key", 0) == 0) {
+    public void checkKeyOnEmpty() {
+        if (sharedPreferences.getInt("key", -1) == -1) {
             typingAnimation(key_hint, "Create a key\nTip: Use more than 4 numbers.");
         }
     }
 
+    /* Click methods */
     @SuppressLint("SetTextI18n")
     public void checkKey(View view) {
         if (!key.getText().toString().equals("")) {

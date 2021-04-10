@@ -2,6 +2,5 @@ package com.merive.securepass.adapter;
 
 public interface ClickListener {
 
-    void onPositionClicked(int position);
-
+    void onItemClick(int position);
 }

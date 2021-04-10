@@ -10,8 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SecurePass"
         tools:ignore="AllowBackup">
-        <activity android:name=".EditPasswordActivity"></activity>
-        <activity android:name=".NewPasswordActivity" />
+        <activity
+            android:name=".EditPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SecurePass" />
+        <activity
+            android:name=".NewPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SecurePass" />
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"

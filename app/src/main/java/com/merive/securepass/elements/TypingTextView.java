@@ -8,7 +8,7 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
 
     private CharSequence mText;
     private int mIndex;
-    private long mDelay = 500; //Default 500ms delay
+    private long mDelay = 150;
 
 
     public TypingTextView(Context context) {

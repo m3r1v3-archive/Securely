@@ -32,10 +32,16 @@ public class EditPasswordActivity extends AppCompatActivity {
         passwordEdit = findViewById(R.id.passwordEdit);
         descriptionEdit = findViewById(R.id.descriptionEdit);
 
-        setEdits();
+        setEditsData();
     }
 
-    public void setEdits() {
+    public void typingAnimation(TypingTextView view, String text) {
+        view.setText("");
+        view.setCharacterDelay(125);
+        view.animateText(text);
+    }
+
+    public void setEditsData() {
         nameEdit.setText(getIntent().getStringExtra("name_for_edit"));
         loginEdit.setText(getIntent().getStringExtra("login_for_edit"));
         passwordEdit.setText(getIntent().getStringExtra("password_for_edit"));
@@ -46,12 +52,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         passwordEdit.setText(new PasswordGenerator(16).generatePassword());
     }
 
-    public void typingAnimation(TypingTextView view, String text) {
-        view.setText("");
-        view.setCharacterDelay(125);
-        view.animateText(text);
-    }
-
+    /* Click methods */
     public void cancelChanges(View view) {
         Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
         startActivity(intent);

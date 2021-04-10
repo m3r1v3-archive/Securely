@@ -1,6 +1,5 @@
 package com.merive.securepass;
 
-import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -9,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     PasswordAdapter adapter;
     PasswordDB db;
 
-    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,27 +40,33 @@ public class MainActivity extends AppCompatActivity {
         passwords = findViewById(R.id.password_recycle_view);
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
+    }
 
-        addPassword();
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        checkNewPassword();
         checkChanges();
         checkDelete();
 
         new GetData().execute();
     }
 
-
+    /* Elements methods */
     public void typingAnimation(TypingTextView view, String text) {
         view.setText("");
         view.setCharacterDelay(125);
         view.animateText(text);
     }
 
+    /* Click methods */
     public void clickAdd(View view) {
         startActivity(new Intent(MainActivity.this, NewPasswordActivity.class));
-        finish();
     }
 
-    public void addPassword() {
+    /* Check changes methods */
+    public void checkNewPassword() {
         if (checkNullable(getData("name"), getData("login"),
                 getData("password"))) {
             db.passwordDao().insertItem(
@@ -111,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /* Methods for check changes methods */
     public String getData(String name) {
         return getIntent().getStringExtra(name);
     }
@@ -127,16 +134,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadRecyclerView(List<Password> passwordList) {
-        passwords.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PasswordAdapter(passwordList,
-                position -> editPassword(position + 1),
-                position -> addInClipboard(
-                        db.passwordDao().getNameById(position + 1),
-                        db.passwordDao().getPasswordById(position + 1)));
-
-        passwords.setAdapter(adapter);
-    }
 
     public void editPassword(int position) {
         Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
@@ -153,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                 db.passwordDao().getDescriptionById(position));
 
         startActivity(intent);
-        finish();
     }
 
     public void addInClipboard(String label, String value) {
@@ -161,7 +157,19 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, value);
         clipboard.setPrimaryClip(clip);
-        Log.i("", "Copied");
+        Toast.makeText(getBaseContext(), label + " Password has been copied.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadRecyclerView(List<Password> passwordList) {
+        passwords.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new PasswordAdapter(passwordList,
+                position -> editPassword(position + 1),
+                position -> addInClipboard(
+                        db.passwordDao().getNameById(position + 1),
+                        db.passwordDao().getPasswordById(position + 1)));
+
+
+        passwords.setAdapter(adapter);
     }
 
     public class GetData extends AsyncTask<Void, Void, List<Password>> {

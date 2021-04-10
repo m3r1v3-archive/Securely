@@ -29,14 +29,22 @@ public class NewPasswordActivity extends AppCompatActivity {
         descriptionEdit = findViewById(R.id.descriptionEdit);
     }
 
+    /* Elements methods */
     public void typingAnimation(TypingTextView view, String text) {
         view.setText("");
         view.setCharacterDelay(125);
         view.animateText(text);
     }
 
+
+    /* Click methods */
+    public void generatePassword(View view) {
+        passwordEdit.setText(new PasswordGenerator(16).generatePassword());
+    }
+
+
     public void add(View view) {
-        if (checkEdits()) {
+        if (checkEditsOnEmpty()) {
             Intent intent = new Intent(getBaseContext(), MainActivity.class);
             intent.putExtra("name", nameEdit.getText().toString());
             intent.putExtra("login", loginEdit.getText().toString());
@@ -53,11 +61,8 @@ public class NewPasswordActivity extends AppCompatActivity {
         finish();
     }
 
-    public void generatePassword(View view) {
-        passwordEdit.setText(new PasswordGenerator(16).generatePassword());
-    }
-
-    public boolean checkEdits() {
+    /* Methods for clicks */
+    public boolean checkEditsOnEmpty() {
         return !nameEdit.getText().toString().isEmpty() ||
                 !loginEdit.getText().toString().isEmpty() ||
                 !passwordEdit.getText().toString().isEmpty();

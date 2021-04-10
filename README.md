@@ -15,13 +15,13 @@ Once we add security enhancements, your data will be stored encrypted and comple
 ### Installing
 While our project is developing, we have few installation methods. 
 After the release of the project page on the Internet, installation will be simplified.
-#### Method 1:
+#### Method 1
  1. Run [_Android Studio_](https://developer.android.com/studio)
  2. Clone repository (_git clone https://github.com/merive/SecurePass.git_)
  3. Set and start Realise Build & Run installing
  4. Launch application
-#### Method 2:
- 1. Clone repository (_git clone https://github.com/merive/Press1MTimes.git_)
+#### Method 2
+ 1. Clone repository (_git clone https://github.com/merive/SecurePass.git_)
  2. Move the APK file from the APK folder to the device
  3. Install application
  4. Launch application
