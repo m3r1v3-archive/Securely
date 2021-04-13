@@ -86,16 +86,22 @@ public class MainActivity extends AppCompatActivity {
     public void checkAddNewPassword() {
         if (checkNullable(getData("name"), getData("login"),
                 getData("password"), getData("description"))) {
-            db.passwordDao().insertItem(
-                    new Password(
-                            getData("name"),
-                            getData("login"),
-                            getData("password"),
-                            getData("description")
-                    ));
-            Toast.makeText(getBaseContext(),
-                    getData("name") + " was added.",
-                    Toast.LENGTH_SHORT).show();
+            if (db.passwordDao().checkExist(getData("name"))) {
+                db.passwordDao().insertItem(
+                        new Password(
+                                getData("name"),
+                                getData("login"),
+                                getData("password"),
+                                getData("description")
+                        ));
+                Toast.makeText(getBaseContext(),
+                        getData("name") + " was added.",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getBaseContext(),
+                        getData("name") + " already in database. Try replace name.",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
