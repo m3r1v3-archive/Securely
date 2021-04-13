@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        checkNewPassword();
+        checkAddNewPassword();
         checkChanges();
         checkDelete();
 
@@ -63,20 +63,39 @@ public class MainActivity extends AppCompatActivity {
     /* Click methods */
     public void clickAdd(View view) {
         startActivity(new Intent(MainActivity.this, NewPasswordActivity.class));
+        finish();
+    }
+
+    public void clickEditPassword(String name) {
+        Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
+
+        intent.putExtra("name_for_edit",
+                name);
+        intent.putExtra("login_for_edit",
+                db.passwordDao().getLoginByName(name));
+        intent.putExtra("password_for_edit",
+                db.passwordDao().getPasswordByName(name));
+        intent.putExtra("description_for_edit",
+                db.passwordDao().getDescriptionByName(name));
+
+        startActivity(intent);
+        finish();
     }
 
     /* Check changes methods */
-    public void checkNewPassword() {
+    public void checkAddNewPassword() {
         if (checkNullable(getData("name"), getData("login"),
-                getData("password"))) {
+                getData("password"), getData("description"))) {
             db.passwordDao().insertItem(
                     new Password(
-                            db.passwordDao().getMaxId() + 1,
                             getData("name"),
                             getData("login"),
                             getData("password"),
                             getData("description")
                     ));
+            Toast.makeText(getBaseContext(),
+                    getData("name") + " was added.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -84,16 +103,20 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (!getData("status").isEmpty()) {
                 if (getData("status").equals("edited")) {
-                    if (getId("edited_id") > 0) {
-                        if (checkNullable(getData("edited_name"), getData("edited_login"),
-                                getData("edited_password"))) {
-                            db.passwordDao().updateItem(getId("edited_id"),
-                                    getData("edited_name"),
-                                    getData("edited_login"),
-                                    getData("edited_password"),
-                                    getData("edited_description")
-                            );
-                        }
+                    if (checkNullable(getData("edited_name"),
+                            getData("edited_login"),
+                            getData("edited_password"),
+                            getData("edited_description"))) {
+                        db.passwordDao().updateItem(
+                                getData("name_before"),
+                                getData("edited_name"),
+                                getData("edited_login"),
+                                getData("edited_password"),
+                                getData("edited_description")
+                        );
+                        Toast.makeText(getBaseContext(),
+                                getData("edited_name") + " was edited.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -106,8 +129,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (!getData("status").isEmpty()) {
                 if (getData("status").equals("deleted")) {
-                    if (getId("deleted_id") > 0) {
-                        db.passwordDao().deleteByItemId(getId("deleted_id"));
+                    if (!getData("deleted_name").equals("")) {
+                        db.passwordDao().deleteByName(getData("deleted_name"));
+                        Toast.makeText(getBaseContext(),
+                                getData("deleted_name") + " was deleted.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -122,34 +148,12 @@ public class MainActivity extends AppCompatActivity {
         return getIntent().getStringExtra(name);
     }
 
-    public int getId(String name) {
-        return getIntent().getIntExtra(name, -1);
-    }
-
-    public boolean checkNullable(String name, String login, String password) {
+    public boolean checkNullable(String name, String login, String password, String des) {
         try {
-            return !name.isEmpty() || !login.isEmpty() || !password.isEmpty();
+            return !name.isEmpty() || !login.isEmpty() || !password.isEmpty() || !des.isEmpty();
         } catch (NullPointerException exc) {
             return false;
         }
-    }
-
-
-    public void editPassword(int position) {
-        Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
-
-        intent.putExtra("id_for_edit", position);
-
-        intent.putExtra("name_for_edit",
-                db.passwordDao().getNameById(position));
-        intent.putExtra("login_for_edit",
-                db.passwordDao().getLoginById(position));
-        intent.putExtra("password_for_edit",
-                db.passwordDao().getPasswordById(position));
-        intent.putExtra("description_for_edit",
-                db.passwordDao().getDescriptionById(position));
-
-        startActivity(intent);
     }
 
     public void addInClipboard(String label, String value) {
@@ -157,17 +161,17 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, value);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(getBaseContext(), label + " Password has been copied.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), label + " Password was copied.",
+                Toast.LENGTH_SHORT).show();
     }
 
     private void loadRecyclerView(List<Password> passwordList) {
         passwords.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PasswordAdapter(passwordList,
-                position -> editPassword(position + 1),
-                position -> addInClipboard(
-                        db.passwordDao().getNameById(position + 1),
-                        db.passwordDao().getPasswordById(position + 1)));
-
+                name -> clickEditPassword(name),
+                name -> addInClipboard(
+                        name,
+                        db.passwordDao().getPasswordByName(name)));
 
         passwords.setAdapter(adapter);
     }

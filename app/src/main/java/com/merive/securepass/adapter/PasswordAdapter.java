@@ -70,8 +70,8 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
         @Override
         public void onClick(View v) {
             if (v.getId() == copy.getId())
-                copyListenerRef.get().onItemClick(getAdapterPosition());
-            else rowListenerRef.get().onItemClick(getAdapterPosition());
+                copyListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
+            else rowListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
         }
     }
 }

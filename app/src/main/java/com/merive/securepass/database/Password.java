@@ -1,18 +1,22 @@
 package com.merive.securepass.database;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity
+@Entity(indices = {@Index(value = {"name"},
+        unique = true)})
 public class Password implements Serializable {
-    @PrimaryKey()
-    private long id;
 
+    @PrimaryKey
     @ColumnInfo(name = "name")
+    @NonNull
     private String name;
 
     @ColumnInfo(name = "login")
@@ -26,8 +30,7 @@ public class Password implements Serializable {
 
 
     @Ignore
-    public Password(long id, String name, String login, String password, String description) {
-        this.id = id;
+    public Password(String name, String login, String password, String description) {
         this.name = name;
         this.login = login;
         this.password = password;
@@ -39,14 +42,6 @@ public class Password implements Serializable {
         this.login = "login";
         this.password = "password";
         this.description = "description";
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

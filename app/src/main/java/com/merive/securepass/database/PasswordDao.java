@@ -19,29 +19,23 @@ public interface PasswordDao {
             "login = :login, " +
             "password = :password, " +
             "description = :description " +
-            "WHERE id = :itemId")
-    void updateItem(long itemId, String name, String login, String password, String description);
+            "WHERE name = :nameBefore")
+    void updateItem(String nameBefore, String name, String login, String password, String description);
 
-    @Query("SELECT name FROM password WHERE id = :itemId")
-    String getNameById(long itemId);
+    @Query("SELECT login FROM password WHERE name = :name")
+    String getLoginByName(String name);
 
-    @Query("SELECT login FROM password WHERE id = :itemId")
-    String getLoginById(long itemId);
+    @Query("SELECT password FROM password WHERE name = :name")
+    String getPasswordByName(String name);
 
-    @Query("SELECT password FROM password WHERE id = :itemId")
-    String getPasswordById(long itemId);
+    @Query("SELECT description FROM password WHERE name = :name")
+    String getDescriptionByName(String name);
 
-    @Query("SELECT description FROM password WHERE id = :itemId")
-    String getDescriptionById(long itemId);
-
-    @Query("DELETE FROM password WHERE id = :itemId")
-    void deleteByItemId(long itemId);
+    @Query("DELETE FROM password WHERE name = :name")
+    void deleteByName(String name);
 
     @Query("SELECT * FROM password")
     List<Password> getAll();
-
-    @Query("SELECT * FROM password WHERE id = ( SELECT MAX(id) FROM password )")
-    long getMaxId();
 
     @Query("DELETE FROM Password")
     void deleteAll();

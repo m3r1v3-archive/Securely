@@ -2,7 +2,6 @@ package com.merive.securepass;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -15,7 +14,7 @@ public class EditPasswordActivity extends AppCompatActivity {
 
     TypingTextView title;
     EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
-    int id;
+    String nameBefore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         title = findViewById(R.id.add_title);
         typingAnimation(title, "Edit Password");
 
-        id = getIntent().getIntExtra("id_for_edit", -1);
+        nameBefore = getIntent().getStringExtra("name_for_edit");
 
         nameEdit = findViewById(R.id.PasswordNameEditView);
         loginEdit = findViewById(R.id.loginEdit);
@@ -56,6 +55,7 @@ public class EditPasswordActivity extends AppCompatActivity {
     public void cancelChanges(View view) {
         Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void saveChanges(View view) {
@@ -63,22 +63,23 @@ public class EditPasswordActivity extends AppCompatActivity {
 
         intent.putExtra("status", "edited");
 
-        intent.putExtra("edited_id", id);
+        intent.putExtra("name_before", nameBefore);
         intent.putExtra("edited_name", nameEdit.getText().toString());
         intent.putExtra("edited_login", loginEdit.getText().toString());
         intent.putExtra("edited_password", passwordEdit.getText().toString());
         intent.putExtra("edited_description", descriptionEdit.getText().toString());
 
         startActivity(intent);
+        finish();
     }
 
     public void delete(View view) {
         Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
-        Log.i("Deleting", String.valueOf(id));
 
         intent.putExtra("status", "deleted");
-        intent.putExtra("deleted_id", id);
+        intent.putExtra("deleted_name", nameBefore);
 
         startActivity(intent);
+        finish();
     }
 }
