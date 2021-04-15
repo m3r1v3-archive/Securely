@@ -2,6 +2,7 @@ package com.merive.securepass;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -53,15 +54,11 @@ public class EditPasswordActivity extends AppCompatActivity {
 
     /* Click methods */
     public void cancelChanges(View view) {
-        Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 
     public void saveChanges(View view) {
-        Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
-
-        intent.putExtra("status", "edited");
+        Intent intent = getIntent();
 
         intent.putExtra("name_before", nameBefore);
         intent.putExtra("edited_name", nameEdit.getText().toString());
@@ -69,17 +66,17 @@ public class EditPasswordActivity extends AppCompatActivity {
         intent.putExtra("edited_password", passwordEdit.getText().toString());
         intent.putExtra("edited_description", descriptionEdit.getText().toString());
 
-        startActivity(intent);
+        setResult(2, intent);
         finish();
     }
 
     public void delete(View view) {
-        Intent intent = new Intent(EditPasswordActivity.this, MainActivity.class);
+        Intent intent = getIntent();
 
-        intent.putExtra("status", "deleted");
         intent.putExtra("deleted_name", nameBefore);
 
-        startActivity(intent);
+        setResult(3, intent);
+        Log.i("", "should delete");
         finish();
     }
 }

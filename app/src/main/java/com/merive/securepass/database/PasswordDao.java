@@ -37,8 +37,17 @@ public interface PasswordDao {
     @Query("SELECT * FROM password ORDER BY name")
     List<Password> getAll();
 
-    @Query("SELECT EXISTS(SELECT 1 FROM password WHERE name= :name)")
+    @Query("SELECT NOT EXISTS(SELECT 1 FROM password WHERE name= :name)")
     boolean checkExist(String name);
+
+    @Query("SELECT\n" +
+            "    (\n" +
+            "       CASE WHEN NOT EXISTS(SELECT NULL FROM password)\n" +
+            "       THEN 1\n" +
+            "       ELSE 0\n" +
+            "       END\n" +
+            "    ) AS isEmpty")
+    boolean checkEmpty();
 
     @Query("DELETE FROM Password")
     void deleteAll();

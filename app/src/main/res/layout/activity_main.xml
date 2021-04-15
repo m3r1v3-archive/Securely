@@ -42,6 +42,7 @@
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/title_main"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"
@@ -55,5 +56,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.089999974" />
+
+    <com.merive.securepass.elements.TypingTextView
+        android:id="@+id/empty"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/share_tech_mono"
+        android:text="@string/list_is_empty"
+        android:textColor="@color/green"
+        android:textSize="48sp"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

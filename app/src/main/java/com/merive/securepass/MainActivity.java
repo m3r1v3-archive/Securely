@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TypingTextView title;
+    TypingTextView title, empty;
     RecyclerView passwords;
     PasswordAdapter adapter;
     PasswordDB db;
@@ -35,22 +36,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         title = findViewById(R.id.title_main);
+        empty = findViewById(R.id.empty);
         typingAnimation(title, getResources().getString(R.string.app_name));
 
         passwords = findViewById(R.id.password_recycle_view);
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        checkAddNewPassword();
-        checkChanges();
-        checkDelete();
+        checkEmpty();
 
         new GetData().execute();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case 1:
+                addNewPassword(data);
+                break;
+            case 2:
+                editPassword(data);
+                break;
+            case 3:
+                deletePassword(data);
+                break;
+        }
     }
 
     /* Elements methods */
@@ -62,12 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
     /* Click methods */
     public void clickAdd(View view) {
-        startActivity(new Intent(MainActivity.this, NewPasswordActivity.class));
-        finish();
+        startActivityForResult(new Intent(this, NewPasswordActivity.class), 1);
     }
 
     public void clickEditPassword(String name) {
-        Intent intent = new Intent(MainActivity.this, EditPasswordActivity.class);
+        Intent intent = new Intent(this, EditPasswordActivity.class);
 
         intent.putExtra("name_for_edit",
                 name);
@@ -78,80 +95,72 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("description_for_edit",
                 db.passwordDao().getDescriptionByName(name));
 
-        startActivity(intent);
-        finish();
+        startActivityForResult(intent, 2);
     }
 
-    /* Check changes methods */
-    public void checkAddNewPassword() {
-        if (checkNullable(getData("name"), getData("login"),
-                getData("password"), getData("description"))) {
-            if (db.passwordDao().checkExist(getData("name"))) {
-                db.passwordDao().insertItem(
-                        new Password(
-                                getData("name"),
-                                getData("login"),
-                                getData("password"),
-                                getData("description")
-                        ));
-                Toast.makeText(getBaseContext(),
-                        getData("name") + " was added.",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getBaseContext(),
-                        getData("name") + " already in database. Try replace name.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
-    public void checkChanges() {
-        try {
-            if (!getData("status").isEmpty()) {
-                if (getData("status").equals("edited")) {
-                    if (checkNullable(getData("edited_name"),
-                            getData("edited_login"),
-                            getData("edited_password"),
-                            getData("edited_description"))) {
-                        db.passwordDao().updateItem(
-                                getData("name_before"),
-                                getData("edited_name"),
-                                getData("edited_login"),
-                                getData("edited_password"),
-                                getData("edited_description")
-                        );
-                        Toast.makeText(getBaseContext(),
-                                getData("edited_name") + " was edited.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        } catch (NullPointerException exc) {
-            Log.i("Wasn't edit", "Password wasn't edit");
-        }
-    }
-
-    public void checkDelete() {
-        try {
-            if (!getData("status").isEmpty()) {
-                if (getData("status").equals("deleted")) {
-                    if (!getData("deleted_name").equals("")) {
-                        db.passwordDao().deleteByName(getData("deleted_name"));
-                        Toast.makeText(getBaseContext(),
-                                getData("deleted_name") + " was deleted.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        } catch (NullPointerException exp) {
-            Log.i("No deleted items", "Nothing wasn't deleted");
+    /* Activities event methods */
+    public void addNewPassword(Intent intent) {
+        if (db.passwordDao().checkExist(getData(intent, "name"))) {
+            db.passwordDao().insertItem(
+                    new Password(
+                            getData(intent, "name"),
+                            getData(intent, "login"),
+                            getData(intent, "password"),
+                            getData(intent, "description")
+                    ));
+            Toast.makeText(getBaseContext(),
+                    getData(intent, "name") + " was added.",
+                    Toast.LENGTH_SHORT).show();
+            new GetData().execute();
+        } else {
+            Toast.makeText(getBaseContext(),
+                    getData(intent, "name") + " already in database. Try replace name.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    /* Methods for check changes methods */
-    public String getData(String name) {
-        return getIntent().getStringExtra(name);
+    public void editPassword(Intent intent) {
+        if (db.passwordDao().checkExist(getData(intent, "edited_name")) ||
+                getData(intent, "name_before").equals(getData(intent, "edited_name"))) {
+            db.passwordDao().updateItem(
+                    getData(intent, "name_before"),
+                    getData(intent, "edited_name"),
+                    getData(intent, "edited_login"),
+                    getData(intent, "edited_password"),
+                    getData(intent, "edited_description")
+            );
+            Toast.makeText(getBaseContext(),
+                    getData(intent, "edited_name") + " was edited.",
+                    Toast.LENGTH_SHORT).show();
+            new GetData().execute();
+        } else {
+            Toast.makeText(getBaseContext(), getData(intent, "edited_name") + " already exist.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deletePassword(Intent intent) {
+        Log.i("", "In deletePassword");
+        db.passwordDao().deleteByName(getData(intent, "deleted_name"));
+        Toast.makeText(getBaseContext(),
+                getData(intent, "deleted_name") + " was deleted.",
+                Toast.LENGTH_SHORT).show();
+        new GetData().execute();
+    }
+
+
+    /* Check methods */
+    public void checkEmpty() {
+        if (db.passwordDao().checkEmpty()) {
+            empty.setVisibility(View.VISIBLE);
+            typingAnimation(empty, getResources().getString(R.string.list_is_empty));
+        }
+    }
+
+    public String getData(Intent intent, String name) {
+        return intent.getStringExtra(name);
     }
 
     public boolean checkNullable(String name, String login, String password, String des) {
@@ -162,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /* Clipboard methods */
     public void addInClipboard(String label, String value) {
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);
@@ -171,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+    /* RecyclerView methods/classes */
     private void loadRecyclerView(List<Password> passwordList) {
         passwords.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PasswordAdapter(passwordList,

@@ -9,4 +9,5 @@
     <string name="description_optional">Description (Optional)</string>
     <string name="login">Login</string>
     <string name="add">Add</string>
+    <string name="list_is_empty">List is Empty</string>
 </resources>
