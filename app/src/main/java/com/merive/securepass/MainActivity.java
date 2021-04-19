@@ -4,9 +4,10 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,25 +26,33 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+
     TypingTextView title, empty;
     RecyclerView passwords;
     PasswordAdapter adapter;
     PasswordDB db;
+
+    SharedPreferences sharedPreferences;
+    int length;
+    String copyingMessage;
+    boolean deleting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        title = findViewById(R.id.title_main);
+        title = findViewById(R.id.settingsTitle);
         empty = findViewById(R.id.empty);
         typingAnimation(title, getResources().getString(R.string.app_name));
+
+        sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 
         passwords = findViewById(R.id.password_recycle_view);
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
-
-
+        checkKeyStatus();
     }
 
     @Override
@@ -52,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         checkEmpty();
 
         new GetData().execute();
+        deleting = getIntent().getBooleanExtra("deleting", false);
     }
 
 
@@ -98,6 +108,18 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 2);
     }
 
+    public void clickLock(View view) {
+        startActivity(new Intent(this, CheckKeyActivity.class));
+        finish();
+    }
+
+    public void clickSettings(View view) {
+        // TODO - There will be onClick for Settings Button
+        Toast.makeText(getBaseContext(),
+                "Coming soon...",
+                Toast.LENGTH_SHORT).show();
+    }
+
 
     /* Activities event methods */
     public void addNewPassword(Intent intent) {
@@ -142,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deletePassword(Intent intent) {
-        Log.i("", "In deletePassword");
         db.passwordDao().deleteByName(getData(intent, "deleted_name"));
         Toast.makeText(getBaseContext(),
                 getData(intent, "deleted_name") + " was deleted.",
@@ -156,6 +177,13 @@ public class MainActivity extends AppCompatActivity {
         if (db.passwordDao().checkEmpty()) {
             empty.setVisibility(View.VISIBLE);
             typingAnimation(empty, getResources().getString(R.string.list_is_empty));
+        }
+    }
+
+    public void checkKeyStatus() {
+        if (sharedPreferences.getBoolean("status", false)) {
+            db.passwordDao().deleteAll();
+            finish();
         }
     }
 
@@ -178,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, value);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(getBaseContext(), label + " Password was copied.",
+        Toast.makeText(getBaseContext(), label + " Password " + copyingMessage,
                 Toast.LENGTH_SHORT).show();
     }
 

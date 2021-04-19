@@ -20,7 +20,7 @@ public class NewPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_password);
 
-        title = findViewById(R.id.add_title);
+        title = findViewById(R.id.addTitle);
         typingAnimation(title, "Add New Password");
 
         nameEdit = findViewById(R.id.PasswordNameEditView);

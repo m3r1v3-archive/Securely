@@ -22,7 +22,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_password);
 
-        title = findViewById(R.id.add_title);
+        title = findViewById(R.id.addTitle);
         typingAnimation(title, "Edit Password");
 
         nameBefore = getIntent().getStringExtra("name_for_edit");
