@@ -49,7 +49,7 @@ public class EditPasswordActivity extends AppCompatActivity {
     }
 
     public void generatePassword(View view) {
-        passwordEdit.setText(new PasswordGenerator(16).generatePassword());
+        passwordEdit.setText(new PasswordGenerator(getIntent().getIntExtra("length", 16)).generatePassword());
     }
 
     /* Click methods */

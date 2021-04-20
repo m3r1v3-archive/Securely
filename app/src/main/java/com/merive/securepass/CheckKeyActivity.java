@@ -41,6 +41,7 @@ public class CheckKeyActivity extends AppCompatActivity {
 
 
         checkKeyOnEmpty();
+        checkDeletingEdit();
     }
 
     /* Elements methods */
@@ -55,6 +56,15 @@ public class CheckKeyActivity extends AppCompatActivity {
         if (sharedPreferences.getInt("key", -1) == -1) {
             typingAnimation(key_hint, "Create a key\nTip: Use more than 4 numbers." +
                     "\nIn the future, you can't change him.");
+        }
+    }
+
+    public void checkDeletingEdit() {
+        if (getIntent().getBooleanExtra("status", false)) {
+            sharedPreferences.edit().putBoolean("delete",
+                    getIntent().getBooleanExtra("deleting", false)).apply();
+            deleting = getIntent().getBooleanExtra("deleting", false);
+            finish();
         }
     }
 
