@@ -2,7 +2,6 @@ package com.merive.securepass;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -76,7 +75,6 @@ public class EditPasswordActivity extends AppCompatActivity {
         intent.putExtra("deleted_name", nameBefore);
 
         setResult(3, intent);
-        Log.i("", "should delete");
         finish();
     }
 }

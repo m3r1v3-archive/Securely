@@ -1,5 +1,6 @@
 package com.merive.securepass.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,9 +70,14 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == copy.getId())
-                copyListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
-            else rowListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
+            try {
+                if (v.getId() == copy.getId())
+                    copyListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
+                else
+                    rowListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
+            } catch (Exception exc) {
+                Log.i("OnClickError", "");
+            }
         }
     }
 }

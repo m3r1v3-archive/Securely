@@ -9,13 +9,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -25,12 +23,10 @@ import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
 import com.merive.securepass.elements.TypingTextView;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ConstraintLayout settings;
     TypingTextView title, empty;
     RecyclerView passwords;
 
@@ -39,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    boolean settingsOpened;
     boolean deleting;
+    int key;
 
 
     @Override
@@ -52,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         empty = findViewById(R.id.empty);
         typingAnimation(title, getResources().getString(R.string.app_name));
 
-        settings = findViewById(R.id.settingsLayout);
-
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 
@@ -62,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
                 .allowMainThreadQueries().build();
         checkKeyStatus();
 
-        settingsOpened = false;
         deleting = getIntent().getBooleanExtra("deleting", false);
+
+        key = getIntent().getIntExtra("key", 0);
     }
 
     @Override
@@ -100,97 +95,87 @@ public class MainActivity extends AppCompatActivity {
 
     /* Click methods */
     public void clickAdd(View view) {
-        if (!settingsOpened)
-            startActivityForResult(new Intent(this, NewPasswordActivity.class)
-                    .putExtra("length",
-                            sharedPreferences.getInt("length", 16)), 1);
+        startActivityForResult(new Intent(this, NewPasswordActivity.class)
+                .putExtra("length",
+                        sharedPreferences.getInt("length", 16)), 1);
     }
 
+
     public void clickEditPassword(String name) {
-        if (!settingsOpened) {
-            Intent intent = new Intent(this, EditPasswordActivity.class);
+        Intent intent = new Intent(this, EditPasswordActivity.class);
 
-            intent.putExtra("name_for_edit",
-                    name);
-            intent.putExtra("login_for_edit",
-                    db.passwordDao().getLoginByName(name));
-            intent.putExtra("password_for_edit",
-                    db.passwordDao().getPasswordByName(name));
-            intent.putExtra("description_for_edit",
-                    db.passwordDao().getDescriptionByName(name));
-            intent.putExtra("length",
-                    sharedPreferences.getInt("length", 16));
+        intent.putExtra("name_for_edit",
+                name);
+        intent.putExtra("login_for_edit",
+                db.passwordDao().getLoginByName(name));
+        intent.putExtra("password_for_edit",
+                db.passwordDao().getPasswordByName(name));
+        intent.putExtra("description_for_edit",
+                db.passwordDao().getDescriptionByName(name));
+        intent.putExtra("length",
+                sharedPreferences.getInt("length", 16));
 
-            startActivityForResult(intent, 2);
-        }
+        startActivityForResult(intent, 2);
     }
 
     public void clickLock(View view) {
-        if (!settingsOpened) {
-            startActivity(new Intent(this, CheckKeyActivity.class));
-            finish();
-        }
+        startActivity(new Intent(this, CheckKeyActivity.class));
+        finish();
+
     }
 
     public void clickSettings(View view) {
-        if (!settingsOpened) {
-            settings.setVisibility(View.VISIBLE);
-
-            TypingTextView
-                    info = findViewById(R.id.info),
-                    settingsTitle = findViewById(R.id.settingsTitle);
-            typingAnimation(settingsTitle, getResources().getString(R.string.settings));
-            typingAnimation(info, "SecurePass " + BuildConfig.VERSION_NAME + ", " + Calendar.getInstance().get(Calendar.YEAR));
-
-            setSettings();
-            settingsOpened = true;
-        }
+        FragmentManager fm = getSupportFragmentManager();
+        SettingsFragment settingsFragment = SettingsFragment.newInstance(
+                sharedPreferences.getInt("length", 16),
+                sharedPreferences.getString("copyingMessage", "was copied."),
+                deleting);
+        settingsFragment.show(fm, "settings_fragment");
     }
 
 
     /* Activities event methods */
     public void addNewPassword(Intent intent) {
-        if (!settingsOpened) {
-            if (db.passwordDao().checkExist(getData(intent, "name"))) {
-                db.passwordDao().insertItem(
-                        new Password(
-                                getData(intent, "name"),
-                                getData(intent, "login"),
-                                getData(intent, "password"),
-                                getData(intent, "description")
-                        ));
-                Toast.makeText(getBaseContext(),
-                        getData(intent, "name") + " was added.",
-                        Toast.LENGTH_SHORT).show();
-                new GetData().execute();
-            } else {
-                Toast.makeText(getBaseContext(),
-                        getData(intent, "name") + " already in database. Try replace name.",
-                        Toast.LENGTH_SHORT).show();
-            }
+        if (db.passwordDao().checkExist(getData(intent, "name"))) {
+            db.passwordDao().insertItem(
+                    new Password(
+                            getData(intent, "name"),
+                            getData(intent, "login"),
+                            getData(intent, "password"),
+                            getData(intent, "description")
+                    ));
+            Toast.makeText(getBaseContext(),
+                    getData(intent, "name") + " was added.",
+                    Toast.LENGTH_SHORT).show();
+            new GetData().execute();
+            checkEmpty();
+        } else {
+            Toast.makeText(getBaseContext(),
+                    getData(intent, "name") + " already in database. Try replace name.",
+                    Toast.LENGTH_SHORT).show();
+
         }
     }
 
 
     public void editPassword(Intent intent) {
-        if (!settingsOpened) {
-            if (db.passwordDao().checkExist(getData(intent, "edited_name")) ||
-                    getData(intent, "name_before").equals(getData(intent, "edited_name"))) {
-                db.passwordDao().updateItem(
-                        getData(intent, "name_before"),
-                        getData(intent, "edited_name"),
-                        getData(intent, "edited_login"),
-                        getData(intent, "edited_password"),
-                        getData(intent, "edited_description")
-                );
-                Toast.makeText(getBaseContext(),
-                        getData(intent, "edited_name") + " was edited.",
-                        Toast.LENGTH_SHORT).show();
-                new GetData().execute();
-            } else {
-                Toast.makeText(getBaseContext(), getData(intent, "edited_name") + " already exist.",
-                        Toast.LENGTH_SHORT).show();
-            }
+        if (db.passwordDao().checkExist(getData(intent, "edited_name")) ||
+                getData(intent, "name_before").equals(getData(intent, "edited_name"))) {
+            db.passwordDao().updateItem(
+                    getData(intent, "name_before"),
+                    getData(intent, "edited_name"),
+                    getData(intent, "edited_login"),
+                    getData(intent, "edited_password"),
+                    getData(intent, "edited_description")
+            );
+            Toast.makeText(getBaseContext(),
+                    getData(intent, "edited_name") + " was edited.",
+                    Toast.LENGTH_SHORT).show();
+            new GetData().execute();
+        } else {
+            Toast.makeText(getBaseContext(), getData(intent, "edited_name") + " already exist.",
+                    Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -209,11 +194,13 @@ public class MainActivity extends AppCompatActivity {
         if (db.passwordDao().checkEmpty()) {
             empty.setVisibility(View.VISIBLE);
             typingAnimation(empty, getResources().getString(R.string.list_is_empty));
+        } else {
+            empty.setVisibility(View.INVISIBLE);
         }
     }
 
     public void checkKeyStatus() {
-        if (sharedPreferences.getBoolean("status", false)) {
+        if (getIntent().getBooleanExtra("status", false)) {
             db.passwordDao().deleteAll();
             finish();
         }
@@ -224,87 +211,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Settings methods */
-    public void setSettings() {
-        SwitchCompat deletingSwitch = findViewById(R.id.deletingSwitch);
-        deletingSwitch.setChecked(deleting);
+    public void deleteAllPasswords() {
+        db.passwordDao().deleteAll();
 
-        EditText copyingMessageEdit = findViewById(R.id.copyingMessageEdit);
-        copyingMessageEdit.setText(sharedPreferences.getString("copyingMessage", "was copied."));
+        new GetData().execute();
+        checkEmpty();
 
-        EditText lengthEdit = findViewById(R.id.passwordLengthEdit);
-        lengthEdit.setText(String.valueOf(sharedPreferences.getInt("length", 16)));
+        Toast.makeText(getBaseContext(),
+                "All passwords have been deleted.",
+                Toast.LENGTH_SHORT).show();
     }
 
-    public void closeSettings(View view) {
-        if (settingsOpened) {
-            settings.setVisibility(View.INVISIBLE);
-            settingsOpened = false;
-        }
-    }
+    public void saveSettings(int length, String message, boolean delete) {
+        sharedPreferences.edit()
+                .putString("copyingMessage", message)
+                .apply();
 
-    public void deleteAllPasswords(View view) {
-        if (settingsOpened) {
-            db.passwordDao().deleteAll();
-
-            new GetData().execute();
-            checkEmpty();
-
-            settingsOpened = false;
-            settings.setVisibility(View.INVISIBLE);
-            Toast.makeText(getBaseContext(),
-                    "All passwords have been deleted.",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void saveSettings(View view) {
-        if (settingsOpened) {
-            EditText copyingMessageEdit = findViewById(R.id.copyingMessageEdit);
-            EditText lengthEdit = findViewById(R.id.passwordLengthEdit);
-
+        if (!String.valueOf(length).isEmpty())
             sharedPreferences.edit()
-                    .putString("copyingMessage", copyingMessageEdit.getText().toString())
+                    .putInt("length", length)
                     .apply();
+        else sharedPreferences.edit()
+                .putInt("length", 16)
+                .apply();
 
-            if (!lengthEdit.getText().toString().isEmpty())
-                sharedPreferences.edit()
-                        .putInt("length", Integer.parseInt(lengthEdit.getText().toString()))
-                        .apply();
-            else sharedPreferences.edit()
-                    .putInt("length", 16)
-                    .apply();
-
-            SwitchCompat deletingSwitch = findViewById(R.id.deletingSwitch);
-            if (deletingSwitch.isChecked() !=
-                    getIntent().getBooleanExtra("deleting", false)) {
-                startActivity(new Intent(this, CheckKeyActivity.class)
-                        .putExtra("status", true)
-                        .putExtra("deleting", deletingSwitch.isChecked()));
-            }
-
-            deleting = deletingSwitch.isChecked();
-            settings.setVisibility(View.INVISIBLE);
-            settingsOpened = false;
-
-            Toast.makeText(getBaseContext(),
-                    "Settings saved.",
-                    Toast.LENGTH_SHORT).show();
+        if (delete !=
+                getIntent().getBooleanExtra("deleting", false)) {
+            startActivity(new Intent(this, CheckKeyActivity.class)
+                    .putExtra("status", true)
+                    .putExtra("deleting", delete));
         }
+
+        deleting = delete;
+
+        Toast.makeText(getBaseContext(),
+                "Settings saved.",
+                Toast.LENGTH_SHORT).show();
     }
 
 
     /* Clipboard methods */
     public void addInClipboard(String label, String value) {
-        if (!settingsOpened) {
-            ClipboardManager clipboard = (ClipboardManager)
-                    getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(label, value);
-            clipboard.setPrimaryClip(clip);
+        ClipboardManager clipboard = (ClipboardManager)
+                getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, value);
+        clipboard.setPrimaryClip(clip);
 
-            Toast.makeText(getBaseContext(), label + " Password " +
-                            sharedPreferences.getString("copyingMessage", "was copied."),
-                    Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(getBaseContext(), label + " Password " +
+                        sharedPreferences.getString("copyingMessage", "was copied."),
+                Toast.LENGTH_SHORT).show();
     }
 
     /* RecyclerView methods/classes */
@@ -325,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
         protected List<Password> doInBackground(Void... params) {
             return db.passwordDao().getAll();
         }
+
 
         @Override
         protected void onPostExecute(List<Password> passwords) {

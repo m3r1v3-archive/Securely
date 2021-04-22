@@ -82,7 +82,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                     finish();
                 }, 3250);
             } else {
-                if (times > 0) {
+                if (times > 1) {
                     if (sharedPreferences.getInt("key", hashKey(0)) == hashKey(Integer.parseInt(key.getText().toString()))) {
                         typingAnimation(key_hint, "All right. Welcome!");
 
@@ -90,6 +90,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                             startActivity(new Intent(this, MainActivity.class)
                                     .putExtra("status", false)
                                     .putExtra("deleting", deleting)
+                                    .putExtra("key", Integer.parseInt(key.getText().toString()))
                             );
                             finish();
                         }, 3250);
@@ -102,6 +103,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                     startActivity(new Intent(this, MainActivity.class)
                             .putExtra("status", true)
                     );
+                    typingAnimation(key_hint, "All Passwords was deleted. Have a nice day :-)");
                 }
             }
         } else {
