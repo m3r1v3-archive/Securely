@@ -66,20 +66,31 @@ public class SettingsFragment extends DialogFragment {
         deletingSwitch.setChecked(getArguments().getBoolean("deleting"));
 
         cancel = view.findViewById(R.id.cancelSettings);
-        cancel.setOnClickListener(v -> dismiss());
+        cancel.setOnClickListener(v -> {
+            view.clearFocus();
+            dismiss();
+        });
 
         deleteAll = view.findViewById(R.id.deletePasswords);
         deleteAll.setOnClickListener(v -> {
             ((MainActivity) getActivity()).deleteAllPasswords();
+
+            view.clearFocus();
             dismiss();
         });
 
         save = view.findViewById(R.id.saveSettings);
         save.setOnClickListener(v -> {
+            int length = passwordLengthEdit.getText().toString().isEmpty() ?
+                    16 : Integer.parseInt(passwordLengthEdit.getText().toString());
+            String copyingMessage = copyingMessageEdit.getText().toString().isEmpty() ?
+                    "was copied." : copyingMessageEdit.getText().toString();
             ((MainActivity) getActivity()).saveSettings(
-                    Integer.parseInt(passwordLengthEdit.getText().toString()),
-                    copyingMessageEdit.getText().toString(),
+                    length,
+                    copyingMessage,
                     deletingSwitch.isChecked());
+
+            view.clearFocus();
             dismiss();
         });
     }
