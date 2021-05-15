@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +32,7 @@ public class NewPasswordActivity extends AppCompatActivity {
 
     /* Elements methods */
     public void typingAnimation(TypingTextView view, String text) {
+        /* Typing animation for TextViews */
         view.setText("");
         view.setCharacterDelay(125);
         view.animateText(text);
@@ -39,11 +41,13 @@ public class NewPasswordActivity extends AppCompatActivity {
 
     /* Click methods */
     public void generatePassword(View view) {
+        /* Generate password and put him to passwordEdit */
         passwordEdit.setText(new PasswordGenerator(getIntent().getIntExtra("length", 16)).generatePassword());
     }
 
 
     public void add(View view) {
+        /* Put values and add password to database */
         if (checkEditsOnEmpty()) {
             Intent intent = getIntent();
 
@@ -54,6 +58,9 @@ public class NewPasswordActivity extends AppCompatActivity {
 
             setResult(1, intent);
             finish();
+        } else {
+            Toast.makeText(getBaseContext(), "You have empty edits.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -63,8 +70,9 @@ public class NewPasswordActivity extends AppCompatActivity {
 
     /* Methods for clicks */
     public boolean checkEditsOnEmpty() {
-        return !nameEdit.getText().toString().isEmpty() ||
-                !loginEdit.getText().toString().isEmpty() ||
+        /* Check edits on empty */
+        return !nameEdit.getText().toString().isEmpty() &&
+                !loginEdit.getText().toString().isEmpty() &&
                 !passwordEdit.getText().toString().isEmpty();
     }
 }

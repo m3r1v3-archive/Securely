@@ -6,20 +6,10 @@ import android.util.AttributeSet;
 
 public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView {
 
+    private final Handler mHandler = new Handler();
     private CharSequence mText;
     private int mIndex;
     private long mDelay = 150;
-
-
-    public TypingTextView(Context context) {
-        super(context);
-    }
-
-    public TypingTextView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    private final Handler mHandler = new Handler();
     private final Runnable characterAdder = new Runnable() {
         @Override
         public void run() {
@@ -30,7 +20,15 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
         }
     };
 
+    public TypingTextView(Context context) {
+        super(context);
+    }
+    public TypingTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
     public void animateText(CharSequence text) {
+        /* Animation for text */
         mText = text;
         mIndex = 0;
 

@@ -65,12 +65,14 @@ public class SettingsFragment extends DialogFragment {
         deletingSwitch = view.findViewById(R.id.deletingSwitch);
         deletingSwitch.setChecked(getArguments().getBoolean("deleting"));
 
+        /* OnClick Cancel */
         cancel = view.findViewById(R.id.cancelSettings);
         cancel.setOnClickListener(v -> {
             view.clearFocus();
             dismiss();
         });
 
+        /* OnClick deleteAll */
         deleteAll = view.findViewById(R.id.deletePasswords);
         deleteAll.setOnClickListener(v -> {
             ((MainActivity) getActivity()).deleteAllPasswords();
@@ -79,6 +81,7 @@ public class SettingsFragment extends DialogFragment {
             dismiss();
         });
 
+        /* OnClick save */
         save = view.findViewById(R.id.saveSettings);
         save.setOnClickListener(v -> {
             int length = passwordLengthEdit.getText().toString().isEmpty() ?
@@ -97,6 +100,7 @@ public class SettingsFragment extends DialogFragment {
 
     /* Elements methods */
     public void typingAnimation(TypingTextView view, String text) {
+        /* Typing animation for TextViews */
         view.setText("");
         view.setCharacterDelay(125);
         view.animateText(text);

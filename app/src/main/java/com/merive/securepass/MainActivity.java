@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Elements methods */
     public void typingAnimation(TypingTextView view, String text) {
+        /* Typing animation for TextViews */
         view.setText("");
         view.setCharacterDelay(125);
         view.animateText(text);
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Click methods */
     public void clickAdd(View view) {
+        /* OnClick Add */
         startActivityForResult(new Intent(this, NewPasswordActivity.class)
                 .putExtra("length",
                         sharedPreferences.getInt("length", 16)), 1);
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void clickEditPassword(String name) {
+        /* OnClick on password row */
         Intent intent = new Intent(this, EditPasswordActivity.class);
 
         intent.putExtra("name_for_edit",
@@ -119,12 +122,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickLock(View view) {
+        /* OnClick Lock */
         startActivity(new Intent(this, CheckKeyActivity.class));
         finish();
 
     }
 
     public void clickSettings(View view) {
+        /* OnClick Settings */
         FragmentManager fm = getSupportFragmentManager();
         SettingsFragment settingsFragment = SettingsFragment.newInstance(
                 sharedPreferences.getInt("length", 16),
@@ -136,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Activities event methods */
     public void addNewPassword(Intent intent) {
+        /* Add password in database */
         if (db.passwordDao().checkExist(getData(intent, "name"))) {
             db.passwordDao().insertItem(
                     new Password(
@@ -159,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void editPassword(Intent intent) {
+        /* Edit password in database */
         if (db.passwordDao().checkExist(getData(intent, "edited_name")) ||
                 getData(intent, "name_before").equals(getData(intent, "edited_name"))) {
             db.passwordDao().updateItem(
@@ -180,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deletePassword(Intent intent) {
+        /* Delete password from database */
         db.passwordDao().deleteByName(getData(intent, "deleted_name"));
         Toast.makeText(getBaseContext(),
                 getData(intent, "deleted_name") + " was deleted.",
@@ -191,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Check methods */
     public void checkEmpty() {
+        /* Check database on empty and if true, set visibility for TextView */
         if (db.passwordDao().checkEmpty()) {
             empty.setVisibility(View.VISIBLE);
             typingAnimation(empty, getResources().getString(R.string.list_is_empty));
@@ -200,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkKeyStatus() {
+        /* If u execute 15 errors in CheckKeyActivity, all passwords deleting */
         if (getIntent().getBooleanExtra("status", false)) {
             db.passwordDao().deleteAll();
             finish();
@@ -212,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Settings methods */
     public void deleteAllPasswords() {
+        /* Delete all passwords from database */
         db.passwordDao().deleteAll();
 
         new GetData().execute();
@@ -223,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveSettings(int length, String message, boolean delete) {
+        /* Save settings changes */
         sharedPreferences.edit()
                 .putString("copyingMessage", message)
                 .apply();
@@ -252,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Clipboard methods */
     public void addInClipboard(String label, String value) {
+        /* Add password to clipboard */
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, value);
