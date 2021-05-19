@@ -1,6 +1,7 @@
 package com.merive.securepass;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,11 +47,12 @@ public class CheckKeyActivity extends AppCompatActivity {
         checkEditOfDeletingAfterErrors();
 
 
-        key = (EditText) findViewById(R.id.key);
+        key = findViewById(R.id.key);
         key.setOnEditorActionListener((v, actionId, event) -> {
             boolean handled = false;
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 checkKey(key);
+                hideKeyboard();
                 handled = true;
             }
             return handled;
@@ -101,6 +104,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                 if (times > 1) {
                     if (sharedPreferences.getInt("key", hashKey(0)) == hashKey(Integer.parseInt(key.getText().toString()))) {
                         typingAnimation(key_hint, "All right. Welcome!");
+                        view.clearFocus();
 
                         new Handler().postDelayed(() -> {
                             startActivity(new Intent(this, MainActivity.class)
@@ -124,6 +128,14 @@ public class CheckKeyActivity extends AppCompatActivity {
             }
         } else {
             typingAnimation(key_hint, "Enter key.");
+        }
+    }
+
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
