@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 editPassword(data);
                 break;
             case 3:
-                deletePassword(data);
+                deletePasswordFragment(data);
                 break;
         }
     }
@@ -186,11 +186,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void deletePassword(Intent intent) {
-        /* Delete password from database */
-        db.passwordDao().deleteByName(getData(intent, "deleted_name"));
+    public void deletePasswordFragment(Intent intent) {
+        /* Open fragment for confirm deleting */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
+                getData(intent, "deleted_name"));
+        confirmFragment.show(fm, "confirm_fragment");
+    }
+
+    public void deletePasswordByName(String name) {
+        db.passwordDao().deleteByName(name);
         Toast.makeText(getBaseContext(),
-                getData(intent, "deleted_name") + " was deleted.",
+                name + " was deleted.",
                 Toast.LENGTH_SHORT).show();
         new GetData().execute();
         checkEmpty();
@@ -221,6 +228,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Settings methods */
+    public void deleteAllFragment() {
+        /* Open fragment for confirm deleting */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance();
+        confirmFragment.show(fm, "confirm_fragment");
+    }
+
     public void deleteAllPasswords() {
         /* Delete all passwords from database */
         db.passwordDao().deleteAll();

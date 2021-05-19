@@ -50,7 +50,7 @@ public class SettingsFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        title = view.findViewById(R.id.settingsTitle);
+        title = view.findViewById(R.id.confirmTitle);
         typingAnimation(title, getResources().getString(R.string.settings));
 
         info = view.findViewById(R.id.info);
@@ -75,10 +75,9 @@ public class SettingsFragment extends DialogFragment {
         /* OnClick deleteAll */
         deleteAll = view.findViewById(R.id.deletePasswords);
         deleteAll.setOnClickListener(v -> {
-            ((MainActivity) getActivity()).deleteAllPasswords();
+            ((MainActivity) getActivity()).deleteAllFragment();
 
             view.clearFocus();
-            dismiss();
         });
 
         /* OnClick save */

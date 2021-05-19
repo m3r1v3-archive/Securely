@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settingsLayout"
+    android:id="@+id/confirmLayout"
     android:layout_width="wrap_content"
     android:layout_height="450sp"
     android:layout_gravity="center"
@@ -18,7 +18,7 @@
     app:layout_constraintVertical_bias="1.0">
 
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/settingsTitle"
+        android:id="@+id/confirmTitle"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
