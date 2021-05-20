@@ -86,15 +86,13 @@ public class PasswordFragment extends DialogFragment {
             dismiss();
         });
 
-        /* OnCLick Generate */
+        /* OnClick Generate */
         generate = view.findViewById(R.id.generate);
         generate.setOnClickListener(v -> {
             generatePassword();
-            view.clearFocus();
-            dismiss();
         });
 
-        /* OnCLick Save */
+        /* OnClick Save */
         save = view.findViewById(R.id.save);
         save.setOnClickListener(v -> {
             view.clearFocus();
@@ -109,6 +107,12 @@ public class PasswordFragment extends DialogFragment {
                         ((MainActivity) getActivity()).addNewPassword(putNewDataInBundle());
                 }
             }
+            dismiss();
+        });
+
+        delete.setOnClickListener(v -> {
+            view.clearFocus();
+            ((MainActivity) getActivity()).deletePasswordFragment(getArguments().getString("name"));
             dismiss();
         });
     }

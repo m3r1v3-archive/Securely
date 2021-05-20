@@ -44,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         title = findViewById(R.id.mainTitle);
-        empty = findViewById(R.id.empty);
         typingAnimation(title, getResources().getString(R.string.app_name));
+
+        empty = findViewById(R.id.empty);
+
 
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
@@ -160,6 +162,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    public void deletePasswordFragment(String name) {
+        /* Open fragment for confirm deleting */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
+                name);
+        confirmFragment.show(fm, "confirm_fragment");
     }
 
     public void deletePasswordByName(String name) {
