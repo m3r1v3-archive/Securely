@@ -21,6 +21,7 @@ import com.merive.securepass.adapter.PasswordAdapter;
 import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
 import com.merive.securepass.elements.TypingTextView;
+import com.merive.securepass.utils.Crypt;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    boolean deleting;
+    boolean deleting, encrypting;
     int key;
 
 
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         deleting = getIntent().getBooleanExtra("deleting", false);
 
         key = getIntent().getIntExtra("key", 0);
+
+        encrypting = sharedPreferences.getBoolean("encrypting", false);
     }
 
     @Override
@@ -93,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
                 name, db.passwordDao().getLoginByName(name),
-                db.passwordDao().getPasswordByName(name),
+                encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
+                        db.passwordDao().getPasswordByName(name),
                 db.passwordDao().getDescriptionByName(name),
                 sharedPreferences.getInt("length", 16));
         passwordFragment.show(fm, "password_fragment");
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         SettingsFragment settingsFragment = SettingsFragment.newInstance(
                 sharedPreferences.getInt("length", 16),
                 sharedPreferences.getString("copyingMessage", "was copied."),
-                deleting);
+                deleting, sharedPreferences.getBoolean("encrypting", false));
         settingsFragment.show(fm, "settings_fragment");
     }
 
@@ -125,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
                     new Password(
                             getData(data, "name"),
                             getData(data, "login"),
-                            getData(data, "password"),
+                            encrypting ? new Crypt(key).encrypt(getData(data, "password")) :
+                                    getData(data, "password"),
                             getData(data, "description")
                     ));
             Toast.makeText(getBaseContext(),
@@ -150,7 +155,8 @@ public class MainActivity extends AppCompatActivity {
                     getData(data, "name_before"),
                     getData(data, "edited_name"),
                     getData(data, "edited_login"),
-                    getData(data, "edited_password"),
+                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_password")) :
+                            getData(data, "edited_password"),
                     getData(data, "edited_description")
             );
             Toast.makeText(getBaseContext(),
@@ -225,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void saveSettings(int length, String message, boolean delete) {
+    public void saveSettings(int length, String message, boolean delete, boolean encrypt) {
         /* Save settings changes */
         sharedPreferences.edit()
                 .putString("copyingMessage", message)
@@ -244,13 +250,45 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, CheckKeyActivity.class)
                     .putExtra("status", true)
                     .putExtra("deleting", delete));
+
+            deleting = delete;
         }
 
-        deleting = delete;
+        if (encrypt != sharedPreferences.getBoolean("encrypting", false)) {
+            if (encrypt) encryptAllPasswords();
+            else decryptAllPasswords();
+            sharedPreferences.edit()
+                    .putBoolean("encrypting", encrypt)
+                    .apply();
+            encrypting = encrypt;
+        }
+
 
         Toast.makeText(getBaseContext(),
                 "Settings saved.",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    public void encryptAllPasswords() {
+        List<String> data = db.passwordDao().getAllNames();
+        for (String s : data) {
+            encryptPassword(s);
+        }
+    }
+
+    public void encryptPassword(String name) {
+        db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
+    }
+
+    public void decryptAllPasswords() {
+        List<String> data = db.passwordDao().getAllNames();
+        for (String s : data) {
+            decryptPassword(s);
+        }
+    }
+
+    public void decryptPassword(String name) {
+        db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
 
@@ -274,7 +312,8 @@ public class MainActivity extends AppCompatActivity {
                 this::clickEditPassword,
                 name -> addInClipboard(
                         name,
-                        db.passwordDao().getPasswordByName(name)));
+                        encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
+                                : db.passwordDao().getPasswordByName(name)));
 
         passwords.setAdapter(adapter);
     }

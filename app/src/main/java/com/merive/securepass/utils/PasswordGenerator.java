@@ -1,4 +1,4 @@
-package com.merive.securepass.generators;
+package com.merive.securepass.utils;
 
 import java.util.ArrayList;
 import java.util.List;

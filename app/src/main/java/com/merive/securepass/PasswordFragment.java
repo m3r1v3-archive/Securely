@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.merive.securepass.elements.TypingTextView;
-import com.merive.securepass.generators.PasswordGenerator;
+import com.merive.securepass.utils.PasswordGenerator;
 
 public class PasswordFragment extends DialogFragment {
 
@@ -88,9 +88,7 @@ public class PasswordFragment extends DialogFragment {
 
         /* OnClick Generate */
         generate = view.findViewById(R.id.generate);
-        generate.setOnClickListener(v -> {
-            generatePassword();
-        });
+        generate.setOnClickListener(v -> generatePassword());
 
         /* OnClick Save */
         save = view.findViewById(R.id.save);

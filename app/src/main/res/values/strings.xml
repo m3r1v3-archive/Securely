@@ -16,4 +16,5 @@
     <string name="password_length">Password Length</string>
     <string name="def_16">def: 16</string>
     <string name="delete_after_15_errors">Delete after 15 errors</string>
+    <string name="encrypt_passwords">Encrypt passwords</string>
 </resources>

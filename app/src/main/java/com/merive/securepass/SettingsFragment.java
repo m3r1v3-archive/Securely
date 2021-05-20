@@ -23,18 +23,20 @@ public class SettingsFragment extends DialogFragment {
 
     TypingTextView title, info;
     EditText passwordLengthEdit, copyingMessageEdit;
-    SwitchCompat deletingSwitch;
+    SwitchCompat deletingSwitch, encryptingSwitch;
     ImageView cancel, deleteAll, save;
 
     public SettingsFragment() {
     }
 
-    public static SettingsFragment newInstance(int length, String message, boolean deleting) {
+    public static SettingsFragment newInstance(int length, String message,
+                                               boolean deleting, boolean encrypting) {
         SettingsFragment frag = new SettingsFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
         args.putString("message", message);
         args.putBoolean("deleting", deleting);
+        args.putBoolean("encrypting", encrypting);
         frag.setArguments(args);
         return frag;
     }
@@ -65,6 +67,9 @@ public class SettingsFragment extends DialogFragment {
         deletingSwitch = view.findViewById(R.id.deletingSwitch);
         deletingSwitch.setChecked(getArguments().getBoolean("deleting"));
 
+        encryptingSwitch = view.findViewById(R.id.encryptingSwitch);
+        encryptingSwitch.setChecked(getArguments().getBoolean("encrypting"));
+
         /* OnClick Cancel */
         cancel = view.findViewById(R.id.cancelSettings);
         cancel.setOnClickListener(v -> {
@@ -90,7 +95,8 @@ public class SettingsFragment extends DialogFragment {
             ((MainActivity) getActivity()).saveSettings(
                     length,
                     copyingMessage,
-                    deletingSwitch.isChecked());
+                    deletingSwitch.isChecked(),
+                    encryptingSwitch.isChecked());
 
             view.clearFocus();
             dismiss();
