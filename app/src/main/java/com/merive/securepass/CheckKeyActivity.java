@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.merive.securepass.elements.TypingTextView;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class CheckKeyActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
@@ -48,7 +50,6 @@ public class CheckKeyActivity extends AppCompatActivity {
 
         pressed = false;
 
-
         key = findViewById(R.id.key);
         key.setOnEditorActionListener((v, actionId, event) -> {
             boolean handled = false;
@@ -72,7 +73,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void checkKeyOnDefault() {
         /* Check key from data on default value */
-        if (sharedPreferences.getInt("key", -1) == -1) {
+        if (sharedPreferences.getString("hash", "-1").equals("-1")) {
             typingAnimation(key_hint, "Create a key\nTip: Use more than 4 numbers." +
                     "\nIn the future, you can't change him.");
         }
@@ -94,47 +95,53 @@ public class CheckKeyActivity extends AppCompatActivity {
         /* Check key method */
         if (!pressed) {
             if (!key.getText().toString().equals("")) {
-                if (sharedPreferences.getInt("key", -1) == -1) {
-                    sharedPreferences.edit().putInt("key", hashKey(Integer.parseInt(key.getText().toString()))).apply();
-
-                    typingAnimation(key_hint, "Key set. Welcome!");
-                    pressed = true;
-
-                    new Handler().postDelayed(() -> {
-                        startActivity(new Intent(CheckKeyActivity.this, MainActivity.class));
-                        finish();
-                    }, 3250);
-                } else {
-                    if (times > 0) {
-                        if (sharedPreferences.getInt("key", -1) == hashKey(Integer.parseInt(key.getText().toString()))) {
-                            typingAnimation(key_hint, "All right. Welcome!");
-                            pressed = true;
-
-                            new Handler().postDelayed(() -> {
-                                startActivity(new Intent(this, MainActivity.class)
-                                        .putExtra("status", false)
-                                        .putExtra("deleting", deletingAfterErrors)
-                                        .putExtra("key", Integer.parseInt(key.getText().toString()))
-                                );
-                                finish();
-                            }, 3250);
-                        } else {
-                            typingAnimation(key_hint, "Invalid key. Try again.");
-                            if (deletingAfterErrors)
-                                times -= 1;
-                        }
-                    } else {
-                        startActivity(new Intent(this, MainActivity.class)
-                                .putExtra("status", true)
-                        );
-                        typingAnimation(key_hint, "All Passwords was deleted. Have a nice day :-)");
-                        pressed = true;
-                    }
+                if (checkOnNewUser()) {
+                    openMain();
+                } else if (checkKey())
+                    openMain();
+                else {
+                    if (checkTimes()) {
+                        typingAnimation(key_hint, "Invalid key. Try again.");
+                        if (deletingAfterErrors) times--;
+                    } else deleteAllPasswords();
                 }
-            } else {
-                typingAnimation(key_hint, "Enter key.");
             }
         }
+    }
+
+
+    public boolean checkOnNewUser() {
+        if (sharedPreferences.getString("hash", "-1").equals("-1")) {
+
+            sharedPreferences.edit().putString("hash", generateHash(key.getText().toString())).apply();
+
+            typingAnimation(key_hint, "Key set. Welcome!");
+            pressed = true;
+            return true;
+        }
+        return false;
+    }
+
+
+    public void openMain() {
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(this, MainActivity.class)
+                    .putExtra("status", false)
+                    .putExtra("deleting", deletingAfterErrors)
+                    .putExtra("key", Integer.parseInt(key.getText().toString()))
+            );
+            finish();
+        }, 3250);
+    }
+
+    public boolean checkKey() {
+        if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
+            typingAnimation(key_hint, "All right. Welcome!");
+            pressed = true;
+
+            return true;
+        }
+        return false;
     }
 
     public void hideKeyboard() {
@@ -145,8 +152,19 @@ public class CheckKeyActivity extends AppCompatActivity {
         }
     }
 
-    public int hashKey(int key) {
-        /* Return hash of key */
-        return String.valueOf(key).hashCode();
+    public boolean checkTimes() {
+        return times > 0;
+    }
+
+    public void deleteAllPasswords() {
+        startActivity(new Intent(this, MainActivity.class)
+                .putExtra("status", true)
+        );
+        typingAnimation(key_hint, "All Passwords was deleted. Have a nice day :-)");
+        pressed = true;
+    }
+
+    public String generateHash(String key) {
+        return BCrypt.hashpw(key, BCrypt.gensalt());
     }
 }

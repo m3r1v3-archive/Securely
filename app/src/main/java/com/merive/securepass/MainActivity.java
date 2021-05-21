@@ -128,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
             db.passwordDao().insertItem(
                     new Password(
                             getData(data, "name"),
-                            getData(data, "login"),
+                            encrypting ? new Crypt(key).encrypt(getData(data, "login")) :
+                                    getData(data, "login"),
                             encrypting ? new Crypt(key).encrypt(getData(data, "password")) :
                                     getData(data, "password"),
                             getData(data, "description")
@@ -154,7 +155,8 @@ public class MainActivity extends AppCompatActivity {
             db.passwordDao().updateItem(
                     getData(data, "name_before"),
                     getData(data, "edited_name"),
-                    getData(data, "edited_login"),
+                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_login")) :
+                            getData(data, "edited_login"),
                     encrypting ? new Crypt(key).encrypt(getData(data, "edited_password")) :
                             getData(data, "edited_password"),
                     getData(data, "edited_description")
