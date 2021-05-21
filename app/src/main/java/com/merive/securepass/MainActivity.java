@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
         /* OnClick on password row */
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
-                name, db.passwordDao().getLoginByName(name),
+                name,
+                db.passwordDao().getLoginByName(name),
                 encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
                         db.passwordDao().getPasswordByName(name),
                 db.passwordDao().getDescriptionByName(name),
@@ -128,8 +129,7 @@ public class MainActivity extends AppCompatActivity {
             db.passwordDao().insertItem(
                     new Password(
                             getData(data, "name"),
-                            encrypting ? new Crypt(key).encrypt(getData(data, "login")) :
-                                    getData(data, "login"),
+                            getData(data, "login"),
                             encrypting ? new Crypt(key).encrypt(getData(data, "password")) :
                                     getData(data, "password"),
                             getData(data, "description")
@@ -155,10 +155,8 @@ public class MainActivity extends AppCompatActivity {
             db.passwordDao().updateItem(
                     getData(data, "name_before"),
                     getData(data, "edited_name"),
-                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_login")) :
-                            getData(data, "edited_login"),
-                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_password")) :
-                            getData(data, "edited_password"),
+                    getData(data, "edited_login"),
+                    getData(data, "edited_password"),
                     getData(data, "edited_description")
             );
             Toast.makeText(getBaseContext(),
@@ -257,8 +255,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (encrypt != sharedPreferences.getBoolean("encrypting", false)) {
-            if (encrypt) encryptAllPasswords();
-            else decryptAllPasswords();
+            if (encrypt) {
+                encryptAllPasswords();
+            } else {
+                decryptAllPasswords();
+            }
             sharedPreferences.edit()
                     .putBoolean("encrypting", encrypt)
                     .apply();
@@ -292,7 +293,6 @@ public class MainActivity extends AppCompatActivity {
     public void decryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
-
 
     /* Clipboard methods */
     public void addInClipboard(String label, String value) {
