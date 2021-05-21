@@ -34,7 +34,7 @@ After the release of the project page on the Internet, installation will be simp
   3. Install application
   4. Launch application
   
-#### Method 2
+#### Method 4
   1. Go to [merive_'s site](https://merive.herokuapp.com/SecurePass)
   2. Download APK
   3. Install application
