@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settingsLayout"
-    android:layout_width="wrap_content"
+    android:id="@+id/passwordLayout"
+    android:layout_width="360sp"
     android:layout_height="450sp"
-    android:layout_gravity="bottom|center"
+    android:layout_gravity="center"
     android:background="@drawable/round_button"
-    android:minWidth="300sp"
+    android:minWidth="360sp"
     android:minHeight="450sp"
     android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,7 @@
     app:layout_constraintVertical_bias="1.0">
 
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/settingsTitle"
+        android:id="@+id/confirmTitle"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012" />
+        app:layout_constraintVertical_bias="0.060000002" />
 
     <ImageView
         android:id="@+id/cancelSettings"
@@ -84,7 +84,7 @@
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/info"
-        android:layout_width="340sp"
+        android:layout_width="320sp"
         android:layout_height="wrap_content"
         android:layout_margin="18sp"
         android:fontFamily="@font/share_tech_mono"
@@ -95,13 +95,14 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68" />
+        app:layout_constraintVertical_bias="0.73" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/deletingSwitch"
-        android:layout_width="340sp"
+        android:layout_width="320sp"
         android:layout_height="wrap_content"
 
         android:fontFamily="@font/share_tech_mono"
@@ -113,7 +114,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.501"
+        app:layout_constraintVertical_bias="0.47000003"
+        app:thumbTint="@color/gray"
+        app:trackTint="@color/green" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/encryptingSwitch"
+        android:layout_width="320sp"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/share_tech_mono"
+        android:text="@string/encrypt_passwords"
+        android:textColor="@color/green"
+
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6"
         app:thumbTint="@color/gray"
         app:trackTint="@color/green" />
 
@@ -141,7 +160,7 @@
         android:hint="@string/def_16"
         android:inputType="number"
         android:maxLength="10"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -149,7 +168,7 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19"
+        app:layout_constraintVertical_bias="0.20999998"
         tools:ignore="LabelFor" />
 
     <EditText
@@ -160,6 +179,7 @@
         android:fontFamily="@font/share_tech_mono"
         android:hint="@string/message_about_copying"
         android:inputType="text"
+        android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -183,5 +203,5 @@
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19999999" />
+        app:layout_constraintVertical_bias="0.20999998" />
 </androidx.constraintlayout.widget.ConstraintLayout>

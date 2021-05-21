@@ -22,6 +22,10 @@ public interface PasswordDao {
             "WHERE name = :nameBefore")
     void updateItem(String nameBefore, String name, String login, String password, String description);
 
+    @Query("UPDATE password SET " +
+            "password = :password WHERE name = :name")
+    void updatePasswordByName(String name, String password);
+
     @Query("SELECT login FROM password WHERE name = :name")
     String getLoginByName(String name);
 
@@ -36,6 +40,9 @@ public interface PasswordDao {
 
     @Query("SELECT * FROM password ORDER BY name")
     List<Password> getAll();
+
+    @Query("SELECT name FROM password")
+    List<String> getAllNames();
 
     @Query("SELECT NOT EXISTS(SELECT 1 FROM password WHERE name= :name)")
     boolean checkExist(String name);

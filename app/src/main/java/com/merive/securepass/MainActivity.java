@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +21,7 @@ import com.merive.securepass.adapter.PasswordAdapter;
 import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
 import com.merive.securepass.elements.TypingTextView;
+import com.merive.securepass.utils.Crypt;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    boolean deleting;
+    boolean deleting, encrypting;
     int key;
 
 
@@ -45,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         title = findViewById(R.id.mainTitle);
-        empty = findViewById(R.id.empty);
         typingAnimation(title, getResources().getString(R.string.app_name));
+
+        empty = findViewById(R.id.empty);
+
 
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         deleting = getIntent().getBooleanExtra("deleting", false);
 
         key = getIntent().getIntExtra("key", 0);
+
+        encrypting = sharedPreferences.getBoolean("encrypting", false);
     }
 
     @Override
@@ -67,23 +71,6 @@ public class MainActivity extends AppCompatActivity {
         checkEmpty();
 
         new GetData().execute();
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode) {
-            case 1:
-                addNewPassword(data);
-                break;
-            case 2:
-                editPassword(data);
-                break;
-            case 3:
-                deletePassword(data);
-                break;
-        }
     }
 
     /* Elements methods */
@@ -97,28 +84,23 @@ public class MainActivity extends AppCompatActivity {
     /* Click methods */
     public void clickAdd(View view) {
         /* OnClick Add */
-        startActivityForResult(new Intent(this, NewPasswordActivity.class)
-                .putExtra("length",
-                        sharedPreferences.getInt("length", 16)), 1);
+        FragmentManager fm = getSupportFragmentManager();
+        PasswordFragment passwordFragment = PasswordFragment.newInstance(
+                sharedPreferences.getInt("length", 16));
+        passwordFragment.show(fm, "password_fragment");
     }
 
 
     public void clickEditPassword(String name) {
         /* OnClick on password row */
-        Intent intent = new Intent(this, EditPasswordActivity.class);
-
-        intent.putExtra("name_for_edit",
-                name);
-        intent.putExtra("login_for_edit",
-                db.passwordDao().getLoginByName(name));
-        intent.putExtra("password_for_edit",
-                db.passwordDao().getPasswordByName(name));
-        intent.putExtra("description_for_edit",
-                db.passwordDao().getDescriptionByName(name));
-        intent.putExtra("length",
+        FragmentManager fm = getSupportFragmentManager();
+        PasswordFragment passwordFragment = PasswordFragment.newInstance(
+                name, db.passwordDao().getLoginByName(name),
+                encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
+                        db.passwordDao().getPasswordByName(name),
+                db.passwordDao().getDescriptionByName(name),
                 sharedPreferences.getInt("length", 16));
-
-        startActivityForResult(intent, 2);
+        passwordFragment.show(fm, "password_fragment");
     }
 
     public void clickLock(View view) {
@@ -134,63 +116,72 @@ public class MainActivity extends AppCompatActivity {
         SettingsFragment settingsFragment = SettingsFragment.newInstance(
                 sharedPreferences.getInt("length", 16),
                 sharedPreferences.getString("copyingMessage", "was copied."),
-                deleting);
+                deleting, sharedPreferences.getBoolean("encrypting", false));
         settingsFragment.show(fm, "settings_fragment");
     }
 
 
     /* Activities event methods */
-    public void addNewPassword(Intent intent) {
+    public void addNewPassword(Bundle data) {
         /* Add password in database */
-        if (db.passwordDao().checkExist(getData(intent, "name"))) {
+        if (db.passwordDao().checkExist(getData(data, "name"))) {
             db.passwordDao().insertItem(
                     new Password(
-                            getData(intent, "name"),
-                            getData(intent, "login"),
-                            getData(intent, "password"),
-                            getData(intent, "description")
+                            getData(data, "name"),
+                            getData(data, "login"),
+                            encrypting ? new Crypt(key).encrypt(getData(data, "password")) :
+                                    getData(data, "password"),
+                            getData(data, "description")
                     ));
             Toast.makeText(getBaseContext(),
-                    getData(intent, "name") + " was added.",
+                    getData(data, "name") + " was added.",
                     Toast.LENGTH_SHORT).show();
             new GetData().execute();
             checkEmpty();
         } else {
             Toast.makeText(getBaseContext(),
-                    getData(intent, "name") + " already in database. Try replace name.",
+                    getData(data, "name") + " already in database. Try replace name.",
                     Toast.LENGTH_SHORT).show();
 
         }
     }
 
 
-    public void editPassword(Intent intent) {
+    public void editPassword(Bundle data) {
         /* Edit password in database */
-        if (db.passwordDao().checkExist(getData(intent, "edited_name")) ||
-                getData(intent, "name_before").equals(getData(intent, "edited_name"))) {
+        if (db.passwordDao().checkExist(getData(data, "edited_name")) ||
+                getData(data, "name_before").equals(getData(data, "edited_name"))) {
             db.passwordDao().updateItem(
-                    getData(intent, "name_before"),
-                    getData(intent, "edited_name"),
-                    getData(intent, "edited_login"),
-                    getData(intent, "edited_password"),
-                    getData(intent, "edited_description")
+                    getData(data, "name_before"),
+                    getData(data, "edited_name"),
+                    getData(data, "edited_login"),
+                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_password")) :
+                            getData(data, "edited_password"),
+                    getData(data, "edited_description")
             );
             Toast.makeText(getBaseContext(),
-                    getData(intent, "edited_name") + " was edited.",
+                    getData(data, "edited_name") + " was edited.",
                     Toast.LENGTH_SHORT).show();
             new GetData().execute();
         } else {
-            Toast.makeText(getBaseContext(), getData(intent, "edited_name") + " already exist.",
+            Toast.makeText(getBaseContext(), getData(data, "edited_name") + " already exist.",
                     Toast.LENGTH_SHORT).show();
 
         }
     }
 
-    public void deletePassword(Intent intent) {
-        /* Delete password from database */
-        db.passwordDao().deleteByName(getData(intent, "deleted_name"));
+    public void deletePasswordFragment(String name) {
+        /* Open fragment for confirm deleting */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
+                name);
+        confirmFragment.show(fm, "confirm_fragment");
+    }
+
+    public void deletePasswordByName(String name) {
+        db.passwordDao().deleteByName(name);
         Toast.makeText(getBaseContext(),
-                getData(intent, "deleted_name") + " was deleted.",
+                name + " was deleted.",
                 Toast.LENGTH_SHORT).show();
         new GetData().execute();
         checkEmpty();
@@ -216,11 +207,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String getData(Intent intent, String name) {
-        return intent.getStringExtra(name);
+    public String getData(Bundle data, String name) {
+        return data.getString(name);
     }
 
     /* Settings methods */
+    public void deleteAllFragment() {
+        /* Open fragment for confirm deleting */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance();
+        confirmFragment.show(fm, "confirm_fragment");
+    }
+
     public void deleteAllPasswords() {
         /* Delete all passwords from database */
         db.passwordDao().deleteAll();
@@ -233,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void saveSettings(int length, String message, boolean delete) {
+    public void saveSettings(int length, String message, boolean delete, boolean encrypt) {
         /* Save settings changes */
         sharedPreferences.edit()
                 .putString("copyingMessage", message)
@@ -252,13 +250,45 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, CheckKeyActivity.class)
                     .putExtra("status", true)
                     .putExtra("deleting", delete));
+
+            deleting = delete;
         }
 
-        deleting = delete;
+        if (encrypt != sharedPreferences.getBoolean("encrypting", false)) {
+            if (encrypt) encryptAllPasswords();
+            else decryptAllPasswords();
+            sharedPreferences.edit()
+                    .putBoolean("encrypting", encrypt)
+                    .apply();
+            encrypting = encrypt;
+        }
+
 
         Toast.makeText(getBaseContext(),
                 "Settings saved.",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    public void encryptAllPasswords() {
+        List<String> data = db.passwordDao().getAllNames();
+        for (String s : data) {
+            encryptPassword(s);
+        }
+    }
+
+    public void encryptPassword(String name) {
+        db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
+    }
+
+    public void decryptAllPasswords() {
+        List<String> data = db.passwordDao().getAllNames();
+        for (String s : data) {
+            decryptPassword(s);
+        }
+    }
+
+    public void decryptPassword(String name) {
+        db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
 
@@ -282,7 +312,8 @@ public class MainActivity extends AppCompatActivity {
                 this::clickEditPassword,
                 name -> addInClipboard(
                         name,
-                        db.passwordDao().getPasswordByName(name)));
+                        encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
+                                : db.passwordDao().getPasswordByName(name)));
 
         passwords.setAdapter(adapter);
     }
