@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
                 name,
-                db.passwordDao().getLoginByName(name),
+                encrypting ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) :
+                        db.passwordDao().getLoginByName(name),
                 encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
                         db.passwordDao().getPasswordByName(name),
                 db.passwordDao().getDescriptionByName(name),
@@ -129,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
             db.passwordDao().insertItem(
                     new Password(
                             getData(data, "name"),
-                            getData(data, "login"),
+                            encrypting ? new Crypt(key).encrypt(getData(data, "login")) :
+                                    getData(data, "login"),
                             encrypting ? new Crypt(key).encrypt(getData(data, "password")) :
                                     getData(data, "password"),
                             getData(data, "description")
@@ -155,8 +157,10 @@ public class MainActivity extends AppCompatActivity {
             db.passwordDao().updateItem(
                     getData(data, "name_before"),
                     getData(data, "edited_name"),
-                    getData(data, "edited_login"),
-                    getData(data, "edited_password"),
+                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_login"))
+                            : getData(data, "edited_login"),
+                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_password"))
+                            : getData(data, "edited_password"),
                     getData(data, "edited_description")
             );
             Toast.makeText(getBaseContext(),
@@ -256,8 +260,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (encrypt != sharedPreferences.getBoolean("encrypting", false)) {
             if (encrypt) {
+                encryptAllLogins();
                 encryptAllPasswords();
             } else {
+                decryptAllLogins();
                 decryptAllPasswords();
             }
             sharedPreferences.edit()
@@ -279,8 +285,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void encryptLogin(String name) {
+        db.passwordDao().updateLoginByName(name, new Crypt(key).encrypt(db.passwordDao().getLoginByName(name)));
+    }
+
+    public void encryptAllLogins() {
+        List<String> data = db.passwordDao().getAllNames();
+        for (String s : data) {
+            encryptLogin(s);
+        }
+    }
+
     public void encryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
+    }
+
+    public void decryptAllLogins() {
+        List<String> data = db.passwordDao().getAllNames();
+        for (String s : data) {
+            decryptLogin(s);
+        }
+    }
+
+    public void decryptLogin(String name) {
+        db.passwordDao().updateLoginByName(name, new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)));
     }
 
     public void decryptAllPasswords() {

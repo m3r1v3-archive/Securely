@@ -26,6 +26,10 @@ public interface PasswordDao {
             "password = :password WHERE name = :name")
     void updatePasswordByName(String name, String password);
 
+    @Query("UPDATE password SET " +
+            "login = :login WHERE name = :name")
+    void updateLoginByName(String name, String login);
+
     @Query("SELECT login FROM password WHERE name = :name")
     String getLoginByName(String name);
 

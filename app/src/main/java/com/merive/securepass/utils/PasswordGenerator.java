@@ -11,7 +11,7 @@ public class PasswordGenerator {
     String[] lowerAlf = "abcdefghijklmnopqrstuvwxyz".split("");
     String[] upperAlf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     String[] numberAlf = "0123456789".split("");
-    String[] symbolsAlf = "!#$%&'()*+`-/:;<>=?,{}|~".split("");
+    String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
 
     public PasswordGenerator(int length) {
         /* Set count of symbols */
