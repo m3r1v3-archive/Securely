@@ -126,52 +126,61 @@ public class MainActivity extends AppCompatActivity {
     /* Activities event methods */
     public void addNewPassword(Bundle data) {
         /* Add password in database */
-        if (db.passwordDao().checkExist(getData(data, "name"))) {
-            db.passwordDao().insertItem(
-                    new Password(
-                            getData(data, "name"),
-                            encrypting ? new Crypt(key).encrypt(getData(data, "login")) :
-                                    getData(data, "login"),
-                            encrypting ? new Crypt(key).encrypt(getData(data, "password")) :
-                                    getData(data, "password"),
-                            getData(data, "description")
-                    ));
-            Toast.makeText(getBaseContext(),
-                    getData(data, "name") + " was added.",
-                    Toast.LENGTH_SHORT).show();
+        if (checkExist(getData(data, "name"), false)) {
+            addPassword(data);
             new GetData().execute();
             checkEmpty();
+        }
+    }
+
+    public boolean checkExist(String name, boolean edit) {
+        /* Check password name on exist */
+        if (db.passwordDao().checkExist(name)) {
+            Toast.makeText(getBaseContext(),
+                    name + " was " + (edit ? "edited" : "added") + ".", Toast.LENGTH_SHORT).show();
+            return true;
         } else {
             Toast.makeText(getBaseContext(),
-                    getData(data, "name") + " already in database. Try replace name.",
-                    Toast.LENGTH_SHORT).show();
-
+                    name + " already in database. Try replace name.", Toast.LENGTH_SHORT).show();
+            return false;
         }
+    }
+
+
+    public void addPassword(Bundle data) {
+        /* Add password in database */
+        db.passwordDao().insertItem(
+                new Password(
+                        getData(data, "name"),
+                        encrypting ? new Crypt(key).encrypt(getData(data, "login")) :
+                                getData(data, "login"),
+                        encrypting ? new Crypt(key).encrypt(getData(data, "password")) :
+                                getData(data, "password"),
+                        getData(data, "description")
+                ));
     }
 
 
     public void editPassword(Bundle data) {
         /* Edit password in database */
-        if (db.passwordDao().checkExist(getData(data, "edited_name")) ||
+        if (checkExist(getData(data, "edited_name"), true) ||
                 getData(data, "name_before").equals(getData(data, "edited_name"))) {
-            db.passwordDao().updateItem(
-                    getData(data, "name_before"),
-                    getData(data, "edited_name"),
-                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_login"))
-                            : getData(data, "edited_login"),
-                    encrypting ? new Crypt(key).encrypt(getData(data, "edited_password"))
-                            : getData(data, "edited_password"),
-                    getData(data, "edited_description")
-            );
-            Toast.makeText(getBaseContext(),
-                    getData(data, "edited_name") + " was edited.",
-                    Toast.LENGTH_SHORT).show();
+            updatePassword(data);
             new GetData().execute();
-        } else {
-            Toast.makeText(getBaseContext(), getData(data, "edited_name") + " already exist.",
-                    Toast.LENGTH_SHORT).show();
-
         }
+    }
+
+    public void updatePassword(Bundle data) {
+        /* Update password in database */
+        db.passwordDao().updateItem(
+                getData(data, "name_before"),
+                getData(data, "edited_name"),
+                encrypting ? new Crypt(key).encrypt(getData(data, "edited_login"))
+                        : getData(data, "edited_login"),
+                encrypting ? new Crypt(key).encrypt(getData(data, "edited_password"))
+                        : getData(data, "edited_password"),
+                getData(data, "edited_description")
+        );
     }
 
     public void deletePasswordFragment(String name) {
@@ -183,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deletePasswordByName(String name) {
+        /* Delete password by name */
         db.passwordDao().deleteByName(name);
         Toast.makeText(getBaseContext(),
                 name + " was deleted.",
@@ -212,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getData(Bundle data, String name) {
+        /* Get name from bundle */
         return data.getString(name);
     }
 
@@ -235,12 +246,24 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void saveSettings(int length, String message, boolean delete, boolean encrypt) {
+    public void saveSettings(int length, String message, boolean deleting, boolean encrypt) {
         /* Save settings changes */
+        updateCopyingMessage(message);
+        updateLengthOfPassword(length);
+        updateDeleting(deleting);
+        updateEncrypt(encrypt);
+        Toast.makeText(getBaseContext(), "Settings saved.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void updateCopyingMessage(String message) {
+        /* Update copingMessage in sharedPreferences */
         sharedPreferences.edit()
                 .putString("copyingMessage", message)
                 .apply();
+    }
 
+    public void updateLengthOfPassword(int length) {
+        /* Update length in sharedPreferences */
         if (!String.valueOf(length).isEmpty())
             sharedPreferences.edit()
                     .putInt("length", length)
@@ -248,37 +271,45 @@ public class MainActivity extends AppCompatActivity {
         else sharedPreferences.edit()
                 .putInt("length", 16)
                 .apply();
+    }
 
-        if (delete !=
+    public void updateDeleting(boolean deleting) {
+        /* Update deleting in sharedPreferences */
+        if (deleting !=
                 getIntent().getBooleanExtra("deleting", false)) {
             startActivity(new Intent(this, CheckKeyActivity.class)
                     .putExtra("status", true)
-                    .putExtra("deleting", delete));
+                    .putExtra("deleting", deleting));
 
-            deleting = delete;
+            this.deleting = deleting;
         }
+    }
 
-        if (encrypt != sharedPreferences.getBoolean("encrypting", false)) {
-            if (encrypt) {
+    public void updateEncrypt(boolean encrypting) {
+        /* Update encrypting in sharedPreferences */
+        if (encrypting != sharedPreferences.getBoolean("encrypting", false)) {
+            if (encrypting) {
                 encryptAllLogins();
                 encryptAllPasswords();
             } else {
                 decryptAllLogins();
                 decryptAllPasswords();
             }
-            sharedPreferences.edit()
-                    .putBoolean("encrypting", encrypt)
-                    .apply();
-            encrypting = encrypt;
+            sharedPreferences.edit().putBoolean("encrypting", encrypting).apply();
+            this.encrypting = encrypting;
         }
+    }
 
-
-        Toast.makeText(getBaseContext(),
-                "Settings saved.",
-                Toast.LENGTH_SHORT).show();
+    public void encryptAllLogins() {
+        /* Encrypt all logins in db */
+        List<String> data = db.passwordDao().getAllNames();
+        for (String s : data) {
+            encryptLogin(s);
+        }
     }
 
     public void encryptAllPasswords() {
+        /* Encrypt all passwords in db */
         List<String> data = db.passwordDao().getAllNames();
         for (String s : data) {
             encryptPassword(s);
@@ -286,39 +317,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void encryptLogin(String name) {
+        /* Encrypt login */
         db.passwordDao().updateLoginByName(name, new Crypt(key).encrypt(db.passwordDao().getLoginByName(name)));
     }
 
-    public void encryptAllLogins() {
-        List<String> data = db.passwordDao().getAllNames();
-        for (String s : data) {
-            encryptLogin(s);
-        }
-    }
-
     public void encryptPassword(String name) {
+        /* Encrypt password */
         db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
     }
 
     public void decryptAllLogins() {
+        /* Decrypt all logins in db */
         List<String> data = db.passwordDao().getAllNames();
         for (String s : data) {
             decryptLogin(s);
         }
     }
 
-    public void decryptLogin(String name) {
-        db.passwordDao().updateLoginByName(name, new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)));
-    }
-
     public void decryptAllPasswords() {
+        /* Decrypt all passwords in db */
         List<String> data = db.passwordDao().getAllNames();
         for (String s : data) {
             decryptPassword(s);
         }
     }
 
+    public void decryptLogin(String name) {
+        /* Decrypt login */
+        db.passwordDao().updateLoginByName(name, new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)));
+    }
+
     public void decryptPassword(String name) {
+        /* Decrypt password */
         db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 

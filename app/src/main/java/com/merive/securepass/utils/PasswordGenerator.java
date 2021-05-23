@@ -6,12 +6,15 @@ import java.util.Random;
 
 public class PasswordGenerator {
 
-    int lowerLength, upperLength, numberLength, symbolsLength;
+    final int lowerLength;
+    final int upperLength;
+    final int numberLength;
+    final int symbolsLength;
 
-    String[] lowerAlf = "abcdefghijklmnopqrstuvwxyz".split("");
-    String[] upperAlf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    String[] numberAlf = "0123456789".split("");
-    String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
+    final String[] lowerAlf = "abcdefghijklmnopqrstuvwxyz".split("");
+    final String[] upperAlf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    final String[] numberAlf = "0123456789".split("");
+    final String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
 
     public PasswordGenerator(int length) {
         /* Set count of symbols */
@@ -43,6 +46,7 @@ public class PasswordGenerator {
     }
 
     public String generateAlfsString() {
+        /* Generate full alphabet string  */
         return generateAlfString(lowerAlf, lowerLength)
                 + generateAlfString(upperAlf, upperLength)
                 + generateAlfString(numberAlf, numberLength)

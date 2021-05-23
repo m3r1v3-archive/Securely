@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class Crypt {
 
-    String alf = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
-    String shuffledAlf;
-    int seed;
+    final String alf = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
+    final String shuffledAlf;
+    final int seed;
 
     public Crypt(int seed) {
         shuffledAlf = shuffle(alf);
