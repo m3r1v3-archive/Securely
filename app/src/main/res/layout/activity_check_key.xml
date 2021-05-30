@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089999974" />
+        app:layout_constraintVertical_bias="0.08" />
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/key_hint"
@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.20999998" />
+        app:layout_constraintVertical_bias="0.20" />
 
     <EditText
         android:id="@+id/key"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.88"
         app:srcCompat="@drawable/check"
         app:tint="@color/green" />
 </androidx.constraintlayout.widget.ConstraintLayout>

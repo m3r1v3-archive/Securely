@@ -163,9 +163,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void editPassword(Bundle data) {
         /* Edit password in database */
-        if (checkExist(getData(data, "edited_name"), true) ||
-                getData(data, "name_before").equals(getData(data, "edited_name"))) {
+        if (getData(data, "name_before").equals(getData(data, "edited_name"))
+                || !checkExist(getData(data, "edited_name"), true)) {
             updatePassword(data);
+            Toast.makeText(getBaseContext(), getData(data, "edited_name") + " was edited.",
+                    Toast.LENGTH_SHORT).show();
             new GetData().execute();
         }
     }
@@ -352,7 +354,6 @@ public class MainActivity extends AppCompatActivity {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
-    /* Clipboard methods */
     public void addInClipboard(String label, String value) {
         /* Add password to clipboard */
         ClipboardManager clipboard = (ClipboardManager)

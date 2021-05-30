@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/passwordLayout"
     android:layout_width="360sp"
-    android:layout_height="450sp"
+    android:layout_height="475sp"
     android:layout_gravity="center"
     android:background="@drawable/round_button"
     android:minWidth="360sp"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.060000002" />
+        app:layout_constraintVertical_bias="0.08" />
 
     <ImageView
         android:id="@+id/cancelSettings"
@@ -46,7 +46,7 @@
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.96"
         app:srcCompat="@drawable/cancel"
         app:tint="@color/green" />
 
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.96"
         app:srcCompat="@drawable/delete"
         app:tint="@color/green" />
 
@@ -78,7 +78,7 @@
         app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.96"
         app:srcCompat="@drawable/save"
         app:tint="@color/green" />
 
@@ -95,10 +95,9 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73" />
+        app:layout_constraintVertical_bias="0.80" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/deletingSwitch"
@@ -114,7 +113,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47000003"
+        app:layout_constraintVertical_bias="0.50"
         app:thumbTint="@color/gray"
         app:trackTint="@color/green" />
 
@@ -132,7 +131,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintVertical_bias="0.65"
         app:thumbTint="@color/gray"
         app:trackTint="@color/green" />
 
@@ -149,7 +148,7 @@
         app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.358" />
+        app:layout_constraintVertical_bias="0.36" />
 
     <EditText
         android:id="@+id/passwordLengthEdit"
@@ -168,7 +167,7 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.20999998"
+        app:layout_constraintVertical_bias="0.20"
         tools:ignore="LabelFor" />
 
     <EditText
@@ -187,7 +186,7 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35000002"
+        app:layout_constraintVertical_bias="0.35"
         tools:ignore="TextFields" />
 
     <com.merive.securepass.elements.TypingTextView
@@ -203,5 +202,5 @@
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.20999998" />
+        app:layout_constraintVertical_bias="0.21" />
 </androidx.constraintlayout.widget.ConstraintLayout>
