@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     /* Activities event methods */
     public void addNewPassword(Bundle data) {
         /* Add password in database */
-        if (checkExist(getData(data, "name"), false)) {
+        if (!checkExist(getData(data, "name"), false)) {
             addPassword(data);
             new GetData().execute();
             checkEmpty();
@@ -138,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
         if (db.passwordDao().checkExist(name)) {
             Toast.makeText(getBaseContext(),
                     name + " was " + (edit ? "edited" : "added") + ".", Toast.LENGTH_SHORT).show();
-            return true;
+            return false;
         } else {
             Toast.makeText(getBaseContext(),
                     name + " already in database. Try replace name.", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         }
     }
 
@@ -166,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
         if (getData(data, "name_before").equals(getData(data, "edited_name"))
                 || !checkExist(getData(data, "edited_name"), true)) {
             updatePassword(data);
-            Toast.makeText(getBaseContext(), getData(data, "edited_name") + " was edited.",
-                    Toast.LENGTH_SHORT).show();
             new GetData().execute();
         }
     }
