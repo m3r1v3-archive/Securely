@@ -97,8 +97,7 @@ public class PasswordFragment extends DialogFragment {
             if (edit) {
                 if (checkEditsOnEmpty())
                     ((MainActivity) getActivity()).editPassword(putEditedDataInBundle());
-                else Toast.makeText(getActivity(), "You have empty edits.",
-                        Toast.LENGTH_SHORT).show();
+                else ((MainActivity) getActivity()).makeToast("You have empty edits.");
             } else {
                 if (checkEditsOnEmpty()) {
                     if (checkEditsOnEmpty())

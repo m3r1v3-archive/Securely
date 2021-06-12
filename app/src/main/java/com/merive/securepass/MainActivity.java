@@ -8,7 +8,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -126,23 +129,21 @@ public class MainActivity extends AppCompatActivity {
     /* Activities event methods */
     public void addNewPassword(Bundle data) {
         /* Add password in database */
-        if (!checkExist(getData(data, "name"), false)) {
+        if (checkNotExist(getData(data, "name"), false)) {
             addPassword(data);
             new GetData().execute();
             checkEmpty();
         }
     }
 
-    public boolean checkExist(String name, boolean edit) {
+    public boolean checkNotExist(String name, boolean edit) {
         /* Check password name on exist */
         if (db.passwordDao().checkExist(name)) {
-            Toast.makeText(getBaseContext(),
-                    name + " was " + (edit ? "edited" : "added") + ".", Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            Toast.makeText(getBaseContext(),
-                    name + " already in database. Try replace name.", Toast.LENGTH_SHORT).show();
+            makeToast(name + " was " + (edit ? "edited" : "added") + ".");
             return true;
+        } else {
+            makeToast(name + " already in database.");
+            return false;
         }
     }
 
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     public void editPassword(Bundle data) {
         /* Edit password in database */
         if (getData(data, "name_before").equals(getData(data, "edited_name"))
-                || !checkExist(getData(data, "edited_name"), true)) {
+                || checkNotExist(getData(data, "edited_name"), true)) {
             updatePassword(data);
             new GetData().execute();
         }
@@ -194,9 +195,7 @@ public class MainActivity extends AppCompatActivity {
     public void deletePasswordByName(String name) {
         /* Delete password by name */
         db.passwordDao().deleteByName(name);
-        Toast.makeText(getBaseContext(),
-                name + " was deleted.",
-                Toast.LENGTH_SHORT).show();
+        makeToast(name + " was deleted.");
         new GetData().execute();
         checkEmpty();
     }
@@ -237,22 +236,18 @@ public class MainActivity extends AppCompatActivity {
     public void deleteAllPasswords() {
         /* Delete all passwords from database */
         db.passwordDao().deleteAll();
-
         new GetData().execute();
         checkEmpty();
-
-        Toast.makeText(getBaseContext(),
-                "All passwords have been deleted.",
-                Toast.LENGTH_SHORT).show();
+        makeToast("All passwords have been deleted.");
     }
 
     public void saveSettings(int length, String message, boolean deleting, boolean encrypt) {
         /* Save settings changes */
+        makeToast("Settings saved.");
         updateCopyingMessage(message);
         updateLengthOfPassword(length);
         updateDeleting(deleting);
         updateEncrypt(encrypt);
-        Toast.makeText(getBaseContext(), "Settings saved.", Toast.LENGTH_SHORT).show();
     }
 
     public void updateCopyingMessage(String message) {
@@ -359,9 +354,22 @@ public class MainActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText(label, value);
         clipboard.setPrimaryClip(clip);
 
-        Toast.makeText(getBaseContext(), label + " Password " +
-                        sharedPreferences.getString("copyingMessage", "was copied."),
-                Toast.LENGTH_SHORT).show();
+        makeToast(label + " Password " +
+                sharedPreferences.getString("copyingMessage", "was copied."));
+    }
+
+    public void makeToast(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast, findViewById(R.id.toastLayout));
+
+        TextView text = layout.findViewById(R.id.message);
+        text.setText(message);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 80);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
     /* RecyclerView methods/classes */
