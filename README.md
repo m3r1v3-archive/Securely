@@ -4,8 +4,7 @@ SecurePass is free open-source password manager with cool design and password ge
 Just remember one key, using a lot of passwords.
 
 Now, we're developing our application. 
-In future, We want to improve the security of storing your passwords to a higher level with our own encryption.
-The project will actively develop and receive periodic updates.
+And after every update we improve it.
 
 ### Why SecurePass is a good password manager?
 We do what we ourselves use. Our project was created for people who do not want to pay money for software that may have backdoors.
@@ -45,6 +44,4 @@ Our project supports branches from the main version, but due to attackers we do 
 If you would like to fork and distribute it, write in the discussion, we will test your application and pin it to the list as a good application.
 
 ### P.P.S.
-Maybe in the future version of application can conflicting.
-Because we recommend save backup of you password before change version of application.
 **Updating application only on our sites**

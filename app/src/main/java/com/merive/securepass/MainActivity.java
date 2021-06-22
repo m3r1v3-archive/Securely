@@ -129,17 +129,17 @@ public class MainActivity extends AppCompatActivity {
     /* Activities event methods */
     public void addNewPassword(Bundle data) {
         /* Add password in database */
-        if (checkNotExist(getData(data, "name"), false)) {
+        if (checkNotExist(getData(data, "name"))) {
             addPassword(data);
+            makeToast(getData(data, "name") + " was " + "added" + ".");
             new GetData().execute();
             checkEmpty();
         }
     }
 
-    public boolean checkNotExist(String name, boolean edit) {
+    public boolean checkNotExist(String name) {
         /* Check password name on exist */
         if (db.passwordDao().checkExist(name)) {
-            makeToast(name + " was " + (edit ? "edited" : "added") + ".");
             return true;
         } else {
             makeToast(name + " already in database.");
@@ -165,8 +165,9 @@ public class MainActivity extends AppCompatActivity {
     public void editPassword(Bundle data) {
         /* Edit password in database */
         if (getData(data, "name_before").equals(getData(data, "edited_name"))
-                || checkNotExist(getData(data, "edited_name"), true)) {
+                || checkNotExist(getData(data, "edited_name"))) {
             updatePassword(data);
+            makeToast(getData(data, "edited_name") + " was " + "edited" + ".");
             new GetData().execute();
         }
     }
@@ -359,12 +360,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeToast(String message) {
+        /* Make custom toast */
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast, findViewById(R.id.toastLayout));
-
         TextView text = layout.findViewById(R.id.message);
         text.setText(message);
-
         Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.BOTTOM, 0, 80);
         toast.setDuration(Toast.LENGTH_SHORT);
@@ -381,7 +381,6 @@ public class MainActivity extends AppCompatActivity {
                         name,
                         encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
                                 : db.passwordDao().getPasswordByName(name)));
-
         passwords.setAdapter(adapter);
     }
 
