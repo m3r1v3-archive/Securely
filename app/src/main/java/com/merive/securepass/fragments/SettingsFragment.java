@@ -1,4 +1,4 @@
-package com.merive.securepass;
+package com.merive.securepass.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.merive.securepass.BuildConfig;
+import com.merive.securepass.MainActivity;
+import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
 
 import java.util.Calendar;

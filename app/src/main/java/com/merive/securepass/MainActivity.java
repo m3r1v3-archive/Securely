@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +25,17 @@ import com.merive.securepass.adapter.PasswordAdapter;
 import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
 import com.merive.securepass.elements.TypingTextView;
+import com.merive.securepass.fragments.ConfirmFragment;
+import com.merive.securepass.fragments.PasswordFragment;
+import com.merive.securepass.fragments.SettingsFragment;
+import com.merive.securepass.fragments.UpdateFragment;
 import com.merive.securepass.utils.Crypt;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         key = getIntent().getIntExtra("key", 0);
 
         encrypting = sharedPreferences.getBoolean("encrypting", false);
+
+        checkVersion();
     }
 
     @Override
@@ -183,6 +195,13 @@ public class MainActivity extends AppCompatActivity {
                         : getData(data, "edited_password"),
                 getData(data, "edited_description")
         );
+    }
+
+    public void updateFragment(String oldVersion, String newVersion) {
+        /* Open UpdateFragment */
+        FragmentManager fm = getSupportFragmentManager();
+        UpdateFragment updateFragment = UpdateFragment.newInstance(oldVersion, newVersion);
+        updateFragment.show(fm, "update_fragment");
     }
 
     public void deletePasswordFragment(String name) {
@@ -370,6 +389,37 @@ public class MainActivity extends AppCompatActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+    public void checkVersion() {
+        /* Make fragment if application was updated */
+        Thread thread = new Thread(() -> {
+            try {
+                if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME))
+                    updateFragment(BuildConfig.VERSION_NAME, getVersionOnSite());
+            } catch (Exception e) {
+                Log.e("CHECK VERSION ERROR ", "NOT POSSIBLE CHECK VERSION" + " (" + e + ") ");
+            }
+        });
+
+        thread.start();
+    }
+
+    public String getVersionOnSite() throws IOException {
+        /* Get version of actual application on site */
+        URL url = new URL("https://merive.herokuapp.com/SecurePass");
+        BufferedReader reader = null;
+        StringBuilder builder = new StringBuilder();
+        try {
+            reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+            for (String line; (line = reader.readLine()) != null; ) builder.append(line.trim());
+        } finally {
+            if (reader != null) try {
+                reader.close();
+            } catch (IOException ignored) {
+            }
+        }
+        return builder.substring(builder.indexOf("<i>") + "<i>".length()).substring(1, builder.substring(builder.indexOf("<i>") + "<i>".length()).indexOf("</i>"));
     }
 
     /* RecyclerView methods/classes */
