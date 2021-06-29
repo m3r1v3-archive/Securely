@@ -24,7 +24,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     TypingTextView title, key_hint;
     EditText key;
     int times;
-    boolean deletingAfterErrors, pressed;
+    boolean deletingAfterErrors, pressed, changeKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +44,10 @@ public class CheckKeyActivity extends AppCompatActivity {
 
         key = findViewById(R.id.key);
 
-
+        changeKey = false;
         checkKeyOnDefault();
         checkEditOfDeletingAfterErrors();
+        checkOnChangeKey();
 
         pressed = false;
 
@@ -74,8 +75,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     public void checkKeyOnDefault() {
         /* Check key from data on default value */
         if (sharedPreferences.getString("hash", "-1").equals("-1")) {
-            typingAnimation(key_hint, "Create a key\nTip: Use more than 4 numbers." +
-                    "\nIn the future, you can't change him.");
+            typingAnimation(key_hint, "Create a new key\nTip: Use more than 4 numbers.");
         }
     }
 
@@ -89,21 +89,42 @@ public class CheckKeyActivity extends AppCompatActivity {
         }
     }
 
+
+    public void checkOnChangeKey() {
+        /* Check on key changing */
+        if (getIntent().getBooleanExtra("changeKey", false)) {
+            typingAnimation(key_hint, "Enter old key.");
+            changeKey = true;
+        }
+    }
+
     /* Click methods */
     @SuppressLint("SetTextI18n")
     public void checkKey(View view) {
         /* Check key method */
-        if (!pressed) {
-            if (!key.getText().toString().equals("")) {
-                if (checkOnNewUser()) {
-                    openMain();
-                } else if (checkKey())
-                    openMain();
-                else {
-                    if (checkTimes()) {
-                        typingAnimation(key_hint, "Invalid key. Try again.");
-                        if (deletingAfterErrors) times--;
-                    } else deleteAllPasswords();
+        if (changeKey) {
+            if (checkKey()) {
+                resetKey();
+                checkKeyOnDefault();
+                key.setText("");
+                changeKey = false;
+                pressed = false;
+            } else {
+                typingAnimation(key_hint, "Invalid key. Try again.");
+            }
+        } else {
+            if (!pressed) {
+                if (!key.getText().toString().equals("")) {
+                    if (checkOnNewUser()) {
+                        openMain();
+                    } else if (checkKey())
+                        openMain();
+                    else {
+                        if (checkTimes()) {
+                            typingAnimation(key_hint, "Invalid key. Try again.");
+                            if (deletingAfterErrors) times--;
+                        } else deleteAllPasswords();
+                    }
                 }
             }
         }
@@ -120,6 +141,10 @@ public class CheckKeyActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void resetKey() {
+        sharedPreferences.edit().putString("hash", "-1").apply();
     }
 
 

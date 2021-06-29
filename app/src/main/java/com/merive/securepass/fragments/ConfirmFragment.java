@@ -1,5 +1,6 @@
 package com.merive.securepass.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.merive.securepass.CheckKeyActivity;
 import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
@@ -40,6 +42,14 @@ public class ConfirmFragment extends DialogFragment {
         return frag;
     }
 
+    public static ConfirmFragment newInstance(boolean changeKey) {
+        ConfirmFragment frag = new ConfirmFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("changeKey", changeKey);
+        frag.setArguments(args);
+        return frag;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +63,9 @@ public class ConfirmFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         title = view.findViewById(R.id.confirmTitle);
-        typingAnimation(title, "Are you sure?");
+        if (getArguments().getBoolean("changeKey", false))
+            typingAnimation(title, "Do you want change key?");
+        else typingAnimation(title, "Are you sure?");
 
         /* OnClick Cancel */
         cancel = view.findViewById(R.id.cancelConfirm);
@@ -65,11 +77,15 @@ public class ConfirmFragment extends DialogFragment {
         /* OnClick OkayConfirm */
         confirm = view.findViewById(R.id.okayConfirm);
         confirm.setOnClickListener(v -> {
-            if (getArguments().getString("name").equals("all")) {
-                ((MainActivity) getActivity()).deleteAllPasswords();
+            if (getArguments().getBoolean("changeKey")) {
+                changeKey();
             } else {
-                ((MainActivity) getActivity())
-                        .deletePasswordByName(getArguments().getString("name"));
+                if (getArguments().getString("name").equals("all")) {
+                    ((MainActivity) getActivity()).deleteAllPasswords();
+                } else {
+                    ((MainActivity) getActivity())
+                            .deletePasswordByName(getArguments().getString("name"));
+                }
             }
             dismiss();
         });
@@ -82,5 +98,12 @@ public class ConfirmFragment extends DialogFragment {
         view.setText("");
         view.setCharacterDelay(125);
         view.animateText(text);
+    }
+
+    public void changeKey() {
+        /* Start change key */
+        ((MainActivity)getActivity()).updateEncrypt(false);
+        startActivity(new Intent(getActivity(), CheckKeyActivity.class)
+                .putExtra("changeKey", true));
     }
 }

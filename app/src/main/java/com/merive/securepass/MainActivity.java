@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     TypingTextView title, empty;
     RecyclerView passwords;
+    ImageView lock;
 
     PasswordAdapter adapter;
     PasswordDB db;
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         empty = findViewById(R.id.empty);
 
-
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 
@@ -78,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
         encrypting = sharedPreferences.getBoolean("encrypting", false);
 
         checkVersion();
+
+        lock = findViewById(R.id.lock);
+        lock.setOnLongClickListener(v -> {
+            longLockClick();
+            return true;
+        });
     }
 
     @Override
@@ -103,6 +110,13 @@ public class MainActivity extends AppCompatActivity {
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
                 sharedPreferences.getInt("length", 16));
         passwordFragment.show(fm, "password_fragment");
+    }
+
+    public void longLockClick() {
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
+                true);
+        confirmFragment.show(fm, "confirm_fragment");
     }
 
 
