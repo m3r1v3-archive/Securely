@@ -59,32 +59,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        title = findViewById(R.id.mainTitle);
+        initLayoutVariables();
+
         typingAnimation(title, getResources().getString(R.string.app_name));
 
-        empty = findViewById(R.id.empty);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 
-        sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
-
-        passwords = findViewById(R.id.password_recycle_view);
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
+
         checkKeyStatus();
-
-        deleting = getIntent().getBooleanExtra("deleting", false);
-
-        key = getIntent().getIntExtra("key", 0);
-
-        encrypting = sharedPreferences.getBoolean("encrypting", false);
-
+        getSettingsData();
         checkVersion();
 
-        lock = findViewById(R.id.lock);
-        lock.setOnLongClickListener(v -> {
-            longLockClick();
-            return true;
-        });
+        lock.setOnLongClickListener(v -> { longClickLock(); return true; });
     }
 
     @Override
@@ -95,7 +83,22 @@ public class MainActivity extends AppCompatActivity {
         new GetData().execute();
     }
 
+    /* ************ */
+    /* Init methods */
+    /* ************ */
+
+    public void initLayoutVariables() {
+        /* Init layout variables */
+        title = findViewById(R.id.mainTitle);
+        empty = findViewById(R.id.empty);
+        passwords = findViewById(R.id.password_recycle_view);
+        lock = findViewById(R.id.lock);
+    }
+
+    /* **************** */
     /* Elements methods */
+    /* **************** */
+
     public void typingAnimation(TypingTextView view, String text) {
         /* Typing animation for TextViews */
         view.setText("");
@@ -103,25 +106,20 @@ public class MainActivity extends AppCompatActivity {
         view.animateText(text);
     }
 
+    /* ************* */
     /* Click methods */
+    /* ************* */
+
     public void clickAdd(View view) {
-        /* OnClick Add */
+        /* Click Add Button */
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
                 sharedPreferences.getInt("length", 16));
         passwordFragment.show(fm, "password_fragment");
     }
 
-    public void longLockClick() {
-        FragmentManager fm = getSupportFragmentManager();
-        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
-                true);
-        confirmFragment.show(fm, "confirm_fragment");
-    }
-
-
     public void clickEditPassword(String name) {
-        /* OnClick on password row */
+        /* Click Password Row */
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
                 name,
@@ -135,14 +133,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickLock(View view) {
-        /* OnClick Lock */
+        /* Click Lock Button */
         startActivity(new Intent(this, CheckKeyActivity.class));
         finish();
+    }
 
+    public void longClickLock() {
+        /* Long Click Lock Button */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
+                true);
+        confirmFragment.show(fm, "confirm_fragment");
     }
 
     public void clickSettings(View view) {
-        /* OnClick Settings */
+        /* Click Settings Button */
         FragmentManager fm = getSupportFragmentManager();
         SettingsFragment settingsFragment = SettingsFragment.newInstance(
                 sharedPreferences.getInt("length", 16),
@@ -151,30 +156,138 @@ public class MainActivity extends AppCompatActivity {
         settingsFragment.show(fm, "settings_fragment");
     }
 
+    public void clickAddInClipboard(String label, String value) {
+        /* Add password to clipboard */
+        ClipboardManager clipboard = (ClipboardManager)
+                getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, value);
+        clipboard.setPrimaryClip(clip);
 
-    /* Activities event methods */
+        makeToast(label + " Password " +
+                sharedPreferences.getString("copyingMessage", "was copied."));
+    }
+
+    /* ************* */
+    /* Check methods */
+    /* ************* */
+
+    public void checkVersion() {
+        /* Make fragment if application was updated */
+        Thread thread = new Thread(() -> {
+            try {
+                if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME))
+                    openUpdateFragment(BuildConfig.VERSION_NAME, getVersionOnSite());
+            } catch (Exception e) {
+                Log.e("CHECK VERSION ERROR ", "NOT POSSIBLE CHECK VERSION" + " (" + e + ") ");
+            }
+        });
+
+        thread.start();
+    }
+
+    public boolean checkNotExist(String name) {
+        /* Check password name on exist */
+        if (db.passwordDao().checkExist(name)) return true;
+        else {
+            makeToast(name + " already in database.");
+            return false;
+        }
+    }
+
+    public void checkEmpty() {
+        /* Check database on empty and if true, set visibility for TextView */
+        if (db.passwordDao().checkEmpty()) {
+            empty.setVisibility(View.VISIBLE);
+            typingAnimation(empty, getResources().getString(R.string.list_is_empty));
+        } else { empty.setVisibility(View.INVISIBLE); }
+    }
+
+    public void checkKeyStatus() {
+        /* If u execute 15 errors in CheckKeyActivity, all passwords deleting */
+        if (getIntent().getBooleanExtra("status", false)) {
+            db.passwordDao().deleteAll();
+            finish();
+        }
+    }
+
+    /* *********** */
+    /* Get methods */
+    /* *********** */
+
+    public String getData(Bundle data, String name) {
+        /* Get name from bundle */
+        return data.getString(name);
+    }
+
+    public void getSettingsData() {
+        deleting = getIntent().getBooleanExtra("deleting", false);
+        key = getIntent().getIntExtra("key", 0);
+        encrypting = sharedPreferences.getBoolean("encrypting", false);
+    }
+
+    public String getVersionOnSite() throws IOException {
+        /* Get version of actual application on site */
+        URL url = new URL("https://merive.herokuapp.com/SecurePass");
+        BufferedReader reader = null;
+        StringBuilder builder = new StringBuilder();
+        try {
+            reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+            for (String line; (line = reader.readLine()) != null; ) builder.append(line.trim());
+        } finally { if (reader != null) try { reader.close(); } catch (IOException ignored) {} }
+        return builder.substring(builder.indexOf("<i>") + "<i>".length()).substring(1,
+                builder.substring(builder.indexOf("<i>") + "<i>".length()).indexOf("</i>"));
+    }
+
+    /* ********************** */
+    /* Open Fragments methods */
+    /* ********************** */
+
+    public void openUpdateFragment(String oldVersion, String newVersion) {
+        /* Open UpdateFragment */
+        FragmentManager fm = getSupportFragmentManager();
+        UpdateFragment updateFragment = UpdateFragment.newInstance(oldVersion, newVersion);
+        updateFragment.show(fm, "update_fragment");
+    }
+
+    public void openConfirmPasswordDelete(String name) {
+        /* Open fragment for confirm deleting */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
+                name);
+        confirmFragment.show(fm, "confirm_fragment");
+    }
+
+    public void openConfirmAllPasswordsDelete() {
+        /* Open fragment for confirm deleting all passwords */
+        FragmentManager fm = getSupportFragmentManager();
+        ConfirmFragment confirmFragment = ConfirmFragment.newInstance();
+        confirmFragment.show(fm, "confirm_fragment");
+    }
+
+    /* ***************** */
+    /* Fragments methods */
+    /* ***************** */
+
+    public void saveSettings(int length, String message, boolean deleting, boolean encrypt) {
+        /* Save settings changes */
+        makeToast("Settings saved.");
+        updateCopyingMessage(message);
+        updateLengthOfPassword(length);
+        updateDeleting(deleting);
+        updateEncrypting(encrypt);
+    }
+
     public void addNewPassword(Bundle data) {
-        /* Add password in database */
+        /* Add password using data from bundle */
         if (checkNotExist(getData(data, "name"))) {
-            addPassword(data);
+            addPasswordInDatabase(data);
             makeToast(getData(data, "name") + " was " + "added" + ".");
             new GetData().execute();
             checkEmpty();
         }
     }
 
-    public boolean checkNotExist(String name) {
-        /* Check password name on exist */
-        if (db.passwordDao().checkExist(name)) {
-            return true;
-        } else {
-            makeToast(name + " already in database.");
-            return false;
-        }
-    }
-
-
-    public void addPassword(Bundle data) {
+    public void addPasswordInDatabase(Bundle data) {
         /* Add password in database */
         db.passwordDao().insertItem(
                 new Password(
@@ -187,18 +300,17 @@ public class MainActivity extends AppCompatActivity {
                 ));
     }
 
-
     public void editPassword(Bundle data) {
-        /* Edit password in database */
+        /* Edit password using data from bundle */
         if (getData(data, "name_before").equals(getData(data, "edited_name"))
                 || checkNotExist(getData(data, "edited_name"))) {
-            updatePassword(data);
+            editPasswordInDatabase(data);
             makeToast(getData(data, "edited_name") + " was " + "edited" + ".");
             new GetData().execute();
         }
     }
 
-    public void updatePassword(Bundle data) {
+    public void editPasswordInDatabase(Bundle data) {
         /* Update password in database */
         db.passwordDao().updateItem(
                 getData(data, "name_before"),
@@ -211,77 +323,15 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    public void updateFragment(String oldVersion, String newVersion) {
-        /* Open UpdateFragment */
-        FragmentManager fm = getSupportFragmentManager();
-        UpdateFragment updateFragment = UpdateFragment.newInstance(oldVersion, newVersion);
-        updateFragment.show(fm, "update_fragment");
-    }
+    /* ************** */
+    /* Update methods */
+    /* ************** */
 
-    public void deletePasswordFragment(String name) {
-        /* Open fragment for confirm deleting */
-        FragmentManager fm = getSupportFragmentManager();
-        ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
-                name);
-        confirmFragment.show(fm, "confirm_fragment");
-    }
-
-    public void deletePasswordByName(String name) {
-        /* Delete password by name */
-        db.passwordDao().deleteByName(name);
-        makeToast(name + " was deleted.");
-        new GetData().execute();
-        checkEmpty();
-    }
-
-
-    /* Check methods */
-    public void checkEmpty() {
-        /* Check database on empty and if true, set visibility for TextView */
-        if (db.passwordDao().checkEmpty()) {
-            empty.setVisibility(View.VISIBLE);
-            typingAnimation(empty, getResources().getString(R.string.list_is_empty));
-        } else {
-            empty.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    public void checkKeyStatus() {
-        /* If u execute 15 errors in CheckKeyActivity, all passwords deleting */
-        if (getIntent().getBooleanExtra("status", false)) {
-            db.passwordDao().deleteAll();
-            finish();
-        }
-    }
-
-    public String getData(Bundle data, String name) {
-        /* Get name from bundle */
-        return data.getString(name);
-    }
-
-    /* Settings methods */
-    public void deleteAllFragment() {
-        /* Open fragment for confirm deleting */
-        FragmentManager fm = getSupportFragmentManager();
-        ConfirmFragment confirmFragment = ConfirmFragment.newInstance();
-        confirmFragment.show(fm, "confirm_fragment");
-    }
-
-    public void deleteAllPasswords() {
-        /* Delete all passwords from database */
-        db.passwordDao().deleteAll();
-        new GetData().execute();
-        checkEmpty();
-        makeToast("All passwords have been deleted.");
-    }
-
-    public void saveSettings(int length, String message, boolean deleting, boolean encrypt) {
-        /* Save settings changes */
-        makeToast("Settings saved.");
-        updateCopyingMessage(message);
-        updateLengthOfPassword(length);
-        updateDeleting(deleting);
-        updateEncrypt(encrypt);
+    public void updateLengthOfPassword(int length) {
+        /* Update length in sharedPreferences */
+        if (!String.valueOf(length).isEmpty())
+            sharedPreferences.edit().putInt("length", length).apply();
+        else sharedPreferences.edit().putInt("length", 16).apply();
     }
 
     public void updateCopyingMessage(String message) {
@@ -291,30 +341,21 @@ public class MainActivity extends AppCompatActivity {
                 .apply();
     }
 
-    public void updateLengthOfPassword(int length) {
-        /* Update length in sharedPreferences */
-        if (!String.valueOf(length).isEmpty())
-            sharedPreferences.edit()
-                    .putInt("length", length)
-                    .apply();
-        else sharedPreferences.edit()
-                .putInt("length", 16)
-                .apply();
-    }
-
     public void updateDeleting(boolean deleting) {
         /* Update deleting in sharedPreferences */
-        if (deleting !=
-                getIntent().getBooleanExtra("deleting", false)) {
+        if (deleting != getIntent().getBooleanExtra("deleting", false)) {
             startActivity(new Intent(this, CheckKeyActivity.class)
                     .putExtra("status", true)
                     .putExtra("deleting", deleting));
-
             this.deleting = deleting;
         }
     }
 
-    public void updateEncrypt(boolean encrypting) {
+    /* ***************************** */
+    /* Encrypting/Decrypting methods */
+    /* ***************************** */
+
+    public void updateEncrypting(boolean encrypting) {
         /* Update encrypting in sharedPreferences */
         if (encrypting != sharedPreferences.getBoolean("encrypting", false)) {
             if (encrypting) {
@@ -332,9 +373,7 @@ public class MainActivity extends AppCompatActivity {
     public void encryptAllLogins() {
         /* Encrypt all logins in db */
         List<String> data = db.passwordDao().getAllNames();
-        for (String s : data) {
-            encryptLogin(s);
-        }
+        for (String s : data) encryptLogin(s);
     }
 
     public void encryptAllPasswords() {
@@ -381,16 +420,29 @@ public class MainActivity extends AppCompatActivity {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
-    public void addInClipboard(String label, String value) {
-        /* Add password to clipboard */
-        ClipboardManager clipboard = (ClipboardManager)
-                getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(label, value);
-        clipboard.setPrimaryClip(clip);
+    /* ************** */
+    /* Delete methods */
+    /* ************** */
 
-        makeToast(label + " Password " +
-                sharedPreferences.getString("copyingMessage", "was copied."));
+    public void deletePasswordByName(String name) {
+        /* Delete password by name */
+        db.passwordDao().deleteByName(name);
+        new GetData().execute();
+        checkEmpty();
+        makeToast(name + " was deleted.");
     }
+
+    public void deleteAllPasswords() {
+        /* Delete all passwords from database */
+        db.passwordDao().deleteAll();
+        new GetData().execute();
+        checkEmpty();
+        makeToast("All passwords have been deleted.");
+    }
+
+    /* ************* */
+    /* Other methods */
+    /* ************* */
 
     public void makeToast(String message) {
         /* Make custom toast */
@@ -405,45 +457,18 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    public void checkVersion() {
-        /* Make fragment if application was updated */
-        Thread thread = new Thread(() -> {
-            try {
-                if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME))
-                    updateFragment(BuildConfig.VERSION_NAME, getVersionOnSite());
-            } catch (Exception e) {
-                Log.e("CHECK VERSION ERROR ", "NOT POSSIBLE CHECK VERSION" + " (" + e + ") ");
-            }
-        });
-
-        thread.start();
-    }
-
-    public String getVersionOnSite() throws IOException {
-        /* Get version of actual application on site */
-        URL url = new URL("https://merive.herokuapp.com/SecurePass");
-        BufferedReader reader = null;
-        StringBuilder builder = new StringBuilder();
-        try {
-            reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-            for (String line; (line = reader.readLine()) != null; ) builder.append(line.trim());
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException ignored) {
-            }
-        }
-        return builder.substring(builder.indexOf("<i>") + "<i>".length()).substring(1, builder.substring(builder.indexOf("<i>") + "<i>".length()).indexOf("</i>"));
-    }
-
+    /* **************************** */
     /* RecyclerView methods/classes */
+    /* **************************** */
+
     private void loadRecyclerView(List<Password> passwordList) {
         passwords.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PasswordAdapter(passwordList,
                 this::clickEditPassword,
-                name -> addInClipboard(
+                name -> clickAddInClipboard(
                         name,
-                        encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
+                        encrypting ?
+                                new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
                                 : db.passwordDao().getPasswordByName(name)));
         passwords.setAdapter(adapter);
     }

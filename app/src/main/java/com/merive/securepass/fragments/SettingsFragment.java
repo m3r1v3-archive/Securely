@@ -83,7 +83,7 @@ public class SettingsFragment extends DialogFragment {
         /* OnClick deleteAll */
         deleteAll = view.findViewById(R.id.deletePasswords);
         deleteAll.setOnClickListener(v -> {
-            ((MainActivity) getActivity()).deleteAllFragment();
+            ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
             view.clearFocus();
             dismiss();
         });

@@ -110,7 +110,7 @@ public class PasswordFragment extends DialogFragment {
 
         delete.setOnClickListener(v -> {
             view.clearFocus();
-            ((MainActivity) getActivity()).deletePasswordFragment(getArguments().getString("name"));
+            ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
             dismiss();
         });
     }

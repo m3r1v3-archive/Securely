@@ -102,7 +102,7 @@ public class ConfirmFragment extends DialogFragment {
 
     public void changeKey() {
         /* Start change key */
-        ((MainActivity)getActivity()).updateEncrypt(false);
+        ((MainActivity)getActivity()).updateEncrypting(false);
         startActivity(new Intent(getActivity(), CheckKeyActivity.class)
                 .putExtra("changeKey", true));
     }
