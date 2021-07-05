@@ -40,4 +40,11 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
     public void setCharacterDelay(long millis) {
         mDelay = millis;
     }
+
+    public static void typingAnimation(TypingTextView view, String text) {
+        /* Typing animation for text elements */
+        view.setText("");
+        view.setCharacterDelay(125);
+        view.animateText(text);
+    }
 }

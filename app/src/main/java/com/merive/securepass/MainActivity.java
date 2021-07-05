@@ -39,6 +39,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 public class MainActivity extends AppCompatActivity {
 
     TypingTextView title, empty;
@@ -93,17 +95,6 @@ public class MainActivity extends AppCompatActivity {
         empty = findViewById(R.id.empty);
         passwords = findViewById(R.id.password_recycle_view);
         lock = findViewById(R.id.lock);
-    }
-
-    /* **************** */
-    /* Elements methods */
-    /* **************** */
-
-    public void typingAnimation(TypingTextView view, String text) {
-        /* Typing animation for TextViews */
-        view.setText("");
-        view.setCharacterDelay(125);
-        view.animateText(text);
     }
 
     /* ************* */
