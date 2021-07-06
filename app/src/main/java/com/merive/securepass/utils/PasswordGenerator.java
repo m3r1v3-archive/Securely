@@ -18,21 +18,15 @@ public class PasswordGenerator {
 
     public PasswordGenerator(int length) {
         /* Set count of symbols */
-        if (length % 2 == 0) {
-            lowerLength = (int) Math.round(0.4 * length);
-            upperLength = (int) Math.round(0.4 * length);
-            numberLength = (int) Math.round(0.1 * length);
-            symbolsLength = (int) Math.round(0.1 * length);
-        } else {
-            length -= 1;
-            lowerLength = (int) Math.round(0.4 * length);
-            upperLength = (int) Math.round(0.4 * length);
-            numberLength = (int) Math.round(0.1 * length);
-            symbolsLength = (int) Math.round(0.1 * length) + 1;
-        }
+        if (length % 2 != 0) length--;
+        lowerLength = (int) Math.round(0.4 * length);
+        upperLength = (int) Math.round(0.4 * length);
+        numberLength = (int) Math.round(0.1 * length);
+        symbolsLength = (int) Math.round(0.1 * length) + (length % 2 == 0 ? 0 : 1);
     }
 
     public String generatePassword() {
+        /* Generate shuffled password */
         return shuffle(generateAlfsString());
     }
 
@@ -56,9 +50,7 @@ public class PasswordGenerator {
     public String shuffle(String string) {
         /* Shuffle symbols in string */
         List<Character> characters = new ArrayList<>();
-        for (char c : string.toCharArray()) {
-            characters.add(c);
-        }
+        for (char c : string.toCharArray()) characters.add(c);
         StringBuilder output = new StringBuilder(string.length());
         while (characters.size() != 0) {
             int randPicker = (int) (Math.random() * characters.size());
