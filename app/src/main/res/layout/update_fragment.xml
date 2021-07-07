@@ -17,7 +17,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="1.0">
 
-    <TextView
+    <com.merive.securepass.elements.TypingTextView
         android:id="@+id/updateTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -25,7 +25,6 @@
         android:layout_marginEnd="32dp"
         android:width="0sp"
         android:fontFamily="@font/share_tech_mono"
-        android:text="@string/new_version_released"
         android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="25sp"
@@ -35,14 +34,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.16000003" />
 
-    <TextView
+    <com.merive.securepass.elements.TypingTextView
         android:id="@+id/version"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:width="0sp"
-        android:text="Download: vx.x.x -> vx.x.x"
         android:fontFamily="@font/share_tech_mono"
         android:textAlignment="center"
         android:textAllCaps="false"

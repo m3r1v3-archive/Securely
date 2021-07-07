@@ -17,10 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.merive.securepass.R;
+import com.merive.securepass.elements.TypingTextView;
+
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
 public class UpdateFragment extends DialogFragment {
 
-    TextView version;
+    TypingTextView title, version;
     ImageView download;
 
     public UpdateFragment() {
@@ -54,6 +57,7 @@ public class UpdateFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initVariables(view);
+        setTitle();
         setVersion();
 
         download.setOnClickListener(this::clickDownload);
@@ -65,6 +69,7 @@ public class UpdateFragment extends DialogFragment {
 
     public void initVariables(View view) {
         /* Init main variables */
+        title = view.findViewById(R.id.updateTitle);
         version = view.findViewById(R.id.version);
         download = view.findViewById(R.id.download);
     }
@@ -84,9 +89,13 @@ public class UpdateFragment extends DialogFragment {
     /* Another methods */
     /* *************** */
 
+    public void setTitle() {
+        typingAnimation(title, "New version released");
+    }
+
     public void setVersion() {
         /* Set Version Text */
-        version.setText(("Download: " + getArguments().getString("oldVersion") + " → " +
+        typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
                 getArguments().getString("newVersion")));
     }
 }

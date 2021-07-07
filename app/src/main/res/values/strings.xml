@@ -24,7 +24,4 @@
     <string name="def_16">def: 16</string>
     <string name="delete_after_15_errors">Delete after 15 errors</string>
     <string name="encrypt_passwords">Encrypt data</string>
-
-    <!-- UpdateFragment -->
-    <string name="new_version_released">New version released</string>
 </resources>
