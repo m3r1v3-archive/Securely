@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean checkNotExist(String name) {
         /* Check password name on exist */
-        if (db.passwordDao().checkExist(name)) return true;
+        if (db.passwordDao().checkNotExist(name)) return true;
         else {
             makeToast(name + " already in database.");
             return false;
