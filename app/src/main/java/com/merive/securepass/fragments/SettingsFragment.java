@@ -21,6 +21,8 @@ import com.merive.securepass.elements.TypingTextView;
 
 import java.util.Calendar;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 
 public class SettingsFragment extends DialogFragment {
 
@@ -30,10 +32,12 @@ public class SettingsFragment extends DialogFragment {
     ImageView cancel, deleteAll, save;
 
     public SettingsFragment() {
+        /* Empty constructor (Needs) */
     }
 
     public static SettingsFragment newInstance(int length, String message,
                                                boolean deleting, boolean encrypting) {
+        /* newInstance method */
         SettingsFragment frag = new SettingsFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
@@ -43,6 +47,10 @@ public class SettingsFragment extends DialogFragment {
         frag.setArguments(args);
         return frag;
     }
+
+    /* **************** */
+    /* Override methods */
+    /* **************** */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,62 +63,76 @@ public class SettingsFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        title = view.findViewById(R.id.confirmTitle);
+        initVariables(view);
         typingAnimation(title, getResources().getString(R.string.settings));
-
-        info = view.findViewById(R.id.info);
         typingAnimation(info, "SecurePass " + BuildConfig.VERSION_NAME + ", " + Calendar.getInstance().get(Calendar.YEAR));
 
-        passwordLengthEdit = view.findViewById(R.id.passwordLengthEdit);
-        passwordLengthEdit.setText(String.valueOf(getArguments().getInt("length")));
+        setEdits();
+        setSwitches();
 
-        copyingMessageEdit = view.findViewById(R.id.copyingMessageEdit);
-        copyingMessageEdit.setText(getArguments().getString("message"));
-
-        deletingSwitch = view.findViewById(R.id.deletingSwitch);
-        deletingSwitch.setChecked(getArguments().getBoolean("deleting"));
-
-        encryptingSwitch = view.findViewById(R.id.encryptingSwitch);
-        encryptingSwitch.setChecked(getArguments().getBoolean("encrypting"));
-
-        /* OnClick Cancel */
-        cancel = view.findViewById(R.id.cancelSettings);
-        cancel.setOnClickListener(v -> {
-            view.clearFocus();
-            dismiss();
-        });
-
-        /* OnClick deleteAll */
-        deleteAll = view.findViewById(R.id.deletePasswords);
-        deleteAll.setOnClickListener(v -> {
-            ((MainActivity) getActivity()).deleteAllFragment();
-            view.clearFocus();
-            dismiss();
-        });
-
-        /* OnClick save */
-        save = view.findViewById(R.id.saveSettings);
-        save.setOnClickListener(v -> {
-            int length = passwordLengthEdit.getText().toString().isEmpty() ?
-                    16 : Integer.parseInt(passwordLengthEdit.getText().toString());
-            String copyingMessage = copyingMessageEdit.getText().toString().isEmpty() ?
-                    "was copied." : copyingMessageEdit.getText().toString();
-            ((MainActivity) getActivity()).saveSettings(
-                    length,
-                    copyingMessage,
-                    deletingSwitch.isChecked(),
-                    encryptingSwitch.isChecked());
-
-            view.clearFocus();
-            dismiss();
-        });
+        cancel.setOnClickListener(this::clickCancel);
+        deleteAll.setOnClickListener(this::clickDeleteAllPasswords);
+        save.setOnClickListener(this::clickSave);
     }
 
-    /* Elements methods */
-    public void typingAnimation(TypingTextView view, String text) {
-        /* Typing animation for TextViews */
-        view.setText("");
-        view.setCharacterDelay(125);
-        view.animateText(text);
+    /* ************ */
+    /* Init methods */
+    /* ************ */
+
+    public void initVariables(View view) {
+        /* Init main variables */
+        title = view.findViewById(R.id.confirmTitle);
+        info = view.findViewById(R.id.info);
+        passwordLengthEdit = view.findViewById(R.id.passwordLengthEdit);
+        copyingMessageEdit = view.findViewById(R.id.copyingMessageEdit);
+        deletingSwitch = view.findViewById(R.id.deletingSwitch);
+        encryptingSwitch = view.findViewById(R.id.encryptingSwitch);
+        cancel = view.findViewById(R.id.cancelSettings);
+        deleteAll = view.findViewById(R.id.deletePasswords);
+        save = view.findViewById(R.id.saveSettings);
+    }
+
+    /* *********** */
+    /* Set methods */
+    /* *********** */
+
+    public void setEdits() {
+        passwordLengthEdit.setText(String.valueOf(getArguments().getInt("length")));
+        copyingMessageEdit.setText(getArguments().getString("message"));
+    }
+
+    public void setSwitches() {
+        deletingSwitch.setChecked(getArguments().getBoolean("deleting"));
+        encryptingSwitch.setChecked(getArguments().getBoolean("encrypting"));
+    }
+
+    /* ************* */
+    /* Click methods */
+    /* ************* */
+
+    public void clickCancel(View view) {
+        /* Click Cancel Button */
+        view.clearFocus();
+        dismiss();
+    }
+
+    public void clickDeleteAllPasswords(View view) {
+        /* Click DeleteAllPasswords Button */
+        ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
+        view.clearFocus();
+        dismiss();
+    }
+
+    public void clickSave(View view) {
+        /* Click Save Button */
+        int length = passwordLengthEdit.getText().toString().isEmpty() ?
+                16 : Integer.parseInt(passwordLengthEdit.getText().toString());
+        String copyingMessage = copyingMessageEdit.getText().toString().isEmpty() ?
+                "was copied." : copyingMessageEdit.getText().toString();
+        ((MainActivity) getActivity()).saveSettings(
+                length, copyingMessage,
+                deletingSwitch.isChecked(), encryptingSwitch.isChecked());
+        view.clearFocus();
+        dismiss();
     }
 }

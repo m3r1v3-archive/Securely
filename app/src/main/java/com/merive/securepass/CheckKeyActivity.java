@@ -18,12 +18,14 @@ import com.merive.securepass.elements.TypingTextView;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 public class CheckKeyActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     TypingTextView title, key_hint;
     EditText key;
-    int times;
+    int errors;
     boolean deletingAfterErrors, pressed, changeKey;
 
     @Override
@@ -34,24 +36,20 @@ public class CheckKeyActivity extends AppCompatActivity {
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 
-        times = 15;
+        errors = 15;
         deletingAfterErrors = sharedPreferences.getBoolean("delete", false);
+        changeKey = false;
+        pressed = false;
 
-        title = findViewById(R.id.title_check);
+        initLayoutVariables();
         typingAnimation(title, getResources().getString(R.string.welcome_to_securepass));
-        key_hint = findViewById(R.id.key_hint);
         typingAnimation(key_hint, getResources().getString(R.string.enter_the_key_in_the_field));
 
-        key = findViewById(R.id.key);
 
-        changeKey = false;
         checkKeyOnDefault();
         checkEditOfDeletingAfterErrors();
         checkOnChangeKey();
 
-        pressed = false;
-
-        key = findViewById(R.id.key);
         key.setOnEditorActionListener((v, actionId, event) -> {
             boolean handled = false;
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -63,13 +61,20 @@ public class CheckKeyActivity extends AppCompatActivity {
         });
     }
 
-    /* Elements methods */
-    public void typingAnimation(TypingTextView view, String text) {
-        /* Typing animation for text elements */
-        view.setText("");
-        view.setCharacterDelay(125);
-        view.animateText(text);
+    /* ************ */
+    /* Init methods */
+    /* ************ */
+
+    public void initLayoutVariables() {
+        /* Init layout variables */
+        title = findViewById(R.id.title_check);
+        key = findViewById(R.id.key);
+        key_hint = findViewById(R.id.key_hint);
     }
+
+    /* ************* */
+    /* Check methods */
+    /* ************* */
 
     @SuppressLint("SetTextI18n")
     public void checkKeyOnDefault() {
@@ -102,40 +107,14 @@ public class CheckKeyActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void checkKey(View view) {
         /* Check key method */
-        if (changeKey) {
-            if (checkKey()) {
-                resetKey();
-                checkKeyOnDefault();
-                key.setText("");
-                changeKey = false;
-                pressed = false;
-            } else {
-                typingAnimation(key_hint, "Invalid key. Try again.");
-            }
-        } else {
-            if (!pressed) {
-                if (!key.getText().toString().equals("")) {
-                    if (checkOnNewUser()) {
-                        openMain();
-                    } else if (checkKey())
-                        openMain();
-                    else {
-                        if (checkTimes()) {
-                            typingAnimation(key_hint, "Invalid key. Try again.");
-                            if (deletingAfterErrors) times--;
-                        } else deleteAllPasswords();
-                    }
-                }
-            }
-        }
+        if (changeKey) changeKey();
+        else login();
     }
 
-
     public boolean checkOnNewUser() {
+        /* Check on default key */
         if (sharedPreferences.getString("hash", "-1").equals("-1")) {
-
             sharedPreferences.edit().putString("hash", generateHash(key.getText().toString())).apply();
-
             typingAnimation(key_hint, "Key set. Welcome!");
             pressed = true;
             return true;
@@ -143,12 +122,58 @@ public class CheckKeyActivity extends AppCompatActivity {
         return false;
     }
 
+    public boolean checkKey() {
+        /* Check key hash */
+        if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
+            typingAnimation(key_hint, "All right. Welcome!");
+            pressed = true;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkErrorsCount() {
+        return errors > 0;
+    }
+
+    /* *************** */
+    /* Another methods */
+    /* *************** */
+
+    public void changeKey() {
+        /* Change Key Operation */
+        if (checkKey()) {
+            resetKey();
+            checkKeyOnDefault();
+            key.setText("");
+            changeKey = false;
+            pressed = false;
+        } else typingAnimation(key_hint, "Invalid key. Try again.");
+    }
+
+    public void login() {
+        /* Login Operation */
+        if (!pressed) {
+            if (!key.getText().toString().equals("")) {
+                if (checkOnNewUser()) openMain();
+                else if (checkKey()) openMain();
+                else {
+                    if (checkErrorsCount()) {
+                        typingAnimation(key_hint, "Invalid key. Try again.");
+                        if (deletingAfterErrors) errors--;
+                    } else deleteAllPasswords();
+                }
+            }
+        }
+    }
+
     public void resetKey() {
+        /* Reset Key to default */
         sharedPreferences.edit().putString("hash", "-1").apply();
     }
 
-
     public void openMain() {
+        /* Open MainActivity */
         new Handler().postDelayed(() -> {
             startActivity(new Intent(this, MainActivity.class)
                     .putExtra("status", false)
@@ -159,17 +184,8 @@ public class CheckKeyActivity extends AppCompatActivity {
         }, 3250);
     }
 
-    public boolean checkKey() {
-        if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
-            typingAnimation(key_hint, "All right. Welcome!");
-            pressed = true;
-
-            return true;
-        }
-        return false;
-    }
-
     public void hideKeyboard() {
+        /* Hide Screen Keyboard */
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -177,11 +193,8 @@ public class CheckKeyActivity extends AppCompatActivity {
         }
     }
 
-    public boolean checkTimes() {
-        return times > 0;
-    }
-
     public void deleteAllPasswords() {
+        /* Delete all passwords if have 15 errors */
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra("status", true)
         );
@@ -190,6 +203,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     }
 
     public String generateHash(String key) {
+        /* Generate Key hash */
         return BCrypt.hashpw(key, BCrypt.gensalt());
     }
 }

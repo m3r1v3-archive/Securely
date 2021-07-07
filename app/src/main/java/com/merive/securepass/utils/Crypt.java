@@ -11,6 +11,7 @@ public class Crypt {
     final int seed;
 
     public Crypt(int seed) {
+        /* Crypt constructor */
         shuffledAlf = shuffle(alf);
         this.seed = seed;
     }
@@ -19,9 +20,7 @@ public class Crypt {
         /* Shuffle symbols in string */
         Random random = new Random(seed);
         List<Character> characters = new ArrayList<>();
-        for (char c : string.toCharArray()) {
-            characters.add(c);
-        }
+        for (char c : string.toCharArray()) characters.add(c);
         StringBuilder output = new StringBuilder(string.length());
         while (characters.size() != 0) {
             int randPicker = (random.nextInt(characters.size()));
@@ -34,9 +33,7 @@ public class Crypt {
         /* Encrypt string */
         StringBuilder encryptedText = new StringBuilder();
         String[] shuffledAlf = shuffle(alf).split("");
-        for (String s : text.split("")) {
-            encryptedText.append(findIndex(shuffledAlf, s)).append(".");
-        }
+        for (String s : text.split("")) encryptedText.append(findIndex(shuffledAlf, s)).append(".");
         return encryptedText.toString();
     }
 
@@ -44,26 +41,18 @@ public class Crypt {
         /* Decrypt string */
         StringBuilder decryptedText = new StringBuilder();
         String[] shuffledAlf = shuffle(alf).split("");
-        for (String s : text.split("\\.")) {
-            decryptedText.append(shuffledAlf[Integer.parseInt(s)]);
-        }
+        for (String s : text.split("\\.")) decryptedText.append(shuffledAlf[Integer.parseInt(s)]);
         return decryptedText.toString();
     }
 
-    public static int findIndex(String[] arr, String c) {
-        /* Fin dindex of symbol */
-        if (arr == null)
-            return -1;
-
+    public int findIndex(String[] arr, String c) {
+        /* Find index of symbol */
+        if (arr == null) return -1;
         int len = arr.length;
         int i = 0;
-
         while (i < len) {
-            if (arr[i].equals(c))
-                return i;
-             else
-                i = i + 1;
-
+            if (arr[i].equals(c)) return i;
+            else i = i + 1;
         }
         return -1;
     }

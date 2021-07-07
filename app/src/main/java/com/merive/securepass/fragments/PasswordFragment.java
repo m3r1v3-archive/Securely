@@ -18,14 +18,22 @@ import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
 import com.merive.securepass.utils.PasswordGenerator;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 public class PasswordFragment extends DialogFragment {
 
     TypingTextView title;
     EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
     ImageView save, cancel, delete, generate;
+    boolean edit;
 
-    /* For AddPassword */
+
+    public PasswordFragment() {
+        /* Empty constructor (Needs) */
+    }
+
     public static PasswordFragment newInstance(int length) {
+        /* newInstance method for add password */
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
@@ -34,9 +42,9 @@ public class PasswordFragment extends DialogFragment {
         return frag;
     }
 
-    /* For EditPassword */
     public static PasswordFragment newInstance
-    (String name, String login, String password, String description, int length) {
+            (String name, String login, String password, String description, int length) {
+        /* newInstance method for edit password */
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
 
@@ -45,12 +53,16 @@ public class PasswordFragment extends DialogFragment {
         args.putString("password", password);
         args.putString("description", description);
         args.putInt("length", length);
-
         args.putBoolean("edit", true);
 
         frag.setArguments(args);
         return frag;
     }
+
+
+    /* **************** */
+    /* Override methods */
+    /* **************** */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,59 +75,40 @@ public class PasswordFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        title = view.findViewById(R.id.viewTitle);
+        initVariables(view);
+        setEdit();
+        setTitle(edit);
+        setDeleteVisibility();
 
+        cancel.setOnClickListener(this::clickCancel);
+        generate.setOnClickListener(v -> clickGeneratePassword());
+        save.setOnClickListener(this::clickSave);
+        delete.setOnClickListener(this::clickDeletePassword);
+    }
+
+    /* ************ */
+    /* Init methods */
+    /* ************ */
+
+    public void initVariables(View view) {
+        /* Init main variables */
+        title = view.findViewById(R.id.viewTitle);
         nameEdit = view.findViewById(R.id.nameEdit);
         loginEdit = view.findViewById(R.id.loginEdit);
         passwordEdit = view.findViewById(R.id.passwordEdit);
         descriptionEdit = view.findViewById(R.id.descriptionEdit);
-
         delete = view.findViewById(R.id.deletePassword);
-
-        boolean edit = getArguments().getBoolean("edit", false);
-        setTitle(edit);
-
-        if (edit) {
-            delete.setVisibility(View.VISIBLE);
-            setEditsData();
-        }
-
-        /* OnClick Cancel */
         cancel = view.findViewById(R.id.cancel);
-        cancel.setOnClickListener(v -> {
-            view.clearFocus();
-            dismiss();
-        });
-
-        /* OnClick Generate */
         generate = view.findViewById(R.id.generate);
-        generate.setOnClickListener(v -> generatePassword());
-
-        /* OnClick Save */
         save = view.findViewById(R.id.save);
-        save.setOnClickListener(v -> {
-            view.clearFocus();
-            if (edit) {
-                if (checkEditsOnEmpty())
-                    ((MainActivity) getActivity()).editPassword(putEditedDataInBundle());
-                else ((MainActivity) getActivity()).makeToast("You have empty edits.");
-            } else {
-                if (checkEditsOnEmpty()) {
-                    if (checkEditsOnEmpty())
-                        ((MainActivity) getActivity()).addNewPassword(putNewDataInBundle());
-                }
-            }
-            dismiss();
-        });
-
-        delete.setOnClickListener(v -> {
-            view.clearFocus();
-            ((MainActivity) getActivity()).deletePasswordFragment(getArguments().getString("name"));
-            dismiss();
-        });
     }
 
+    /* *********** */
+    /* Set methods */
+    /* *********** */
+
     public void setTitle(boolean edit) {
+        /* Set Title Value */
         String titleText = edit ? "Edit" : "Add";
         typingAnimation(title, titleText + " password");
     }
@@ -128,12 +121,86 @@ public class PasswordFragment extends DialogFragment {
         descriptionEdit.setText(getArguments().getString("description"));
     }
 
-    public void generatePassword() {
+    public void setDeleteVisibility() {
+        /* Set Delete Visibility */
+        if (edit) {
+            delete.setVisibility(View.VISIBLE);
+            setEditsData();
+        }
+    }
+
+    public void setEdit() {
+        /* Set edit value from arguments */
+        edit = getArguments().getBoolean("edit", false);
+    }
+
+    /* ************* */
+    /* Click methods */
+    /* ************* */
+
+    public void clickCancel(View view) {
+        /* Click Cancel Button */
+        view.clearFocus();
+        dismiss();
+    }
+
+    public void clickSave(View view) {
+        /* Click Save Button */
+        view.clearFocus();
+        if (edit) saveEditPassword();
+        else saveNewPassword();
+        dismiss();
+    }
+
+    public void clickDeletePassword(View view) {
+        /* CLick DeletePassword Button */
+        view.clearFocus();
+        ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
+        dismiss();
+    }
+
+    public void clickGeneratePassword() {
         /* Generate password and set to passwordEdit */
         passwordEdit.setText(new PasswordGenerator(getArguments().getInt("length", 16)).generatePassword());
     }
 
+    /* ************ */
+    /* Save methods */
+    /* ************ */
+
+    public void saveNewPassword() {
+        /* Save New Password Operation */
+        if (checkEditsOnEmpty()) {
+            if (checkEditsOnEmpty())
+                ((MainActivity) getActivity()).addNewPassword(putNewDataInBundle());
+        }
+    }
+
+    public void saveEditPassword() {
+        /* Save Edited Password Operation */
+        if (checkEditsOnEmpty())
+            ((MainActivity) getActivity()).editPassword(putEditedDataInBundle());
+        else ((MainActivity) getActivity()).makeToast("You have empty edits.");
+    }
+
+    /* *************** */
+    /* Another methods */
+    /* *************** */
+
+    public Bundle putNewDataInBundle() {
+        /* Put new data from edits to bundle */
+        Bundle data = new Bundle();
+
+        data.putString("name", nameEdit.getText().toString());
+        data.putString("login", loginEdit.getText().toString());
+        data.putString("password", passwordEdit.getText().toString());
+        data.putString("description", descriptionEdit.getText().toString());
+
+        return data;
+    }
+
     public Bundle putEditedDataInBundle() {
+        /* Put edited data from edits to bundle */
         Bundle data = new Bundle();
 
         data.putString("name_before", getArguments().getString("name"));
@@ -145,29 +212,10 @@ public class PasswordFragment extends DialogFragment {
         return data;
     }
 
-    public Bundle putNewDataInBundle() {
-        Bundle data = new Bundle();
-
-        data.putString("name", nameEdit.getText().toString());
-        data.putString("login", loginEdit.getText().toString());
-        data.putString("password", passwordEdit.getText().toString());
-        data.putString("description", descriptionEdit.getText().toString());
-
-        return data;
-    }
-
     public boolean checkEditsOnEmpty() {
+        /* Check Main Edits on Empty */
         return !nameEdit.getText().toString().isEmpty() &&
                 !loginEdit.getText().toString().isEmpty() &&
                 !passwordEdit.getText().toString().isEmpty();
-    }
-
-
-    /* Elements methods */
-    public void typingAnimation(TypingTextView view, String text) {
-        /* Typing animation for TextViews */
-        view.setText("");
-        view.setCharacterDelay(125);
-        view.animateText(text);
     }
 }

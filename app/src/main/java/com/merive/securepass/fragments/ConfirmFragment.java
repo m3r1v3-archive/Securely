@@ -18,15 +18,19 @@ import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 public class ConfirmFragment extends DialogFragment {
 
     TypingTextView title;
     ImageView cancel, confirm;
 
     public ConfirmFragment() {
+        /* Empty constructor (Needs) */
     }
 
     public static ConfirmFragment newInstance(String name) {
+        /* newInstance method for confirm deleting password by name */
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
         args.putString("name", name);
@@ -35,6 +39,7 @@ public class ConfirmFragment extends DialogFragment {
     }
 
     public static ConfirmFragment newInstance() {
+        /* newInstance method for confirm deleting all passwords */
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
         args.putString("name", "all");
@@ -43,12 +48,17 @@ public class ConfirmFragment extends DialogFragment {
     }
 
     public static ConfirmFragment newInstance(boolean changeKey) {
+        /* newInstance method for confirm changing key */
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
         args.putBoolean("changeKey", changeKey);
         frag.setArguments(args);
         return frag;
     }
+
+    /* **************** */
+    /* Override methods */
+    /* **************** */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,47 +72,59 @@ public class ConfirmFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        title = view.findViewById(R.id.confirmTitle);
-        if (getArguments().getBoolean("changeKey", false))
-            typingAnimation(title, "Do you want change key?");
-        else typingAnimation(title, "Are you sure?");
+        initVariables(view);
+        checkKeyChange();
 
-        /* OnClick Cancel */
-        cancel = view.findViewById(R.id.cancelConfirm);
-        cancel.setOnClickListener(v -> {
-            view.clearFocus();
-            dismiss();
-        });
-
-        /* OnClick OkayConfirm */
-        confirm = view.findViewById(R.id.okayConfirm);
-        confirm.setOnClickListener(v -> {
-            if (getArguments().getBoolean("changeKey")) {
-                changeKey();
-            } else {
-                if (getArguments().getString("name").equals("all")) {
-                    ((MainActivity) getActivity()).deleteAllPasswords();
-                } else {
-                    ((MainActivity) getActivity())
-                            .deletePasswordByName(getArguments().getString("name"));
-                }
-            }
-            dismiss();
-        });
+        cancel.setOnClickListener(this::clickCancel);
+        confirm.setOnClickListener(this::clickConfirm);
 
     }
 
-    /* Elements methods */
-    public void typingAnimation(TypingTextView view, String text) {
-        /* Typing animation for TextViews */
-        view.setText("");
-        view.setCharacterDelay(125);
-        view.animateText(text);
+    /* ************ */
+    /* Init methods */
+    /* ************ */
+
+    public void initVariables(View view) {
+        /* Init main variables */
+        title = view.findViewById(R.id.confirmTitle);
+        cancel = view.findViewById(R.id.cancelConfirm);
+        confirm = view.findViewById(R.id.okayConfirm);
+    }
+
+    /* ************* */
+    /* Click methods */
+    /* ************* */
+
+    public void clickCancel(View view) {
+        /* Click Cancel Button */
+        view.clearFocus();
+        dismiss();
+    }
+
+    public void clickConfirm(View view) {
+        /* Click Confirm Button */
+        if (getArguments().getBoolean("changeKey")) changeKey();
+        else {
+            if (getArguments().getString("name").equals("all"))
+                ((MainActivity) getActivity()).deleteAllPasswords();
+            else ((MainActivity) getActivity())
+                    .deletePasswordByName(getArguments().getString("name"));
+        } dismiss();
+    }
+
+    /* *************** */
+    /* Another methods */
+    /* *************** */
+
+    public void checkKeyChange() {
+        if (getArguments().getBoolean("changeKey", false))
+            typingAnimation(title, "Do you want change key?");
+        else typingAnimation(title, "Are you sure?");
     }
 
     public void changeKey() {
         /* Start change key */
-        ((MainActivity)getActivity()).updateEncrypt(false);
+        ((MainActivity) getActivity()).updateEncrypting(false);
         startActivity(new Intent(getActivity(), CheckKeyActivity.class)
                 .putExtra("changeKey", true));
     }

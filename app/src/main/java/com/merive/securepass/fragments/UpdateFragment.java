@@ -17,16 +17,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.merive.securepass.R;
+import com.merive.securepass.elements.TypingTextView;
+
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
 public class UpdateFragment extends DialogFragment {
 
-    TextView version;
+    TypingTextView title, version;
     ImageView download;
 
     public UpdateFragment() {
+        /* Empty constructor (Needs) */
     }
 
     public static UpdateFragment newInstance(String oldVersion, String newVersion) {
+        /* newInstance method */
         UpdateFragment frag = new UpdateFragment();
         Bundle args = new Bundle();
         args.putString("oldVersion", oldVersion);
@@ -34,6 +39,10 @@ public class UpdateFragment extends DialogFragment {
         frag.setArguments(args);
         return frag;
     }
+
+    /* **************** */
+    /* Override methods */
+    /* **************** */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,21 +56,46 @@ public class UpdateFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initVariables(view);
+        setTitle();
+        setVersion();
 
-        version = view.findViewById(R.id.version);
-        version.setText("Download: " + getArguments().getString("oldVersion") + " → " +
-                getArguments().getString("newVersion"));
-
-        /* OnClick Download */
-        download = view.findViewById(R.id.download);
-        download.setOnClickListener(v -> {
-            clickDownload();
-        });
+        download.setOnClickListener(this::clickDownload);
     }
 
-    public void clickDownload() {
+    /* ************ */
+    /* Init methods */
+    /* ************ */
+
+    public void initVariables(View view) {
+        /* Init main variables */
+        title = view.findViewById(R.id.updateTitle);
+        version = view.findViewById(R.id.version);
+        download = view.findViewById(R.id.download);
+    }
+
+    /* ************* */
+    /* Click methods */
+    /* ************* */
+
+    public void clickDownload(View view) {
+        /* Click Download Button */
         dismiss();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://merive.herokuapp.com/SecurePass"));
         startActivity(browserIntent);
+    }
+
+    /* *************** */
+    /* Another methods */
+    /* *************** */
+
+    public void setTitle() {
+        typingAnimation(title, "New version released");
+    }
+
+    public void setVersion() {
+        /* Set Version Text */
+        typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
+                getArguments().getString("newVersion")));
     }
 }
