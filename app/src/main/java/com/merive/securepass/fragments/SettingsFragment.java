@@ -1,5 +1,7 @@
 package com.merive.securepass.fragments;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,8 +22,6 @@ import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
 
 import java.util.Calendar;
-
-import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
 
 public class SettingsFragment extends DialogFragment {
@@ -81,7 +81,7 @@ public class SettingsFragment extends DialogFragment {
 
     public void initVariables(View view) {
         /* Init main variables */
-        title = view.findViewById(R.id.confirmTitle);
+        title = view.findViewById(R.id.settingsTitle);
         info = view.findViewById(R.id.info);
         passwordLengthEdit = view.findViewById(R.id.passwordLengthEdit);
         copyingMessageEdit = view.findViewById(R.id.copyingMessageEdit);

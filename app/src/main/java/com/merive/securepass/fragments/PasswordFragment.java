@@ -1,8 +1,12 @@
 package com.merive.securepass.fragments;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +21,6 @@ import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
 import com.merive.securepass.utils.PasswordGenerator;
-
-import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
 public class PasswordFragment extends DialogFragment {
 
@@ -84,6 +86,7 @@ public class PasswordFragment extends DialogFragment {
         generate.setOnClickListener(v -> clickGeneratePassword());
         save.setOnClickListener(this::clickSave);
         delete.setOnClickListener(this::clickDeletePassword);
+        passwordEdit.setOnClickListener(this::clickPasswordEdit);
     }
 
     /* ************ */
@@ -153,7 +156,7 @@ public class PasswordFragment extends DialogFragment {
     }
 
     public void clickDeletePassword(View view) {
-        /* CLick DeletePassword Button */
+        /* Click DeletePassword Button */
         view.clearFocus();
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
         dismiss();
@@ -162,6 +165,15 @@ public class PasswordFragment extends DialogFragment {
     public void clickGeneratePassword() {
         /* Generate password and set to passwordEdit */
         passwordEdit.setText(new PasswordGenerator(getArguments().getInt("length", 16)).generatePassword());
+    }
+
+    public void clickPasswordEdit(View view) {
+        /* View password 5 seconds and after hide */
+        passwordEdit.setTransformationMethod(null);
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
+        }, 5000);
     }
 
     /* ************ */

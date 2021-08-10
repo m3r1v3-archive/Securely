@@ -1,5 +1,7 @@
 package com.merive.securepass;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.merive.securepass.elements.TypingTextView;
 
 import org.mindrot.jbcrypt.BCrypt;
-
-import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
 public class CheckKeyActivity extends AppCompatActivity {
 

@@ -1,5 +1,7 @@
 package com.merive.securepass;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -39,8 +41,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static com.merive.securepass.elements.TypingTextView.typingAnimation;
-
 public class MainActivity extends AppCompatActivity {
 
     TypingTextView title, empty;
@@ -74,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
         getSettingsData();
         checkVersion();
 
-        lock.setOnLongClickListener(v -> { longClickLock(); return true; });
+        lock.setOnLongClickListener(v -> {
+            longClickLock();
+            return true;
+        });
     }
 
     @Override
@@ -190,7 +193,9 @@ public class MainActivity extends AppCompatActivity {
         if (db.passwordDao().checkEmpty()) {
             empty.setVisibility(View.VISIBLE);
             typingAnimation(empty, getResources().getString(R.string.list_is_empty));
-        } else { empty.setVisibility(View.INVISIBLE); }
+        } else {
+            empty.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void checkKeyStatus() {
@@ -224,7 +229,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
             for (String line; (line = reader.readLine()) != null; ) builder.append(line.trim());
-        } finally { if (reader != null) try { reader.close(); } catch (IOException ignored) {} }
+        } finally {
+            if (reader != null) try {
+                reader.close();
+            } catch (IOException ignored) {
+            }
+        }
         return builder.substring(builder.indexOf("<i>") + "<i>".length()).substring(1,
                 builder.substring(builder.indexOf("<i>") + "<i>".length()).indexOf("</i>"));
     }

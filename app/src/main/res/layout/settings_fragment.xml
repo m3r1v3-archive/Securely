@@ -18,7 +18,7 @@
     app:layout_constraintVertical_bias="1.0">
 
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/confirmTitle"
+        android:id="@+id/settingsTitle"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:text=""
         android:textAlignment="center"
         android:textColor="@color/green"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

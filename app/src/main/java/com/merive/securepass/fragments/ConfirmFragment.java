@@ -118,8 +118,10 @@ public class ConfirmFragment extends DialogFragment {
 
     public void checkKeyChange() {
         if (getArguments().getBoolean("changeKey", false))
-            typingAnimation(title, "Do you want change key?");
-        else typingAnimation(title, "Are you sure?");
+            typingAnimation(title, "Change key?");
+        else if (getArguments().getString("name").equals("all"))
+            typingAnimation(title, "Delete all password?");
+        else typingAnimation(title, "Delete password?");
     }
 
     public void changeKey() {

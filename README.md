@@ -9,7 +9,7 @@ And after every update we improve it.
 ### Why SecurePass is a good password manager?
 We do what we ourselves use. Our project was created for people who do not want to pay money for software that may have backdoors.
 Our code is our main advantage.
-Once we add security enhancements, your data will be stored encrypted and completely secure.
+We'll be update SecurePass, improve safe and make our project better.
 
 ### Installing
 While our project is developing, we have few installation methods. 
