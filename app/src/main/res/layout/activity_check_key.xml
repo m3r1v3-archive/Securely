@@ -7,6 +7,20 @@
     android:background="@color/dark"
     tools:context=".CheckKeyActivity">
 
+    <View
+        android:id="@+id/bar2"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@xml/bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/title_check"
         android:layout_width="wrap_content"
@@ -54,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintVertical_bias="0.65"
         tools:ignore="LabelFor" />
 
     <ImageView
@@ -69,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.88"
+        app:layout_constraintVertical_bias="0.97"
         app:srcCompat="@drawable/check"
         app:tint="@color/green" />
 </androidx.constraintlayout.widget.ConstraintLayout>
