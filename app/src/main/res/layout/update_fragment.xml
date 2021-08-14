@@ -6,7 +6,7 @@
     android:layout_height="195sp"
     android:layout_gravity="center"
 
-    android:background="@xml/round_button"
+    android:background="@xml/background"
     android:minWidth="340sp"
     android:minHeight="195sp"
     android:visibility="visible"
@@ -16,6 +16,20 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="1.0">
+
+    <View
+        android:id="@+id/barUpdate"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@xml/bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/updateTitle"
@@ -66,7 +80,7 @@
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.88"
+        app:layout_constraintVertical_bias="0.83"
         app:srcCompat="@drawable/download"
         app:tint="@color/green" />
 

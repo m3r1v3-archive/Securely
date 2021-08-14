@@ -27,25 +27,26 @@ public class PasswordFragment extends DialogFragment {
     TypingTextView title;
     EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
     ImageView save, cancel, delete, generate;
-    boolean edit;
+    boolean edit, show;
 
 
     public PasswordFragment() {
         /* Empty constructor (Needs) */
     }
 
-    public static PasswordFragment newInstance(int length) {
+    public static PasswordFragment newInstance(int length, boolean show) {
         /* newInstance method for add password */
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
+        args.putBoolean("show", show);
 
         frag.setArguments(args);
         return frag;
     }
 
     public static PasswordFragment newInstance
-            (String name, String login, String password, String description, int length) {
+            (String name, String login, String password, String description, int length, boolean show) {
         /* newInstance method for edit password */
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
@@ -56,6 +57,7 @@ public class PasswordFragment extends DialogFragment {
         args.putString("description", description);
         args.putInt("length", length);
         args.putBoolean("edit", true);
+        args.putBoolean("show", show);
 
         frag.setArguments(args);
         return frag;
@@ -81,12 +83,16 @@ public class PasswordFragment extends DialogFragment {
         setEdit();
         setTitle(edit);
         setDeleteVisibility();
+        setShow();
 
         cancel.setOnClickListener(this::clickCancel);
         generate.setOnClickListener(v -> clickGeneratePassword());
         save.setOnClickListener(this::clickSave);
         delete.setOnClickListener(this::clickDeletePassword);
-        passwordEdit.setOnClickListener(this::clickPasswordEdit);
+        passwordEdit.setOnLongClickListener(v -> {
+            clickPasswordEdit();
+            return false;
+        });
     }
 
     /* ************ */
@@ -137,6 +143,11 @@ public class PasswordFragment extends DialogFragment {
         edit = getArguments().getBoolean("edit", false);
     }
 
+    public void setShow() {
+        show = getArguments().getBoolean("show");
+        if (show) passwordEdit.setTransformationMethod(null);
+    }
+
     /* ************* */
     /* Click methods */
     /* ************* */
@@ -167,13 +178,17 @@ public class PasswordFragment extends DialogFragment {
         passwordEdit.setText(new PasswordGenerator(getArguments().getInt("length", 16)).generatePassword());
     }
 
-    public void clickPasswordEdit(View view) {
+    public void clickPasswordEdit() {
         /* View password 5 seconds and after hide */
-        passwordEdit.setTransformationMethod(null);
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
-        }, 5000);
+        if (!show) {
+            show = true;
+            passwordEdit.setTransformationMethod(null);
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
+            }, 5000);
+            show = false;
+        }
     }
 
     /* ************ */

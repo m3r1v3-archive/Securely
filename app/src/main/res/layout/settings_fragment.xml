@@ -6,7 +6,7 @@
     android:layout_width="360sp"
     android:layout_height="475sp"
     android:layout_gravity="center"
-    android:background="@xml/round_button"
+    android:background="@xml/background"
     android:minWidth="360sp"
     android:minHeight="450sp"
     android:visibility="visible"
@@ -17,11 +17,27 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="1.0">
 
+    <View
+        android:id="@+id/barSettings"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@xml/bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/settingsTitle"
 
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/share_tech_mono"
         android:text=""
         android:textAlignment="center"
@@ -46,7 +62,7 @@
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
+        app:layout_constraintVertical_bias="0.94"
         app:srcCompat="@drawable/cancel"
         app:tint="@color/green" />
 
@@ -61,7 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
+        app:layout_constraintVertical_bias="0.94"
         app:srcCompat="@drawable/delete"
         app:tint="@color/green" />
 
@@ -78,7 +94,7 @@
         app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
+        app:layout_constraintVertical_bias="0.94"
         app:srcCompat="@drawable/save"
         app:tint="@color/green" />
 
@@ -97,7 +113,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.80" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/deletingSwitch"
@@ -114,6 +130,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.50"
+        app:thumbTint="@color/gray"
+        app:trackTint="@color/green" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/showPasswordSwitch"
+        android:layout_width="320sp"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/share_tech_mono"
+        android:text="@string/always_show_password"
+        android:textColor="@color/green"
+
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.354"
         app:thumbTint="@color/gray"
         app:trackTint="@color/green" />
 
@@ -135,21 +169,6 @@
         app:thumbTint="@color/gray"
         app:trackTint="@color/green" />
 
-    <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/copyingMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/share_tech_mono"
-        android:text="@string/coping_message"
-        android:textColor="@color/green"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.086"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36" />
-
     <EditText
         android:id="@+id/passwordLengthEdit"
         android:layout_width="160sp"
@@ -167,27 +186,8 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.20"
+        app:layout_constraintVertical_bias="0.19999999"
         tools:ignore="LabelFor" />
-
-    <EditText
-        android:id="@+id/copyingMessageEdit"
-        android:layout_width="160sp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="@font/share_tech_mono"
-        android:hint="@string/message_about_copying"
-        android:inputType="text"
-        android:textAlignment="center"
-        android:textColor="@color/green"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35"
-        tools:ignore="TextFields" />
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/passwordLength"
@@ -199,7 +199,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintHorizontal_bias="0.092"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.21" />

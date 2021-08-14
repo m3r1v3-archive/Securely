@@ -9,37 +9,35 @@
     tools:context=".MainActivity">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/password_recycle_view"
-        android:layout_width="0sp"
-        android:layout_height="0dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="28dp"
-        android:scrollbarSize="1sp"
-        android:scrollbarThumbVertical="@xml/scrollbar"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/lock"
+    <View
+        android:id="@+id/bar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@xml/bar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
-        app:layout_constraintVertical_bias="0.40"
-        tools:listitem="@layout/password_row" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/addButton"
+        android:id="@+id/lock"
         android:layout_width="56sp"
         android:layout_height="56sp"
         android:background="@xml/round_button"
         android:contentDescription="@string/todo"
-        android:onClick="clickAdd"
+        android:onClick="clickLock"
         android:padding="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toEndOf="@+id/settings"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
-        app:srcCompat="@drawable/add"
+        app:layout_constraintVertical_bias="0.97"
+        app:srcCompat="@drawable/lock"
         app:tint="@color/green" />
 
     <ImageView
@@ -55,29 +53,45 @@
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
+        app:layout_constraintVertical_bias="0.97"
         app:srcCompat="@drawable/settings"
         app:tint="@color/green" />
 
     <ImageView
-        android:id="@+id/lock"
+        android:id="@+id/add"
         android:layout_width="56sp"
         android:layout_height="56sp"
         android:background="@xml/round_button"
         android:contentDescription="@string/todo"
-        android:onClick="clickLock"
+        android:onClick="clickAdd"
         android:padding="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addButton"
-        app:layout_constraintStart_toEndOf="@+id/settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
-        app:srcCompat="@drawable/lock"
+        app:layout_constraintVertical_bias="0.97"
+        app:srcCompat="@drawable/add"
         app:tint="@color/green" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/password_recycle_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        android:scrollbarSize="1sp"
+        android:scrollbarThumbVertical="@xml/scrollbar"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/lock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
+        tools:listitem="@layout/password_row" />
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/mainTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"
         android:text=""
@@ -86,9 +100,10 @@
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintVertical_bias="0.060000002" />
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/empty"
