@@ -108,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
         /* Click Add Button */
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
-                sharedPreferences.getInt("length", 16));
+                sharedPreferences.getInt("length", 16),
+                sharedPreferences.getBoolean("showPassword", false));
         passwordFragment.show(fm, "password_fragment");
     }
 
@@ -122,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
                         db.passwordDao().getPasswordByName(name),
                 db.passwordDao().getDescriptionByName(name),
-                sharedPreferences.getInt("length", 16));
+                sharedPreferences.getInt("length", 16),
+                sharedPreferences.getBoolean("showPassword", false));
         passwordFragment.show(fm, "password_fragment");
     }
 
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         SettingsFragment settingsFragment = SettingsFragment.newInstance(
                 sharedPreferences.getInt("length", 16),
-                sharedPreferences.getString("copyingMessage", "was copied."),
+                sharedPreferences.getBoolean("showPassword", false),
                 deleting, sharedPreferences.getBoolean("encrypting", false));
         settingsFragment.show(fm, "settings_fragment");
     }
@@ -157,8 +159,7 @@ public class MainActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText(label, value);
         clipboard.setPrimaryClip(clip);
 
-        makeToast(label + " Password " +
-                sharedPreferences.getString("copyingMessage", "was copied."));
+        makeToast(label + " Password has been copied.");
     }
 
     /* ************* */
@@ -269,10 +270,10 @@ public class MainActivity extends AppCompatActivity {
     /* Fragments methods */
     /* ***************** */
 
-    public void saveSettings(int length, String message, boolean deleting, boolean encrypt) {
+    public void saveSettings(int length, boolean show, boolean deleting, boolean encrypt) {
         /* Save settings changes */
         makeToast("Settings saved.");
-        updateCopyingMessage(message);
+        updateShowPassword(show);
         updateLengthOfPassword(length);
         updateDeleting(deleting);
         updateEncrypting(encrypt);
@@ -335,10 +336,10 @@ public class MainActivity extends AppCompatActivity {
         else sharedPreferences.edit().putInt("length", 16).apply();
     }
 
-    public void updateCopyingMessage(String message) {
-        /* Update copingMessage in sharedPreferences */
+    public void updateShowPassword(boolean show) {
+        /* Update ShowPassword in sharedPreferences */
         sharedPreferences.edit()
-                .putString("copyingMessage", message)
+                .putBoolean("showPassword", show)
                 .apply();
     }
 
@@ -452,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
         TextView text = layout.findViewById(R.id.message);
         text.setText(message);
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 80);
+        toast.setGravity(Gravity.BOTTOM, 0, 63);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();

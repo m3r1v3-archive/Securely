@@ -27,21 +27,21 @@ import java.util.Calendar;
 public class SettingsFragment extends DialogFragment {
 
     TypingTextView title, info;
-    EditText passwordLengthEdit, copyingMessageEdit;
-    SwitchCompat deletingSwitch, encryptingSwitch;
+    EditText passwordLengthEdit;
+    SwitchCompat showPasswordSwitch, deletingSwitch, encryptingSwitch;
     ImageView cancel, deleteAll, save;
 
     public SettingsFragment() {
         /* Empty constructor (Needs) */
     }
 
-    public static SettingsFragment newInstance(int length, String message,
+    public static SettingsFragment newInstance(int length, boolean show,
                                                boolean deleting, boolean encrypting) {
         /* newInstance method */
         SettingsFragment frag = new SettingsFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
-        args.putString("message", message);
+        args.putBoolean("show", show);
         args.putBoolean("deleting", deleting);
         args.putBoolean("encrypting", encrypting);
         frag.setArguments(args);
@@ -84,7 +84,7 @@ public class SettingsFragment extends DialogFragment {
         title = view.findViewById(R.id.settingsTitle);
         info = view.findViewById(R.id.info);
         passwordLengthEdit = view.findViewById(R.id.passwordLengthEdit);
-        copyingMessageEdit = view.findViewById(R.id.copyingMessageEdit);
+        showPasswordSwitch = view.findViewById(R.id.showPasswordSwitch);
         deletingSwitch = view.findViewById(R.id.deletingSwitch);
         encryptingSwitch = view.findViewById(R.id.encryptingSwitch);
         cancel = view.findViewById(R.id.cancelSettings);
@@ -98,10 +98,10 @@ public class SettingsFragment extends DialogFragment {
 
     public void setEdits() {
         passwordLengthEdit.setText(String.valueOf(getArguments().getInt("length")));
-        copyingMessageEdit.setText(getArguments().getString("message"));
     }
 
     public void setSwitches() {
+        showPasswordSwitch.setChecked(getArguments().getBoolean("show"));
         deletingSwitch.setChecked(getArguments().getBoolean("deleting"));
         encryptingSwitch.setChecked(getArguments().getBoolean("encrypting"));
     }
@@ -127,10 +127,8 @@ public class SettingsFragment extends DialogFragment {
         /* Click Save Button */
         int length = passwordLengthEdit.getText().toString().isEmpty() ?
                 16 : Integer.parseInt(passwordLengthEdit.getText().toString());
-        String copyingMessage = copyingMessageEdit.getText().toString().isEmpty() ?
-                "was copied." : copyingMessageEdit.getText().toString();
         ((MainActivity) getActivity()).saveSettings(
-                length, copyingMessage,
+                length, showPasswordSwitch.isChecked(),
                 deletingSwitch.isChecked(), encryptingSwitch.isChecked());
         view.clearFocus();
         dismiss();

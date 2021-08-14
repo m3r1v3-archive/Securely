@@ -134,6 +134,24 @@
         app:trackTint="@color/green" />
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/showPasswordSwitch"
+        android:layout_width="320sp"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/share_tech_mono"
+        android:text="@string/always_show_password"
+        android:textColor="@color/green"
+
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.354"
+        app:thumbTint="@color/gray"
+        app:trackTint="@color/green" />
+
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/encryptingSwitch"
         android:layout_width="320sp"
         android:layout_height="wrap_content"
@@ -150,21 +168,6 @@
         app:layout_constraintVertical_bias="0.65"
         app:thumbTint="@color/gray"
         app:trackTint="@color/green" />
-
-    <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/copyingMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/share_tech_mono"
-        android:text="@string/coping_message"
-        android:textColor="@color/green"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.092"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
 
     <EditText
         android:id="@+id/passwordLengthEdit"
@@ -183,27 +186,8 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.20"
+        app:layout_constraintVertical_bias="0.19999999"
         tools:ignore="LabelFor" />
-
-    <EditText
-        android:id="@+id/copyingMessageEdit"
-        android:layout_width="160sp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="@font/share_tech_mono"
-        android:hint="@string/message_about_copying"
-        android:inputType="text"
-        android:textAlignment="center"
-        android:textColor="@color/green"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35"
-        tools:ignore="TextFields" />
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/passwordLength"
@@ -215,7 +199,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.092"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.21" />
