@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -36,7 +37,8 @@ public class CheckKeyActivity extends AppCompatActivity {
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 
-        errors = 15;
+        errors = sharedPreferences.getInt("errors", 15);
+
         deletingAfterErrors = sharedPreferences.getBoolean("delete", false);
         changeKey = false;
         pressed = false;
@@ -160,7 +162,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                 else {
                     if (checkErrorsCount()) {
                         typingAnimation(key_hint, "Invalid key. Try again.");
-                        if (deletingAfterErrors) errors--;
+                        if (deletingAfterErrors) errorIns();
                     } else deleteAllPasswords();
                 }
             }
@@ -172,9 +174,20 @@ public class CheckKeyActivity extends AppCompatActivity {
         sharedPreferences.edit().putString("hash", "-1").apply();
     }
 
+    public void errorIns() {
+        errors--;
+        sharedPreferences.edit().putInt("errors", errors).apply();
+    }
+
+    public void resetErrors() {
+        errors = 15;
+        sharedPreferences.edit().putInt("errors", 15).apply();
+    }
+
     public void openMain() {
         /* Open MainActivity */
         new Handler().postDelayed(() -> {
+            resetErrors();
             startActivity(new Intent(this, MainActivity.class)
                     .putExtra("status", false)
                     .putExtra("deleting", deletingAfterErrors)
@@ -198,7 +211,7 @@ public class CheckKeyActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra("status", true)
         );
-        typingAnimation(key_hint, "All Passwords was deleted. Have a nice day :-)");
+        typingAnimation(key_hint, "All Passwords was deleted. Have a nice day xD");
         pressed = true;
     }
 
