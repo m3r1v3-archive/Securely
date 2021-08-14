@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String getVersionOnSite() throws IOException {
         /* Get version of actual application on site */
-        URL url = new URL("https://merive.herokuapp.com/SecurePass/download");
+        URL url = new URL(getResources().getString(R.string.website));
         BufferedReader reader = null;
         StringBuilder builder = new StringBuilder();
         try {

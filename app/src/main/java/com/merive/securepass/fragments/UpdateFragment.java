@@ -81,7 +81,7 @@ public class UpdateFragment extends DialogFragment {
     public void clickDownload(View view) {
         /* Click Download Button */
         dismiss();
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://merive.herokuapp.com/SecurePass/Download"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website)));
         startActivity(browserIntent);
     }
 
@@ -90,7 +90,7 @@ public class UpdateFragment extends DialogFragment {
     /* *************** */
 
     public void setTitle() {
-        typingAnimation(title, "New version released");
+        typingAnimation(title, getResources().getString(R.string.new_version_released));
     }
 
     public void setVersion() {

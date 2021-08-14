@@ -82,7 +82,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     public void checkKeyOnDefault() {
         /* Check key from data on default value */
         if (sharedPreferences.getString("hash", "-1").equals("-1")) {
-            typingAnimation(key_hint, "Create a new key\nTip: Use more than 4 numbers.");
+            typingAnimation(key_hint, getResources().getString(R.string.create_a_new_name));
         }
     }
 
@@ -100,7 +100,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     public void checkOnChangeKey() {
         /* Check on key changing */
         if (getIntent().getBooleanExtra("changeKey", false)) {
-            typingAnimation(key_hint, "Enter old key.");
+            typingAnimation(key_hint, getResources().getString(R.string.enter_old_key));
             changeKey = true;
         }
     }
@@ -117,7 +117,7 @@ public class CheckKeyActivity extends AppCompatActivity {
         /* Check on default key */
         if (sharedPreferences.getString("hash", "-1").equals("-1")) {
             sharedPreferences.edit().putString("hash", generateHash(key.getText().toString())).apply();
-            typingAnimation(key_hint, "Key set. Welcome!");
+            typingAnimation(key_hint, getResources().getString(R.string.key_set));
             pressed = true;
             return true;
         }
@@ -127,7 +127,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     public boolean checkKey() {
         /* Check key hash */
         if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
-            typingAnimation(key_hint, "All right. Welcome!");
+            typingAnimation(key_hint, getResources().getString(R.string.all_right));
             pressed = true;
             return true;
         }
@@ -150,7 +150,7 @@ public class CheckKeyActivity extends AppCompatActivity {
             key.setText("");
             changeKey = false;
             pressed = false;
-        } else typingAnimation(key_hint, "Invalid key. Try again.");
+        } else typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
     }
 
     public void login() {
@@ -161,7 +161,7 @@ public class CheckKeyActivity extends AppCompatActivity {
                 else if (checkKey()) openMain();
                 else {
                     if (checkErrorsCount()) {
-                        typingAnimation(key_hint, "Invalid key. Try again.");
+                        typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
                         if (deletingAfterErrors) errorIns();
                     } else deleteAllPasswords();
                 }
@@ -211,7 +211,7 @@ public class CheckKeyActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra("status", true)
         );
-        typingAnimation(key_hint, "All Passwords was deleted. Have a nice day xD");
+        typingAnimation(key_hint, getResources().getString(R.string.all_passwords_was_deleted));
         pressed = true;
     }
 
