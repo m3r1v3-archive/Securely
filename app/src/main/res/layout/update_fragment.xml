@@ -19,10 +19,10 @@
 
     <View
         android:id="@+id/barUpdate"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="0sp"
+        android:layout_height="56sp"
+        android:layout_marginStart="24sp"
+        android:layout_marginEnd="24sp"
         android:background="@xml/bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +33,10 @@
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/updateTitle"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32sp"
+        android:layout_marginEnd="32sp"
         android:width="0sp"
         android:fontFamily="@font/share_tech_mono"
         android:textAlignment="center"
@@ -50,10 +50,10 @@
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/version"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32sp"
+        android:layout_marginEnd="32sp"
         android:width="0sp"
         android:fontFamily="@font/share_tech_mono"
         android:textAlignment="center"

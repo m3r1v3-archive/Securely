@@ -14,9 +14,10 @@
     <string name="enter_old_key">Enter old key</string>
     <string name="key_set">Key set. Welcome!</string>
     <string name="all_right">All right. Welcome!</string>
+    <string name="enter_the_key">Enter the key</string>
 
     <!--  ConfirmFragment  -->
-    <string name="change_key">Change a key?</string>
+    <string name="change_key">Change the key?</string>
     <string name="delete_all_passwords">Delete all passwords?</string>
     <string name="delete_a_password">Delete a password?</string>
 
@@ -28,11 +29,11 @@
 
     <!--  SettingsFragment  -->
     <string name="settings">Settings</string>
-    <string name="always_show_password">Always show password</string>
+    <string name="always_show_password">Always show a password</string>
     <string name="password_length">Symbol count</string>
     <string name="def_16">Default: 16</string>
     <string name="delete_after_15_errors">Delete after 15 errors</string>
-    <string name="encrypt_passwords">Encrypt data</string>
+    <string name="encrypt_passwords">Encrypt the data</string>
 
     <!--  UpdateFragment  -->
     <string name="new_version_released">New version released</string>

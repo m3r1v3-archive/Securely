@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText(label, value);
         clipboard.setPrimaryClip(clip);
 
-        makeToast(label + " Password has been copied.");
+        makeToast(label + " Password has been copied");
     }
 
     /* ************* */
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         /* Check password name on exist */
         if (db.passwordDao().checkNotExist(name)) return true;
         else {
-            makeToast(name + " already in database.");
+            makeToast(name + " already in database");
             return false;
         }
     }
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveSettings(int length, boolean show, boolean deleting, boolean encrypt) {
         /* Save settings changes */
-        makeToast("Settings saved.");
+        makeToast("Settings saved");
         updateShowPassword(show);
         updateLengthOfPassword(length);
         updateDeleting(deleting);
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         /* Add password using data from bundle */
         if (checkNotExist(getData(data, "name"))) {
             addPasswordInDatabase(data);
-            makeToast(getData(data, "name") + " was " + "added" + ".");
+            makeToast(getData(data, "name") + " was " + "added");
             new GetData().execute();
             checkEmpty();
         }
@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         if (getData(data, "name_before").equals(getData(data, "edited_name"))
                 || checkNotExist(getData(data, "edited_name"))) {
             editPasswordInDatabase(data);
-            makeToast(getData(data, "edited_name") + " was " + "edited" + ".");
+            makeToast(getData(data, "edited_name") + " was " + "edited");
             new GetData().execute();
         }
     }
@@ -432,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
         db.passwordDao().deleteByName(name);
         new GetData().execute();
         checkEmpty();
-        makeToast(name + " was deleted.");
+        makeToast(name + " was deleted");
     }
 
     public void deleteAllPasswords() {
@@ -440,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
         db.passwordDao().deleteAll();
         new GetData().execute();
         checkEmpty();
-        makeToast("All passwords have been deleted.");
+        makeToast("All passwords have been deleted");
     }
 
     /* ************* */

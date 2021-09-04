@@ -52,6 +52,8 @@ public class CheckKeyActivity extends AppCompatActivity {
         checkEditOfDeletingAfterErrors();
         checkOnChangeKey();
 
+        setFocus();
+
         key.setOnEditorActionListener((v, actionId, event) -> {
             boolean handled = false;
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -201,9 +203,15 @@ public class CheckKeyActivity extends AppCompatActivity {
         /* Hide Screen Keyboard */
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void setFocus() {
+        key.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(key, InputMethodManager.SHOW_FORCED);
     }
 
     public void deleteAllPasswords() {
