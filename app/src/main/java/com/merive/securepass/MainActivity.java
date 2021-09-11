@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickAdd(View view) {
         /* Click Add Button */
+        makeVibration();
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
                 sharedPreferences.getInt("length", 16),
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickEditPassword(String name) {
         /* Click Password Row */
+        makeVibration();
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
                 name,
@@ -131,12 +134,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickLock(View view) {
         /* Click Lock Button */
+        makeVibration();
         startActivity(new Intent(this, CheckKeyActivity.class));
         finish();
     }
 
     public void longClickLock() {
         /* Long Click Lock Button */
+        makeVibration();
         FragmentManager fm = getSupportFragmentManager();
         ConfirmFragment confirmFragment = ConfirmFragment.newInstance(
                 true);
@@ -145,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickSettings(View view) {
         /* Click Settings Button */
+        makeVibration();
         FragmentManager fm = getSupportFragmentManager();
         SettingsFragment settingsFragment = SettingsFragment.newInstance(
                 sharedPreferences.getInt("length", 16),
@@ -155,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickAddInClipboard(String label, String value) {
         /* Add password to clipboard */
+        makeVibration();
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, value);
@@ -458,6 +465,11 @@ public class MainActivity extends AppCompatActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+    public void makeVibration() {
+        Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(100);
     }
 
     /* **************************** */

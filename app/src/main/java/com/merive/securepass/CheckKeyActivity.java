@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -188,6 +189,7 @@ public class CheckKeyActivity extends AppCompatActivity {
 
     public void openMain() {
         /* Open MainActivity */
+        makeVibration();
         new Handler().postDelayed(() -> {
             resetErrors();
             startActivity(new Intent(this, MainActivity.class)
@@ -216,6 +218,7 @@ public class CheckKeyActivity extends AppCompatActivity {
 
     public void deleteAllPasswords() {
         /* Delete all passwords if have 15 errors */
+        makeVibration();
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra("status", true)
         );
@@ -226,5 +229,10 @@ public class CheckKeyActivity extends AppCompatActivity {
     public String generateHash(String key) {
         /* Generate Key hash */
         return BCrypt.hashpw(key, BCrypt.gensalt());
+    }
+
+    public void makeVibration() {
+        Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(100);
     }
 }
