@@ -178,8 +178,9 @@ public class MainActivity extends AppCompatActivity {
         /* Make fragment if application was updated */
         Thread thread = new Thread(() -> {
             try {
-                if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME))
+                if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME)) {
                     openUpdateFragment(BuildConfig.VERSION_NAME, getVersionOnSite());
+                }
             } catch (Exception e) {
                 Log.e("CHECK VERSION ERROR ", "NOT POSSIBLE CHECK VERSION" + " (" + e + ") ");
             }

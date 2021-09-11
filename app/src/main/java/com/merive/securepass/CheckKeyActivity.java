@@ -112,6 +112,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void checkKey(View view) {
         /* Check key method */
+        makeVibration();
         if (changeKey) changeKey();
         else login();
     }
@@ -189,7 +190,6 @@ public class CheckKeyActivity extends AppCompatActivity {
 
     public void openMain() {
         /* Open MainActivity */
-        makeVibration();
         new Handler().postDelayed(() -> {
             resetErrors();
             startActivity(new Intent(this, MainActivity.class)
@@ -218,7 +218,6 @@ public class CheckKeyActivity extends AppCompatActivity {
 
     public void deleteAllPasswords() {
         /* Delete all passwords if have 15 errors */
-        makeVibration();
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra("status", true)
         );

@@ -2,9 +2,11 @@ package com.merive.securepass.fragments;
 
 import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,6 +115,7 @@ public class SettingsFragment extends DialogFragment {
     public void clickCancel(View view) {
         /* Click Cancel Button */
         view.clearFocus();
+        makeVibration();
         dismiss();
     }
 
@@ -120,11 +123,13 @@ public class SettingsFragment extends DialogFragment {
         /* Click DeleteAllPasswords Button */
         ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
         view.clearFocus();
+        makeVibration();
         dismiss();
     }
 
     public void clickSave(View view) {
         /* Click Save Button */
+        makeVibration();
         int length = passwordLengthEdit.getText().toString().isEmpty() ?
                 16 : Integer.parseInt(passwordLengthEdit.getText().toString());
         ((MainActivity) getActivity()).saveSettings(
@@ -132,5 +137,14 @@ public class SettingsFragment extends DialogFragment {
                 deletingSwitch.isChecked(), encryptingSwitch.isChecked());
         view.clearFocus();
         dismiss();
+    }
+
+    /* *************** */
+    /* Another methods */
+    /* *************** */
+
+    public void makeVibration() {
+        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(100);
     }
 }

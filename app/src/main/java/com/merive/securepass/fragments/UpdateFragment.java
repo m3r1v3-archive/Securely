@@ -1,11 +1,13 @@
 package com.merive.securepass.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +83,7 @@ public class UpdateFragment extends DialogFragment {
     public void clickDownload(View view) {
         /* Click Download Button */
         dismiss();
+        makeVibration();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website)));
         startActivity(browserIntent);
     }
@@ -97,5 +100,10 @@ public class UpdateFragment extends DialogFragment {
         /* Set Version Text */
         typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
                 getArguments().getString("newVersion")));
+    }
+
+    public void makeVibration() {
+        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(100);
     }
 }

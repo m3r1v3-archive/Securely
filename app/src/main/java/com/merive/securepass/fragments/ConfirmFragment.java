@@ -1,9 +1,11 @@
 package com.merive.securepass.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,11 +100,13 @@ public class ConfirmFragment extends DialogFragment {
     public void clickCancel(View view) {
         /* Click Cancel Button */
         view.clearFocus();
+        makeVibration();
         dismiss();
     }
 
     public void clickConfirm(View view) {
         /* Click Confirm Button */
+        makeVibration();
         if (getArguments().getBoolean("changeKey")) changeKey();
         else {
             if (getArguments().getString("name").equals("all"))
@@ -129,5 +133,10 @@ public class ConfirmFragment extends DialogFragment {
         ((MainActivity) getActivity()).updateEncrypting(false);
         startActivity(new Intent(getActivity(), CheckKeyActivity.class)
                 .putExtra("changeKey", true));
+    }
+
+    public void makeVibration() {
+        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(100);
     }
 }
