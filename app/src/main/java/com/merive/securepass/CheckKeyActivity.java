@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.merive.securepass.elements.TypingTextView;
+import com.merive.securepass.utils.VibrationManager;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -231,7 +233,11 @@ public class CheckKeyActivity extends AppCompatActivity {
     }
 
     public void makeVibration() {
-        Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(100);
+        if (checkSoundMode())
+            VibrationManager.makeVibration(getApplicationContext());
+    }
+
+    public boolean checkSoundMode() {
+        return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
     }
 }

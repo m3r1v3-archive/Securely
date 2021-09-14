@@ -100,13 +100,13 @@ public class ConfirmFragment extends DialogFragment {
     public void clickCancel(View view) {
         /* Click Cancel Button */
         view.clearFocus();
-        makeVibration();
+        ((MainActivity) getActivity()).makeVibration();;
         dismiss();
     }
 
     public void clickConfirm(View view) {
         /* Click Confirm Button */
-        makeVibration();
+        ((MainActivity) getActivity()).makeVibration();;
         if (getArguments().getBoolean("changeKey")) changeKey();
         else {
             if (getArguments().getString("name").equals("all"))
@@ -133,10 +133,5 @@ public class ConfirmFragment extends DialogFragment {
         ((MainActivity) getActivity()).updateEncrypting(false);
         startActivity(new Intent(getActivity(), CheckKeyActivity.class)
                 .putExtra("changeKey", true));
-    }
-
-    public void makeVibration() {
-        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(100);
     }
 }

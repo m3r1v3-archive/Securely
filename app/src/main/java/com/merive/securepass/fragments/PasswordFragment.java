@@ -157,14 +157,14 @@ public class PasswordFragment extends DialogFragment {
     public void clickCancel(View view) {
         /* Click Cancel Button */
         view.clearFocus();
-        makeVibration();
+        ((MainActivity) getActivity()).makeVibration();
         dismiss();
     }
 
     public void clickSave(View view) {
         /* Click Save Button */
         view.clearFocus();
-        makeVibration();
+        ((MainActivity) getActivity()).makeVibration();
         if (edit) saveEditPassword();
         else saveNewPassword();
         dismiss();
@@ -173,20 +173,20 @@ public class PasswordFragment extends DialogFragment {
     public void clickDeletePassword(View view) {
         /* Click DeletePassword Button */
         view.clearFocus();
-        makeVibration();
+        ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
         dismiss();
     }
 
     public void clickGeneratePassword() {
         /* Generate password and set to passwordEdit */
-        makeVibration();
+        ((MainActivity) getActivity()).makeVibration();
         passwordEdit.setText(new PasswordGenerator(getArguments().getInt("length", 16)).generatePassword());
     }
 
     public void clickPasswordEdit() {
         /* View password 5 seconds and after hide */
-        makeVibration();
+        ((MainActivity) getActivity()).makeVibration();
         if (!show) {
             show = true;
             passwordEdit.setTransformationMethod(null);
@@ -251,10 +251,5 @@ public class PasswordFragment extends DialogFragment {
         return !nameEdit.getText().toString().isEmpty() &&
                 !loginEdit.getText().toString().isEmpty() &&
                 !passwordEdit.getText().toString().isEmpty();
-    }
-
-    public void makeVibration() {
-        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(100);
     }
 }

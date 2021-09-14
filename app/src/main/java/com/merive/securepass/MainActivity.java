@@ -7,9 +7,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +34,7 @@ import com.merive.securepass.fragments.PasswordFragment;
 import com.merive.securepass.fragments.SettingsFragment;
 import com.merive.securepass.fragments.UpdateFragment;
 import com.merive.securepass.utils.Crypt;
+import com.merive.securepass.utils.VibrationManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -214,6 +215,10 @@ public class MainActivity extends AppCompatActivity {
             db.passwordDao().deleteAll();
             finish();
         }
+    }
+
+    public boolean checkSoundMode() {
+        return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
     }
 
     /* *********** */
@@ -469,8 +474,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeVibration() {
-        Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(100);
+        if (checkSoundMode())
+            VibrationManager.makeVibration(getApplicationContext());
     }
 
     /* **************************** */
