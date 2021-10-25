@@ -39,7 +39,7 @@
     <string name="new_version_released">New version released</string>
 
     <!--  Website Link  -->
-    <string name="website">https://merive.herokuapp.com/SecurePass/download</string>
+    <string name="website">https://merive.herokuapp.com/SecurePass/Download/</string>
 
     <!--  TODO  -->
     <string name="todo">TODO</string>
