@@ -100,13 +100,13 @@ public class ConfirmFragment extends DialogFragment {
     public void clickCancel(View view) {
         /* Click Cancel Button */
         view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();;
+        ((MainActivity) getActivity()).makeVibration();
         dismiss();
     }
 
     public void clickConfirm(View view) {
         /* Click Confirm Button */
-        ((MainActivity) getActivity()).makeVibration();;
+        ((MainActivity) getActivity()).makeVibration();
         if (getArguments().getBoolean("changeKey")) changeKey();
         else {
             if (getArguments().getString("name").equals("all"))

@@ -9,6 +9,7 @@
     android:background="@xml/background"
     android:minWidth="360sp"
     android:minHeight="450sp"
+    android:padding="6sp"
     android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -36,18 +37,19 @@
 
         android:layout_width="0sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32sp"
-        android:layout_marginEnd="32sp"
+        android:layout_marginLeft="12sp"
+        android:layout_marginRight="12sp"
         android:fontFamily="@font/share_tech_mono"
+        android:padding="6sp"
         android:text=""
         android:textAlignment="center"
         android:textColor="@color/green"
-        android:textSize="24sp"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintVertical_bias="0.060000002" />
 
     <ImageView
         android:id="@+id/cancelSettings"
@@ -102,8 +104,14 @@
         android:id="@+id/info"
         android:layout_width="320sp"
         android:layout_height="wrap_content"
-        android:layout_margin="18sp"
+        android:layout_marginLeft="12sp"
+        android:layout_marginRight="12sp"
         android:fontFamily="@font/share_tech_mono"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingLeft="16sp"
+        android:paddingTop="12sp"
+        android:paddingRight="16sp"
+        android:paddingBottom="12sp"
         android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="18sp"
@@ -111,16 +119,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.78" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/deletingSwitch"
         android:layout_width="320sp"
         android:layout_height="48sp"
-
+        android:layout_margin="6sp"
         android:background="@xml/round_button"
         android:fontFamily="@font/share_tech_mono"
-
         android:paddingLeft="16sp"
         android:paddingTop="12sp"
         android:paddingRight="16sp"
@@ -140,10 +147,9 @@
         android:id="@+id/showPasswordSwitch"
         android:layout_width="320sp"
         android:layout_height="48sp"
-
+        android:layout_margin="6sp"
         android:background="@xml/round_button"
         android:fontFamily="@font/share_tech_mono"
-
         android:paddingLeft="16sp"
         android:paddingTop="12sp"
         android:paddingRight="16sp"
@@ -163,10 +169,9 @@
         android:id="@+id/encryptingSwitch"
         android:layout_width="320sp"
         android:layout_height="48sp"
-
+        android:layout_margin="6sp"
         android:background="@xml/round_button"
         android:fontFamily="@font/share_tech_mono"
-
         android:paddingLeft="16sp"
         android:paddingTop="12sp"
         android:paddingRight="16sp"
@@ -186,8 +191,11 @@
         android:id="@+id/passwordLength"
         android:layout_width="154sp"
         android:layout_height="48sp"
+        android:layout_marginTop="6sp"
+        android:layout_marginBottom="6sp"
         android:background="@xml/round_button"
         android:fontFamily="@font/share_tech_mono"
+        android:gravity="center|center_horizontal|center_vertical"
         android:paddingLeft="16sp"
         android:paddingTop="12sp"
         android:paddingRight="16sp"
@@ -207,9 +215,12 @@
         android:id="@+id/passwordLengthEdit"
         android:layout_width="154sp"
         android:layout_height="48sp"
+        android:layout_marginTop="6sp"
+        android:layout_marginBottom="6sp"
         android:background="@xml/round_button"
         android:ems="10"
         android:fontFamily="@font/share_tech_mono"
+        android:gravity="center_horizontal|center_vertical"
         android:hint="@string/def_16"
         android:inputType="number"
         android:maxLength="3"

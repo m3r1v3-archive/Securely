@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark"
-    android:scrollbarSize="2sp"
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,7 @@
         android:layout_marginBottom="6sp"
         android:background="@xml/background"
         android:padding="12sp"
-        android:scrollbarSize="1sp"
+        android:scrollbarSize="2sp"
         android:scrollbarThumbVertical="@xml/scrollbar"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bar_fragment"

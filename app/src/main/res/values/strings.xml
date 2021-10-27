@@ -19,7 +19,7 @@
     <!--  ConfirmFragment  -->
     <string name="change_key">Change the key?</string>
     <string name="delete_all_passwords">Delete all passwords?</string>
-    <string name="delete_a_password">Delete a password?</string>
+    <string name="delete_a_password">Delete password?</string>
 
     <!--  PasswordFragment  -->
     <string name="password_name">Password Name</string>
