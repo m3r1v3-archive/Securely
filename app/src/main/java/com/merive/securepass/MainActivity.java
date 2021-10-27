@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ import com.merive.securepass.adapter.PasswordAdapter;
 import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
 import com.merive.securepass.elements.TypingTextView;
+import com.merive.securepass.fragments.BarFragment;
 import com.merive.securepass.fragments.ConfirmFragment;
 import com.merive.securepass.fragments.PasswordFragment;
 import com.merive.securepass.fragments.SettingsFragment;
@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     TypingTextView title, empty;
     RecyclerView passwords;
-    ImageView lock;
 
     PasswordAdapter adapter;
     PasswordDB db;
@@ -66,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         initLayoutVariables();
 
+        setBarFragment();
+
         typingAnimation(title, getResources().getString(R.string.app_name));
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
@@ -76,11 +77,6 @@ public class MainActivity extends AppCompatActivity {
         checkKeyStatus();
         getSettingsData();
         checkVersion();
-
-        lock.setOnLongClickListener(v -> {
-            longClickLock();
-            return true;
-        });
     }
 
     @Override
@@ -100,14 +96,13 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.mainTitle);
         empty = findViewById(R.id.empty);
         passwords = findViewById(R.id.password_recycle_view);
-        lock = findViewById(R.id.lock);
     }
 
     /* ************* */
     /* Click methods */
     /* ************* */
 
-    public void clickAdd(View view) {
+    public void clickAdd() {
         /* Click Add Button */
         makeVibration();
         FragmentManager fm = getSupportFragmentManager();
@@ -133,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         passwordFragment.show(fm, "password_fragment");
     }
 
-    public void clickLock(View view) {
+    public void clickLock() {
         /* Click Lock Button */
         makeVibration();
         startActivity(new Intent(this, CheckKeyActivity.class));
@@ -149,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         confirmFragment.show(fm, "confirm_fragment");
     }
 
-    public void clickSettings(View view) {
+    public void clickSettings() {
         /* Click Settings Button */
         makeVibration();
         FragmentManager fm = getSupportFragmentManager();
@@ -337,6 +332,14 @@ public class MainActivity extends AppCompatActivity {
                         : getData(data, "edited_password"),
                 getData(data, "edited_description")
         );
+    }
+
+    public void setBarFragment() {
+        /* Set Bar Fragment */
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.bar_fragment, BarFragment.class, null)
+                .commit();
     }
 
     /* ************** */
