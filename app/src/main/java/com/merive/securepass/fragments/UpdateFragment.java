@@ -1,18 +1,17 @@
 package com.merive.securepass.fragments;
 
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,8 +20,6 @@ import androidx.fragment.app.DialogFragment;
 import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
-
-import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
 public class UpdateFragment extends DialogFragment {
 

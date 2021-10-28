@@ -1,25 +1,27 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toastLayout"
-    android:layout_width="376sp"
+    android:layout_width="match_parent"
     android:layout_height="56sp"
     android:layout_gravity="center"
-    android:layout_margin="16sp"
-    android:background="@xml/round_button"
+    android:background="@xml/background_light"
     android:gravity="center"
-    android:minWidth="376sp"
-    android:minHeight="60sp"
+    android:layout_marginRight="6sp"
+    android:layout_marginLeft="6sp"
     android:orientation="horizontal">
 
-    <TextView
+    <com.merive.securepass.elements.TypingTextView
         android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12sp"
-        android:layout_marginRight="12sp"
         android:fontFamily="@font/share_tech_mono"
         android:padding="6sp"
         android:textAlignment="center"
         android:textColor="@color/green"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

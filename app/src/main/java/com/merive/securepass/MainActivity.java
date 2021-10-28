@@ -12,14 +12,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -32,6 +29,7 @@ import com.merive.securepass.fragments.BarFragment;
 import com.merive.securepass.fragments.ConfirmFragment;
 import com.merive.securepass.fragments.PasswordFragment;
 import com.merive.securepass.fragments.SettingsFragment;
+import com.merive.securepass.fragments.ToastFragment;
 import com.merive.securepass.fragments.UpdateFragment;
 import com.merive.securepass.utils.Crypt;
 import com.merive.securepass.utils.VibrationManager;
@@ -163,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText(label, value);
         clipboard.setPrimaryClip(clip);
 
-        makeToast(label + " Password has been copied");
+        makeToast(label + " Password was copied");
     }
 
     /* ************* */
@@ -338,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
         /* Set Bar Fragment */
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.bar_fragment, BarFragment.class, null)
                 .commit();
     }
@@ -463,17 +462,25 @@ public class MainActivity extends AppCompatActivity {
     /* Other methods */
     /* ************* */
 
+    public void setBar() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        transaction.setReorderingAllowed(true);
+
+        transaction.replace(R.id.bar_fragment, BarFragment.class, null);
+        transaction.commit();
+    }
+
     public void makeToast(String message) {
         /* Make custom toast */
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast, findViewById(R.id.toastLayout));
-        TextView text = layout.findViewById(R.id.message);
-        text.setText(message);
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 63);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-        toast.show();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        transaction.setReorderingAllowed(true);
+
+        transaction.replace(R.id.bar_fragment, ToastFragment.newInstance(message), null);
+        transaction.commit();
     }
 
     public void makeVibration() {
