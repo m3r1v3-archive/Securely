@@ -6,15 +6,26 @@ import java.util.Random;
 
 public class Crypt {
 
-    final String alf = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
-    final String shuffledAlf;
+    final String pack = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
+    final String shuffledPack;
     final int seed;
 
+    /**
+     * Crypt Constructor.
+     *
+     * @param seed Crypter seed (Equals your key)
+     */
     public Crypt(int seed) {
-        shuffledAlf = shuffle(alf);
+        shuffledPack = shuffle(pack);
         this.seed = seed;
     }
 
+    /**
+     * This method is shuffling symbol pack.
+     *
+     * @param string Symbol pack.
+     * @return Shuffled symbol pack.
+     */
     public String shuffle(String string) {
         Random random = new Random(seed);
         List<Character> characters = new ArrayList<>();
@@ -27,26 +38,45 @@ public class Crypt {
         return output.toString();
     }
 
+    /**
+     * This method is encrypt text using generated symbol pack.
+     *
+     * @param text Text what will be encrypting.
+     * @return Encrypted text.
+     */
     public String encrypt(String text) {
         StringBuilder encryptedText = new StringBuilder();
-        String[] shuffledAlf = shuffle(alf).split("");
+        String[] shuffledAlf = shuffle(pack).split("");
         for (String s : text.split("")) encryptedText.append(findIndex(shuffledAlf, s)).append(".");
         return encryptedText.toString();
     }
 
+    /**
+     * This method is decrypt text using generated symbol pack.
+     *
+     * @param text Text what will be decrypting.
+     * @return Decrypted text.
+     */
     public String decrypt(String text) {
         StringBuilder decryptedText = new StringBuilder();
-        String[] shuffledAlf = shuffle(alf).split("");
+        String[] shuffledAlf = shuffle(pack).split("");
         for (String s : text.split("\\.")) decryptedText.append(shuffledAlf[Integer.parseInt(s)]);
         return decryptedText.toString();
     }
 
-    public int findIndex(String[] arr, String c) {
+    /**
+     * This method is finding symbol index in array.
+     *
+     * @param arr    Array with symbols.
+     * @param symbol Finding symbol.
+     * @return Symbol index.
+     */
+    public int findIndex(String[] arr, String symbol) {
         if (arr == null) return -1;
         int len = arr.length;
         int i = 0;
         while (i < len) {
-            if (arr[i].equals(c)) return i;
+            if (arr[i].equals(symbol)) return i;
             else i = i + 1;
         }
         return -1;
