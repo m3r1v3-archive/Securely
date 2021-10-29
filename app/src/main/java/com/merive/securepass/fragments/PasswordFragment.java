@@ -31,11 +31,9 @@ public class PasswordFragment extends DialogFragment {
 
 
     public PasswordFragment() {
-        /* Empty constructor (Needs) */
     }
 
     public static PasswordFragment newInstance(int length, boolean show) {
-        /* newInstance method for add password */
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
@@ -47,7 +45,6 @@ public class PasswordFragment extends DialogFragment {
 
     public static PasswordFragment newInstance
             (String name, String login, String password, String description, int length, boolean show) {
-        /* newInstance method for edit password */
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
 
@@ -62,11 +59,6 @@ public class PasswordFragment extends DialogFragment {
         frag.setArguments(args);
         return frag;
     }
-
-
-    /* **************** */
-    /* Override methods */
-    /* **************** */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,12 +88,7 @@ public class PasswordFragment extends DialogFragment {
         });
     }
 
-    /* ************ */
-    /* Init methods */
-    /* ************ */
-
     public void initVariables(View view) {
-        /* Init main variables */
         title = view.findViewById(R.id.password_title);
         nameEdit = view.findViewById(R.id.name_edit);
         loginEdit = view.findViewById(R.id.login_edit);
@@ -113,34 +100,26 @@ public class PasswordFragment extends DialogFragment {
         save = view.findViewById(R.id.password_save_button);
     }
 
-    /* *********** */
-    /* Set methods */
-    /* *********** */
-
     public void setTitle(boolean edit) {
-        /* Set Title Value */
         String titleText = edit ? "Edit" : "Add";
         typingAnimation(title, titleText + " password");
     }
 
-    public void setEditsData() {
-        /* Set data to EditTexts */
-        nameEdit.setText(getArguments().getString("name"));
-        loginEdit.setText(getArguments().getString("login"));
-        passwordEdit.setText(getArguments().getString("password"));
-        descriptionEdit.setText(getArguments().getString("description"));
-    }
-
     public void setDeleteVisibility() {
-        /* Set Delete Visibility */
         if (edit) {
             delete.setVisibility(View.VISIBLE);
             setEditsData();
         }
     }
 
+    public void setEditsData() {
+        nameEdit.setText(getArguments().getString("name"));
+        loginEdit.setText(getArguments().getString("login"));
+        passwordEdit.setText(getArguments().getString("password"));
+        descriptionEdit.setText(getArguments().getString("description"));
+    }
+
     public void setEdit() {
-        /* Set edit value from arguments */
         edit = getArguments().getBoolean("edit", false);
     }
 
@@ -149,19 +128,13 @@ public class PasswordFragment extends DialogFragment {
         if (show) passwordEdit.setTransformationMethod(null);
     }
 
-    /* ************* */
-    /* Click methods */
-    /* ************* */
-
     public void clickCancel(View view) {
-        /* Click Cancel Button */
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         dismiss();
     }
 
     public void clickSave(View view) {
-        /* Click Save Button */
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         if (edit) saveEditPassword();
@@ -170,7 +143,6 @@ public class PasswordFragment extends DialogFragment {
     }
 
     public void clickDeletePassword(View view) {
-        /* Click DeletePassword Button */
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
@@ -178,13 +150,11 @@ public class PasswordFragment extends DialogFragment {
     }
 
     public void clickGeneratePassword() {
-        /* Generate password and set to passwordEdit */
         ((MainActivity) getActivity()).makeVibration();
         passwordEdit.setText(new PasswordGenerator(getArguments().getInt("length", 16)).generatePassword());
     }
 
     public void clickPasswordEdit() {
-        /* View password 5 seconds and after hide */
         ((MainActivity) getActivity()).makeVibration();
         if (!show) {
             show = true;
@@ -197,31 +167,20 @@ public class PasswordFragment extends DialogFragment {
         }
     }
 
-    /* ************ */
-    /* Save methods */
-    /* ************ */
-
     public void saveNewPassword() {
-        /* Save New Password Operation */
         if (checkEditsOnEmpty()) {
             if (checkEditsOnEmpty())
                 ((MainActivity) getActivity()).addNewPassword(putNewDataInBundle());
-        }
+        } else ((MainActivity) getActivity()).makeToast("You have empty fields");
     }
 
     public void saveEditPassword() {
-        /* Save Edited Password Operation */
         if (checkEditsOnEmpty())
             ((MainActivity) getActivity()).editPassword(putEditedDataInBundle());
-        else ((MainActivity) getActivity()).makeToast("You have empty edits.");
+        else ((MainActivity) getActivity()).makeToast("You have empty fields");
     }
 
-    /* *************** */
-    /* Another methods */
-    /* *************** */
-
     public Bundle putNewDataInBundle() {
-        /* Put new data from edits to bundle */
         Bundle data = new Bundle();
 
         data.putString("name", nameEdit.getText().toString());
@@ -233,7 +192,6 @@ public class PasswordFragment extends DialogFragment {
     }
 
     public Bundle putEditedDataInBundle() {
-        /* Put edited data from edits to bundle */
         Bundle data = new Bundle();
 
         data.putString("name_before", getArguments().getString("name"));
@@ -246,7 +204,6 @@ public class PasswordFragment extends DialogFragment {
     }
 
     public boolean checkEditsOnEmpty() {
-        /* Check Main Edits on Empty */
         return !nameEdit.getText().toString().isEmpty() &&
                 !loginEdit.getText().toString().isEmpty() &&
                 !passwordEdit.getText().toString().isEmpty();

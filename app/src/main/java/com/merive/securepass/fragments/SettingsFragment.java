@@ -32,12 +32,10 @@ public class SettingsFragment extends DialogFragment {
     ImageView cancel, deleteAll, save;
 
     public SettingsFragment() {
-        /* Empty constructor (Needs) */
     }
 
     public static SettingsFragment newInstance(int length, boolean show,
                                                boolean deleting, boolean encrypting) {
-        /* newInstance method */
         SettingsFragment frag = new SettingsFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
@@ -47,10 +45,6 @@ public class SettingsFragment extends DialogFragment {
         frag.setArguments(args);
         return frag;
     }
-
-    /* **************** */
-    /* Override methods */
-    /* **************** */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,12 +70,7 @@ public class SettingsFragment extends DialogFragment {
         save.setOnClickListener(this::clickSave);
     }
 
-    /* ************ */
-    /* Init methods */
-    /* ************ */
-
     public void initVariables(View view) {
-        /* Init main variables */
         title = view.findViewById(R.id.settings_title);
         info = view.findViewById(R.id.info_text);
         passwordLengthEdit = view.findViewById(R.id.password_length_edit);
@@ -93,10 +82,6 @@ public class SettingsFragment extends DialogFragment {
         save = view.findViewById(R.id.save_settings_button);
     }
 
-    /* *********** */
-    /* Set methods */
-    /* *********** */
-
     public void setEdits() {
         passwordLengthEdit.setText(String.valueOf(getArguments().getInt("length")));
     }
@@ -107,19 +92,13 @@ public class SettingsFragment extends DialogFragment {
         encryptingSwitch.setChecked(getArguments().getBoolean("encrypting"));
     }
 
-    /* ************* */
-    /* Click methods */
-    /* ************* */
-
     public void clickCancel(View view) {
-        /* Click Cancel Button */
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         dismiss();
     }
 
     public void clickDeleteAllPasswords(View view) {
-        /* Click DeleteAllPasswords Button */
         ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
@@ -127,7 +106,6 @@ public class SettingsFragment extends DialogFragment {
     }
 
     public void clickSave(View view) {
-        /* Click Save Button */
         ((MainActivity) getActivity()).makeVibration();
         int length = passwordLengthEdit.getText().toString().isEmpty() ?
                 16 : Integer.parseInt(passwordLengthEdit.getText().toString());

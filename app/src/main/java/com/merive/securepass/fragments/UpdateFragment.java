@@ -27,11 +27,9 @@ public class UpdateFragment extends DialogFragment {
     ImageView download;
 
     public UpdateFragment() {
-        /* Empty constructor (Needs) */
     }
 
     public static UpdateFragment newInstance(String oldVersion, String newVersion) {
-        /* newInstance method */
         UpdateFragment frag = new UpdateFragment();
         Bundle args = new Bundle();
         args.putString("oldVersion", oldVersion);
@@ -40,17 +38,12 @@ public class UpdateFragment extends DialogFragment {
         return frag;
     }
 
-    /* **************** */
-    /* Override methods */
-    /* **************** */
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return inflater.inflate(R.layout.update_fragment, container);
     }
-
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -65,39 +58,25 @@ public class UpdateFragment extends DialogFragment {
         download.setOnClickListener(this::clickDownload);
     }
 
-    /* ************ */
-    /* Init methods */
-    /* ************ */
-
     public void initVariables(View view) {
-        /* Init main variables */
         title = view.findViewById(R.id.update_title);
         version = view.findViewById(R.id.version_text);
         download = view.findViewById(R.id.download_update_button);
     }
 
-    /* ************* */
-    /* Click methods */
-    /* ************* */
 
     public void clickDownload(View view) {
-        /* Click Download Button */
         dismiss();
         ((MainActivity) getActivity()).makeVibration();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website)));
         startActivity(browserIntent);
     }
 
-    /* *************** */
-    /* Another methods */
-    /* *************** */
-
     public void setTitle() {
         typingAnimation(title, getResources().getString(R.string.new_version_released));
     }
 
     public void setVersion() {
-        /* Set Version Text */
         typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
                 getArguments().getString("newVersion")));
     }

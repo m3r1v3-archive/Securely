@@ -9,5 +9,6 @@ import javax.crypto.NoSuchPaddingException;
 
 public interface ClickListener {
 
-    void onItemClick(String name) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException;
+    void onItemClick(String name) throws IllegalBlockSizeException, InvalidKeyException,
+            BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException;
 }

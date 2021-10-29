@@ -17,7 +17,6 @@ public class PasswordGenerator {
     final String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
 
     public PasswordGenerator(int length) {
-        /* Set count of symbols */
         if (length % 2 != 0) length--;
         lowerLength = (int) Math.round(0.4 * length);
         upperLength = (int) Math.round(0.4 * length);
@@ -26,12 +25,10 @@ public class PasswordGenerator {
     }
 
     public String generatePassword() {
-        /* Generate shuffled password */
         return shuffle(generateAlfsString());
     }
 
     public String generateAlfString(String[] alf, int length) {
-        /* Generate alphabet */
         StringBuilder string = new StringBuilder();
         while (string.length() != length)
             string.append(alf[new Random().nextInt(alf.length)]);
@@ -40,7 +37,6 @@ public class PasswordGenerator {
     }
 
     public String generateAlfsString() {
-        /* Generate full alphabet string  */
         return generateAlfString(lowerAlf, lowerLength)
                 + generateAlfString(upperAlf, upperLength)
                 + generateAlfString(numberAlf, numberLength)
@@ -48,7 +44,6 @@ public class PasswordGenerator {
     }
 
     public String shuffle(String string) {
-        /* Shuffle symbols in string */
         List<Character> characters = new ArrayList<>();
         for (char c : string.toCharArray()) characters.add(c);
         StringBuilder output = new StringBuilder(string.length());

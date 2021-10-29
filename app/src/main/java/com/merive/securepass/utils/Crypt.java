@@ -11,13 +11,11 @@ public class Crypt {
     final int seed;
 
     public Crypt(int seed) {
-        /* Crypt constructor */
         shuffledAlf = shuffle(alf);
         this.seed = seed;
     }
 
     public String shuffle(String string) {
-        /* Shuffle symbols in string */
         Random random = new Random(seed);
         List<Character> characters = new ArrayList<>();
         for (char c : string.toCharArray()) characters.add(c);
@@ -30,7 +28,6 @@ public class Crypt {
     }
 
     public String encrypt(String text) {
-        /* Encrypt string */
         StringBuilder encryptedText = new StringBuilder();
         String[] shuffledAlf = shuffle(alf).split("");
         for (String s : text.split("")) encryptedText.append(findIndex(shuffledAlf, s)).append(".");
@@ -38,7 +35,6 @@ public class Crypt {
     }
 
     public String decrypt(String text) {
-        /* Decrypt string */
         StringBuilder decryptedText = new StringBuilder();
         String[] shuffledAlf = shuffle(alf).split("");
         for (String s : text.split("\\.")) decryptedText.append(shuffledAlf[Integer.parseInt(s)]);
@@ -46,7 +42,6 @@ public class Crypt {
     }
 
     public int findIndex(String[] arr, String c) {
-        /* Find index of symbol */
         if (arr == null) return -1;
         int len = arr.length;
         int i = 0;

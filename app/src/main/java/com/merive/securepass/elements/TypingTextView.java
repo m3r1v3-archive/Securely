@@ -23,12 +23,18 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
     public TypingTextView(Context context) {
         super(context);
     }
+
     public TypingTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    public static void typingAnimation(TypingTextView view, String text) {
+        view.setText("");
+        view.setCharacterDelay(125);
+        view.animateText(text);
+    }
+
     public void animateText(CharSequence text) {
-        /* Animation for text */
         mText = text;
         mIndex = 0;
 
@@ -39,12 +45,5 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
 
     public void setCharacterDelay(long millis) {
         mDelay = millis;
-    }
-
-    public static void typingAnimation(TypingTextView view, String text) {
-        /* Typing animation for text elements */
-        view.setText("");
-        view.setCharacterDelay(125);
-        view.animateText(text);
     }
 }

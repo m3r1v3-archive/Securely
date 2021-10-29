@@ -26,11 +26,9 @@ public class ConfirmFragment extends DialogFragment {
     ImageView cancel, confirm;
 
     public ConfirmFragment() {
-        /* Empty constructor (Needs) */
     }
 
     public static ConfirmFragment newInstance(String name) {
-        /* newInstance method for confirm deleting password by name */
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
         args.putString("name", name);
@@ -39,7 +37,6 @@ public class ConfirmFragment extends DialogFragment {
     }
 
     public static ConfirmFragment newInstance() {
-        /* newInstance method for confirm deleting all passwords */
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
         args.putString("name", "all");
@@ -48,17 +45,12 @@ public class ConfirmFragment extends DialogFragment {
     }
 
     public static ConfirmFragment newInstance(boolean changeKey) {
-        /* newInstance method for confirm changing key */
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
         args.putBoolean("changeKey", changeKey);
         frag.setArguments(args);
         return frag;
     }
-
-    /* **************** */
-    /* Override methods */
-    /* **************** */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,30 +73,19 @@ public class ConfirmFragment extends DialogFragment {
 
     }
 
-    /* ************ */
-    /* Init methods */
-    /* ************ */
-
     public void initVariables(View view) {
-        /* Init main variables */
         title = view.findViewById(R.id.confirm_title);
         cancel = view.findViewById(R.id.confirm_cancel_button);
         confirm = view.findViewById(R.id.confirm_okay_button);
     }
 
-    /* ************* */
-    /* Click methods */
-    /* ************* */
-
     public void clickCancel(View view) {
-        /* Click Cancel Button */
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         dismiss();
     }
 
     public void clickConfirm(View view) {
-        /* Click Confirm Button */
         ((MainActivity) getActivity()).makeVibration();
         if (getArguments().getBoolean("changeKey")) changeKey();
         else {
@@ -115,10 +96,6 @@ public class ConfirmFragment extends DialogFragment {
         } dismiss();
     }
 
-    /* *************** */
-    /* Another methods */
-    /* *************** */
-
     public void checkKeyChange() {
         if (getArguments().getBoolean("changeKey", false))
             typingAnimation(title, getResources().getString(R.string.change_key));
@@ -128,7 +105,6 @@ public class ConfirmFragment extends DialogFragment {
     }
 
     public void changeKey() {
-        /* Start change key */
         ((MainActivity) getActivity()).updateEncrypting(false);
         startActivity(new Intent(getActivity(), CheckKeyActivity.class)
                 .putExtra("changeKey", true));

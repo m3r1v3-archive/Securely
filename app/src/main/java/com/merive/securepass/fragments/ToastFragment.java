@@ -20,7 +20,6 @@ public class ToastFragment extends Fragment {
     TypingTextView text;
 
     public static ToastFragment newInstance(String message) {
-        /* newInstance method */
         ToastFragment frag = new ToastFragment();
         Bundle args = new Bundle();
         args.putString("message", message);
@@ -40,12 +39,11 @@ public class ToastFragment extends Fragment {
 
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
-            ((MainActivity) getActivity()).setBar();
+            ((MainActivity) getActivity()).openBarFragment();
         }, 5750);
     }
 
     public void initVariables(View view) {
-        /* Init main variables */
         text = view.findViewById(R.id.toast_text);
     }
 
