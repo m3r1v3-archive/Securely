@@ -2,6 +2,7 @@ package com.merive.securepass.elements;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.AttributeSet;
 
 public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView {
 
@@ -27,6 +28,18 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
      */
     public TypingTextView(Context context) {
         super(context);
+    }
+
+    /**
+     * TypingTextView Constructor
+     *
+     * @param context Using by AppCompatTextView.
+     * @param attrs   Using by AppCompatTextView.
+     * @see Context
+     * @see AttributeSet
+     */
+    public TypingTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 
     /**
