@@ -8,7 +8,7 @@
     <!--  CheckPasswordActivity  -->
     <string name="welcome_to_securepass">Welcome to SecurePass</string>
     <string name="enter_the_key_in_the_field">Enter the key in the field.</string>
-    <string name="create_a_new_name">Create a new key\nTip: Use more than 4 numbers.</string>
+    <string name="create_a_new_key">Create a new key\nTip: Use more than 4 numbers.</string>
     <string name="all_passwords_was_deleted">All Passwords was deleted.\nHave a nice day xD</string>
     <string name="invalid_key">Invalid key. Try again.</string>
     <string name="enter_old_key">Enter old key</string>

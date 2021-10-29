@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method set BarFragment to bar_fragment element in layout.
+     *
+     * @see BarFragment
      */
     public void setBarFragment() {
         getSupportFragmentManager().beginTransaction()
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method is replacing bar_fragment element to BarFragment.
+     *
+     * @see BarFragment
      */
     public void openBarFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -139,9 +143,11 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method is setting Settings values to variables.
+     *
+     * @see SettingsFragment
      */
     public void getSettingsData() {
-        deleting = getIntent().getBooleanExtra("deleting", false);
+        deleting = getIntent().getBooleanExtra("delete", false);
         key = getIntent().getIntExtra("key", 0);
         encrypting = sharedPreferences.getBoolean("encrypting", false);
     }
@@ -513,10 +519,10 @@ public class MainActivity extends AppCompatActivity {
      * @see SharedPreferences
      */
     public void updateDeleting(boolean deleting) {
-        if (deleting != getIntent().getBooleanExtra("deleting", false)) {
+        if (deleting != getIntent().getBooleanExtra("delete", false)) {
             startActivity(new Intent(this, CheckKeyActivity.class)
                     .putExtra("status", true)
-                    .putExtra("deleting", deleting));
+                    .putExtra("delete", deleting));
             this.deleting = deleting;
         }
     }

@@ -77,7 +77,7 @@
         android:layout_height="56sp"
         android:background="@xml/background_light"
         android:contentDescription="@string/todo"
-        android:onClick="checkKey"
+        android:onClick="clickCheckKey"
         android:padding="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
