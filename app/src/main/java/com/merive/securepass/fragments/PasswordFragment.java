@@ -2,12 +2,10 @@ package com.merive.securepass.fragments;
 
 import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,15 +102,15 @@ public class PasswordFragment extends DialogFragment {
 
     public void initVariables(View view) {
         /* Init main variables */
-        title = view.findViewById(R.id.viewTitle);
-        nameEdit = view.findViewById(R.id.nameEdit);
-        loginEdit = view.findViewById(R.id.loginEdit);
-        passwordEdit = view.findViewById(R.id.passwordEdit);
-        descriptionEdit = view.findViewById(R.id.descriptionEdit);
-        delete = view.findViewById(R.id.deletePassword);
-        cancel = view.findViewById(R.id.cancel);
-        generate = view.findViewById(R.id.generate);
-        save = view.findViewById(R.id.save);
+        title = view.findViewById(R.id.password_title);
+        nameEdit = view.findViewById(R.id.name_edit);
+        loginEdit = view.findViewById(R.id.login_edit);
+        passwordEdit = view.findViewById(R.id.password_edit);
+        descriptionEdit = view.findViewById(R.id.description_edit);
+        delete = view.findViewById(R.id.password_delete_button);
+        cancel = view.findViewById(R.id.password_cancel_button);
+        generate = view.findViewById(R.id.generate_password_button);
+        save = view.findViewById(R.id.password_save_button);
     }
 
     /* *********** */

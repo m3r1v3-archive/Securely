@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="56sp"
     android:layout_gravity="center"
+    android:layout_marginLeft="6sp"
+    android:layout_marginRight="6sp"
     android:background="@xml/background_light"
     android:gravity="center"
-    android:layout_marginRight="6sp"
-    android:layout_marginLeft="6sp"
     android:orientation="horizontal">
 
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/message"
+        android:id="@+id/toast_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"

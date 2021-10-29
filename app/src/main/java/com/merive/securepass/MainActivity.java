@@ -91,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void initLayoutVariables() {
         /* Init layout variables */
-        title = findViewById(R.id.mainTitle);
-        empty = findViewById(R.id.empty);
-        passwords = findViewById(R.id.password_recycle_view);
+        title = findViewById(R.id.main_title);
+        empty = findViewById(R.id.main_empty_message);
+        passwords = findViewById(R.id.password_recycler_view);
     }
 
     /* ************* */

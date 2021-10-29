@@ -46,7 +46,7 @@ public class ToastFragment extends Fragment {
 
     public void initVariables(View view) {
         /* Init main variables */
-        text = view.findViewById(R.id.message);
+        text = view.findViewById(R.id.toast_text);
     }
 
     public void setText() {

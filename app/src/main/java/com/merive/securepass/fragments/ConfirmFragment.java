@@ -1,11 +1,9 @@
 package com.merive.securepass.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,9 +87,9 @@ public class ConfirmFragment extends DialogFragment {
 
     public void initVariables(View view) {
         /* Init main variables */
-        title = view.findViewById(R.id.confirmTitle);
-        cancel = view.findViewById(R.id.cancelConfirm);
-        confirm = view.findViewById(R.id.okayConfirm);
+        title = view.findViewById(R.id.confirm_title);
+        cancel = view.findViewById(R.id.confirm_cancel_button);
+        confirm = view.findViewById(R.id.confirm_okay_button);
     }
 
     /* ************* */

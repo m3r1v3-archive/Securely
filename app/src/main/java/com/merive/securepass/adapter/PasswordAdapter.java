@@ -61,7 +61,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
             rowListenerRef = new WeakReference<>(rowListener);
 
             name = itemView.findViewById(R.id.password_name);
-            copy = itemView.findViewById(R.id.copy_password);
+            copy = itemView.findViewById(R.id.copy_password_button);
 
 
             itemView.setOnClickListener(this);

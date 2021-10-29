@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -74,9 +73,9 @@ public class CheckKeyActivity extends AppCompatActivity {
 
     public void initLayoutVariables() {
         /* Init layout variables */
-        title = findViewById(R.id.title_check);
-        key = findViewById(R.id.key);
-        key_hint = findViewById(R.id.key_hint);
+        title = findViewById(R.id.check_key_title);
+        key = findViewById(R.id.key_edit);
+        key_hint = findViewById(R.id.check_key_hint);
     }
 
     /* ************* */

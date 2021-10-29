@@ -1,5 +1,5 @@
 <resources>
-    <!--  Main Strings  -->
+    <!--  Basic Strings  -->
     <string name="app_name">SecurePass</string>
 
     <!--  MainActivity  -->
@@ -17,7 +17,7 @@
     <string name="enter_the_key">Enter the key</string>
 
     <!--  ConfirmFragment  -->
-    <string name="change_key">Change the key?</string>
+    <string name="change_key">Change key?</string>
     <string name="delete_all_passwords">Delete all passwords?</string>
     <string name="delete_a_password">Delete password?</string>
 

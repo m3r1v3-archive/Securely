@@ -71,9 +71,9 @@ public class UpdateFragment extends DialogFragment {
 
     public void initVariables(View view) {
         /* Init main variables */
-        title = view.findViewById(R.id.updateTitle);
-        version = view.findViewById(R.id.version);
-        download = view.findViewById(R.id.download);
+        title = view.findViewById(R.id.update_title);
+        version = view.findViewById(R.id.version_text);
+        download = view.findViewById(R.id.download_update_button);
     }
 
     /* ************* */

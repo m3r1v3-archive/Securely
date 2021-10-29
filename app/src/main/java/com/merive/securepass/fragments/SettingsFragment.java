@@ -2,11 +2,9 @@ package com.merive.securepass.fragments;
 
 import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,15 +82,15 @@ public class SettingsFragment extends DialogFragment {
 
     public void initVariables(View view) {
         /* Init main variables */
-        title = view.findViewById(R.id.settingsTitle);
-        info = view.findViewById(R.id.info);
-        passwordLengthEdit = view.findViewById(R.id.passwordLengthEdit);
-        showPasswordSwitch = view.findViewById(R.id.showPasswordSwitch);
-        deletingSwitch = view.findViewById(R.id.deletingSwitch);
-        encryptingSwitch = view.findViewById(R.id.encryptingSwitch);
-        cancel = view.findViewById(R.id.cancelSettings);
-        deleteAll = view.findViewById(R.id.deletePasswords);
-        save = view.findViewById(R.id.saveSettings);
+        title = view.findViewById(R.id.settings_title);
+        info = view.findViewById(R.id.info_text);
+        passwordLengthEdit = view.findViewById(R.id.password_length_edit);
+        showPasswordSwitch = view.findViewById(R.id.show_password_switch);
+        deletingSwitch = view.findViewById(R.id.delete_password_switch);
+        encryptingSwitch = view.findViewById(R.id.encrypt_data_switch);
+        cancel = view.findViewById(R.id.settings_cancel_button);
+        deleteAll = view.findViewById(R.id.delete_passwords_button);
+        save = view.findViewById(R.id.save_settings_button);
     }
 
     /* *********** */

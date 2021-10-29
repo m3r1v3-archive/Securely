@@ -8,7 +8,7 @@
     tools:context=".CheckKeyActivity">
 
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/title_check"
+        android:id="@+id/check_key_title"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12sp"
@@ -26,7 +26,7 @@
         app:layout_constraintVertical_bias="0.06" />
 
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/key_hint"
+        android:id="@+id/check_key_hint"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12sp"
@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0.18" />
 
     <EditText
-        android:id="@+id/key"
+        android:id="@+id/key_edit"
         android:layout_width="235sp"
         android:layout_height="48sp"
         android:layout_marginStart="24sp"
@@ -61,6 +61,7 @@
         android:paddingTop="12sp"
         android:paddingRight="16sp"
         android:paddingBottom="12sp"
+        android:singleLine="true"
         android:textColor="@color/green"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +72,7 @@
         tools:ignore="LabelFor" />
 
     <ImageView
-        android:id="@+id/check_button"
+        android:id="@+id/check_key_button"
         android:layout_width="56sp"
         android:layout_height="56sp"
         android:background="@xml/background_light"
@@ -85,4 +86,5 @@
         app:layout_constraintVertical_bias="0.85"
         app:srcCompat="@drawable/check"
         app:tint="@color/green" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
