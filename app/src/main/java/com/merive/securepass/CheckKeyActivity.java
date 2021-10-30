@@ -2,14 +2,12 @@ package com.merive.securepass;
 
 import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,8 +27,13 @@ public class CheckKeyActivity extends AppCompatActivity {
     TypingTextView title, key_hint;
     EditText key;
     int errors;
-    boolean deletingAfterErrors, pressed, changeKey;
+    boolean deleteAfterErrors, pressed, changeKey;
 
+    /**
+     * This method is the start point at the CheckKeyActivity.
+     *
+     * @param savedInstanceState Used by super.onCreate method.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,25 +45,79 @@ public class CheckKeyActivity extends AppCompatActivity {
 
         errors = sharedPreferences.getInt("errors", 15);
 
-        deletingAfterErrors = sharedPreferences.getBoolean("delete", false);
+        deleteAfterErrors = sharedPreferences.getBoolean("delete", false);
         changeKey = false;
         pressed = false;
 
         initLayoutVariables();
+
         typingAnimation(title, getResources().getString(R.string.welcome_to_securepass));
         typingAnimation(key_hint, getResources().getString(R.string.enter_the_key_in_the_field));
 
+        checkKeyOnAbsence();
+        checkDeleteAfterErrorsEdit();
+        checkKeyEdit();
 
-        checkKeyOnDefault();
-        checkEditOfDeletingAfterErrors();
-        checkOnChangeKey();
+        setKeyOnEditorListener();
+    }
 
-        setFocus();
+    /**
+     * This method is assigns main layout variables.
+     */
+    private void initLayoutVariables() {
+        title = findViewById(R.id.check_key_title);
+        key = findViewById(R.id.key_edit);
+        key_hint = findViewById(R.id.check_key_hint);
+    }
 
+    /**
+     * This method is checking key in sharedPreference on absence.
+     * If key's hash in memory is -1, will set special hint.
+     *
+     * @see SharedPreferences
+     */
+    private void checkKeyOnAbsence() {
+        if (sharedPreferences.getString("hash", "-1").equals("-1")) {
+            typingAnimation(key_hint, getResources().getString(R.string.create_a_new_key));
+        }
+    }
+
+    /**
+     * This method is checking if Delete After Errors was edit in MainActivity.
+     *
+     * @see MainActivity
+     */
+    private void checkDeleteAfterErrorsEdit() {
+        if (getIntent().getBooleanExtra("status", false)) {
+            sharedPreferences.edit().putBoolean("delete",
+                    getIntent().getBooleanExtra("delete", false)).apply();
+            deleteAfterErrors = getIntent().getBooleanExtra("delete", false);
+            finish();
+        }
+    }
+
+    /**
+     * This method is checking if was confirm key editing in MainActivity.
+     *
+     * @see MainActivity
+     * @see com.merive.securepass.fragments.ConfirmFragment
+     */
+    private void checkKeyEdit() {
+        if (getIntent().getBooleanExtra("changeKey", false)) {
+            typingAnimation(key_hint, getResources().getString(R.string.enter_old_key));
+            changeKey = true;
+        }
+    }
+
+    /**
+     * This method is setting listener for done button on keyboard.
+     * If after dialing the key you press the button done, key will checked.
+     */
+    private void setKeyOnEditorListener() {
         key.setOnEditorActionListener((v, actionId, event) -> {
             boolean handled = false;
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                checkKey(key);
+                clickCheckKey(key);
                 hideKeyboard();
                 handled = true;
             }
@@ -68,59 +125,110 @@ public class CheckKeyActivity extends AppCompatActivity {
         });
     }
 
-    /* ************ */
-    /* Init methods */
-    /* ************ */
-
-    public void initLayoutVariables() {
-        /* Init layout variables */
-        title = findViewById(R.id.title_check);
-        key = findViewById(R.id.key);
-        key_hint = findViewById(R.id.key_hint);
-    }
-
-    /* ************* */
-    /* Check methods */
-    /* ************* */
-
-    @SuppressLint("SetTextI18n")
-    public void checkKeyOnDefault() {
-        /* Check key from data on default value */
-        if (sharedPreferences.getString("hash", "-1").equals("-1")) {
-            typingAnimation(key_hint, getResources().getString(R.string.create_a_new_name));
-        }
-    }
-
-    public void checkEditOfDeletingAfterErrors() {
-        /* Check edits of deletingAfterErrors variable */
-        if (getIntent().getBooleanExtra("status", false)) {
-            sharedPreferences.edit().putBoolean("delete",
-                    getIntent().getBooleanExtra("deleting", false)).apply();
-            deletingAfterErrors = getIntent().getBooleanExtra("deleting", false);
-            finish();
-        }
-    }
-
-
-    public void checkOnChangeKey() {
-        /* Check on key changing */
-        if (getIntent().getBooleanExtra("changeKey", false)) {
-            typingAnimation(key_hint, getResources().getString(R.string.enter_old_key));
-            changeKey = true;
-        }
-    }
-
-    /* Click methods */
-    @SuppressLint("SetTextI18n")
-    public void checkKey(View view) {
-        /* Check key method */
+    /**
+     * This method is executing after click check button.
+     * The method is making vibration and changing key (if changeKey is true) or start logging.
+     *
+     * @param view Not use
+     * @see View
+     */
+    public void clickCheckKey(View view) {
         makeVibration();
         if (changeKey) changeKey();
         else login();
     }
 
-    public boolean checkOnNewUser() {
-        /* Check on default key */
+    /**
+     * This method is making vibration.
+     * If checkSoundMode() is true, VibrationManager will make Vibration.
+     *
+     * @see VibrationManager
+     */
+    private void makeVibration() {
+        if (checkSoundMode())
+            VibrationManager.makeVibration(getApplicationContext());
+    }
+
+    /**
+     * This method is checking ringer mode of device.
+     *
+     * @return If mode isn't mute, return true.
+     */
+    private boolean checkSoundMode() {
+        return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
+    }
+
+    /**
+     * This method is changing key in sharedPreference.
+     * The method is checking inputted key hash with old key hash in memory.
+     * If hash is okay, will start key resetting and next input value will be new key.
+     * Else key_hint message will change to invalid.
+     *
+     * @see SharedPreferences
+     */
+    private void changeKey() {
+        if (checkKeyHash()) {
+            resetKey();
+            checkKeyOnAbsence();
+            key.setText("");
+            changeKey = false;
+            pressed = false;
+        } else typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
+    }
+
+    /**
+     * This method is checking inputted key hash and sharedPreference Key Hash.
+     *
+     * @return true if hashes are equal, else False.
+     */
+    private boolean checkKeyHash() {
+        if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
+            typingAnimation(key_hint, getResources().getString(R.string.all_right));
+            pressed = true;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method is resetting key in sharedPreference to default ("-1")
+     */
+    private void resetKey() {
+        sharedPreferences.edit().putString("hash", "-1").apply();
+    }
+
+    /**
+     * This method is logging you to application.
+     * If check_key button wasn't pressed, key field isn't empty,
+     * if key in sharedPreference equals "-1", key will hash, will assign to shared and will open MainActivity.
+     * Else if hash in sharedPreference equals to Key Hash in Field, will open MainActivity.
+     * Else if Errors counts more than 15, key_hint will edit to invalid and if DeleteAfterErrors is true, will execute errorsIns().
+     * Else will execute deleteAllPasswords().
+     *
+     * @see MainActivity
+     */
+    private void login() {
+        if (!pressed) {
+            if (!key.getText().toString().equals("")) {
+                if (checkOnNoKey()) openMain();
+                else if (checkKeyHash()) openMain();
+                else {
+                    if (checkErrorsCount()) {
+                        typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
+                        if (deleteAfterErrors) errorDec();
+                    } else deleteAllPasswords();
+                }
+            }
+        }
+    }
+
+    /**
+     * This method is checking key hash in sharedPreference.
+     *
+     * @return If hash equals "-1", will set hash from key field, will edit key_hint,
+     * pressed will assign true and return true, else will return false.
+     */
+    private boolean checkOnNoKey() {
         if (sharedPreferences.getString("hash", "-1").equals("-1")) {
             sharedPreferences.edit().putString("hash", generateHash(key.getText().toString())).apply();
             typingAnimation(key_hint, getResources().getString(R.string.key_set));
@@ -130,96 +238,61 @@ public class CheckKeyActivity extends AppCompatActivity {
         return false;
     }
 
-    public boolean checkKey() {
-        /* Check key hash */
-        if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
-            typingAnimation(key_hint, getResources().getString(R.string.all_right));
-            pressed = true;
-            return true;
-        }
-        return false;
+    /**
+     * This method generates and return hash string.
+     *
+     * @param key Hashing value
+     * @return Hash String
+     */
+    private String generateHash(String key) {
+        return BCrypt.hashpw(key, BCrypt.gensalt());
     }
 
-    public boolean checkErrorsCount() {
-        return errors > 0;
-    }
-
-    /* *************** */
-    /* Another methods */
-    /* *************** */
-
-    public void changeKey() {
-        /* Change Key Operation */
-        if (checkKey()) {
-            resetKey();
-            checkKeyOnDefault();
-            key.setText("");
-            changeKey = false;
-            pressed = false;
-        } else typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
-    }
-
-    public void login() {
-        /* Login Operation */
-        if (!pressed) {
-            if (!key.getText().toString().equals("")) {
-                if (checkOnNewUser()) openMain();
-                else if (checkKey()) openMain();
-                else {
-                    if (checkErrorsCount()) {
-                        typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
-                        if (deletingAfterErrors) errorIns();
-                    } else deleteAllPasswords();
-                }
-            }
-        }
-    }
-
-    public void resetKey() {
-        /* Reset Key to default */
-        sharedPreferences.edit().putString("hash", "-1").apply();
-    }
-
-    public void errorIns() {
-        errors--;
-        sharedPreferences.edit().putInt("errors", errors).apply();
-    }
-
-    public void resetErrors() {
-        errors = 15;
-        sharedPreferences.edit().putInt("errors", 15).apply();
-    }
-
-    public void openMain() {
-        /* Open MainActivity */
+    /**
+     * This method is opening MainActivity and put necessary values for it.
+     */
+    private void openMain() {
         new Handler().postDelayed(() -> {
             resetErrors();
             startActivity(new Intent(this, MainActivity.class)
                     .putExtra("status", false)
-                    .putExtra("deleting", deletingAfterErrors)
+                    .putExtra("delete", deleteAfterErrors)
                     .putExtra("key", Integer.parseInt(key.getText().toString()))
             );
             finish();
         }, 3250);
     }
 
-    public void hideKeyboard() {
-        /* Hide Screen Keyboard */
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+    /**
+     * This method is resetting errors value.
+     * The method is assigning 15 to errors and edit errors sharedPreference value.
+     */
+    private void resetErrors() {
+        errors = 15;
+        sharedPreferences.edit().putInt("errors", errors).apply();
     }
 
-    public void setFocus() {
-        key.requestFocus();
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(key, InputMethodManager.SHOW_FORCED);
+    /**
+     * This method is checking errors more than 0.
+     *
+     * @return True if errors more than 0.
+     */
+    private boolean checkErrorsCount() {
+        return errors > 0;
     }
 
-    public void deleteAllPasswords() {
-        /* Delete all passwords if have 15 errors */
+    /**
+     * This method is decrement for errors and edit errors value in sharedPreference.
+     */
+    private void errorDec() {
+        sharedPreferences.edit().putInt("errors", --errors).apply();
+    }
+
+    /**
+     * This method is opening MainActivity for deleting all passwords.
+     * It edit key_hint and assign true to pressed.
+     */
+    private void deleteAllPasswords() {
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra("status", true)
         );
@@ -227,17 +300,14 @@ public class CheckKeyActivity extends AppCompatActivity {
         pressed = true;
     }
 
-    public String generateHash(String key) {
-        /* Generate Key hash */
-        return BCrypt.hashpw(key, BCrypt.gensalt());
-    }
-
-    public void makeVibration() {
-        if (checkSoundMode())
-            VibrationManager.makeVibration(getApplicationContext());
-    }
-
-    public boolean checkSoundMode() {
-        return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
+    /**
+     * This method is hiding keyboard from screen.
+     */
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

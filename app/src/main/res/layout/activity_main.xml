@@ -5,116 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark"
-    android:scrollbarSize="2sp"
     tools:context=".MainActivity">
 
-
-    <View
-        android:id="@+id/bar"
-        android:layout_width="0sp"
-        android:layout_height="56sp"
-        android:layout_marginStart="8sp"
-        android:layout_marginEnd="8sp"
-        android:background="@xml/bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ImageView
-        android:id="@+id/lock"
-        android:layout_width="56sp"
-        android:layout_height="56sp"
-        android:background="@xml/round_button"
-        android:contentDescription="@string/todo"
-        android:onClick="clickLock"
-        android:padding="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/add"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toEndOf="@+id/settings"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97"
-        app:srcCompat="@drawable/lock"
-        app:tint="@color/green" />
-
-    <ImageView
-        android:id="@+id/settings"
-        android:layout_width="56sp"
-        android:layout_height="56sp"
-        android:background="@xml/round_button"
-        android:contentDescription="@string/todo"
-        android:onClick="clickSettings"
-        android:padding="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97"
-        app:srcCompat="@drawable/settings"
-        app:tint="@color/green" />
-
-    <ImageView
-        android:id="@+id/add"
-        android:layout_width="56sp"
-        android:layout_height="56sp"
-        android:background="@xml/round_button"
-        android:contentDescription="@string/todo"
-        android:onClick="clickAdd"
-        android:padding="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97"
-        app:srcCompat="@drawable/add"
-        app:tint="@color/green" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/password_recycle_view"
-        android:layout_width="0sp"
-        android:layout_height="0sp"
-        android:layout_marginTop="14sp"
-        android:layout_marginBottom="14sp"
-        android:scrollbarSize="1sp"
-        android:scrollbarThumbVertical="@xml/scrollbar"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/lock"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
-        tools:listitem="@layout/password_row" />
-
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/mainTitle"
+        android:id="@+id/main_title"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12sp"
+        android:layout_marginRight="12sp"
         android:fontFamily="@font/share_tech_mono"
+        android:padding="12sp"
         android:text=""
         android:textAlignment="center"
         android:textColor="@color/green"
-        android:textSize="28sp"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.060000002" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/empty"
-        android:layout_width="336sp"
+        android:id="@+id/main_empty_message"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"
-
-        android:background="@xml/round_button"
+        android:layout_margin="16sp"
+        android:background="@xml/background_light"
         android:fontFamily="@font/share_tech_mono"
         android:padding="16sp"
         android:textAlignment="center"
-
         android:textColor="@color/green"
         android:textSize="36sp"
         android:visibility="invisible"
@@ -122,5 +42,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/password_recycler_view"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:layout_marginLeft="12sp"
+        android:layout_marginTop="18sp"
+        android:layout_marginRight="12sp"
+        android:layout_marginBottom="18sp"
+        android:background="@xml/background"
+        android:padding="12sp"
+        android:scrollbarSize="2sp"
+        android:scrollbarThumbVertical="@xml/scrollbar"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bar_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_title"
+        tools:listitem="@layout/password_row" />
+
+    <FrameLayout
+        android:id="@+id/bar_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="76sp"
+        android:layout_marginLeft="4sp"
+        android:layout_marginRight="4sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,8 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
+    /**
+     * This method is the start point at the SplashActivity.
+     *
+     * @param savedInstanceState Used by super.onCreate method.
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startActivity(new Intent(SplashActivity.this, CheckKeyActivity.class));
         finish();

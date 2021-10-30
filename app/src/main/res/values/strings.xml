@@ -1,5 +1,5 @@
 <resources>
-    <!--  Main Strings  -->
+    <!--  Basic Strings  -->
     <string name="app_name">SecurePass</string>
 
     <!--  MainActivity  -->
@@ -8,7 +8,7 @@
     <!--  CheckPasswordActivity  -->
     <string name="welcome_to_securepass">Welcome to SecurePass</string>
     <string name="enter_the_key_in_the_field">Enter the key in the field.</string>
-    <string name="create_a_new_name">Create a new key\nTip: Use more than 4 numbers.</string>
+    <string name="create_a_new_key">Create a new key\nTip: Use more than 4 numbers.</string>
     <string name="all_passwords_was_deleted">All Passwords was deleted.\nHave a nice day xD</string>
     <string name="invalid_key">Invalid key. Try again.</string>
     <string name="enter_old_key">Enter old key</string>
@@ -17,9 +17,9 @@
     <string name="enter_the_key">Enter the key</string>
 
     <!--  ConfirmFragment  -->
-    <string name="change_key">Change the key?</string>
+    <string name="change_key">Change key?</string>
     <string name="delete_all_passwords">Delete all passwords?</string>
-    <string name="delete_a_password">Delete a password?</string>
+    <string name="delete_password">Delete password?</string>
 
     <!--  PasswordFragment  -->
     <string name="password_name">Password Name</string>
@@ -39,7 +39,7 @@
     <string name="new_version_released">New version released</string>
 
     <!--  Website Link  -->
-    <string name="website">https://merive.herokuapp.com/SecurePass/download</string>
+    <string name="website">https://merive.herokuapp.com/SecurePass/Download/</string>
 
     <!--  TODO  -->
     <string name="todo">TODO</string>

@@ -6,18 +6,27 @@ import java.util.Random;
 
 public class Crypt {
 
-    final String alf = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
-    final String shuffledAlf;
+    final String shuffledPack;
     final int seed;
+    private final String pack = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
 
+    /**
+     * Crypt Constructor.
+     *
+     * @param seed Crypter seed (Equals your key)
+     */
     public Crypt(int seed) {
-        /* Crypt constructor */
-        shuffledAlf = shuffle(alf);
+        shuffledPack = shuffle(pack);
         this.seed = seed;
     }
 
-    public String shuffle(String string) {
-        /* Shuffle symbols in string */
+    /**
+     * This method is shuffling symbol PACK.
+     *
+     * @param string Symbol PACK.
+     * @return Shuffled symbol PACK.
+     */
+    private String shuffle(String string) {
         Random random = new Random(seed);
         List<Character> characters = new ArrayList<>();
         for (char c : string.toCharArray()) characters.add(c);
@@ -29,29 +38,45 @@ public class Crypt {
         return output.toString();
     }
 
+    /**
+     * This method is encrypt text using generated symbol PACK.
+     *
+     * @param text Text what will be encrypting.
+     * @return Encrypted text.
+     */
     public String encrypt(String text) {
-        /* Encrypt string */
         StringBuilder encryptedText = new StringBuilder();
-        String[] shuffledAlf = shuffle(alf).split("");
+        String[] shuffledAlf = shuffle(pack).split("");
         for (String s : text.split("")) encryptedText.append(findIndex(shuffledAlf, s)).append(".");
         return encryptedText.toString();
     }
 
+    /**
+     * This method is decrypt text using generated symbol PACK.
+     *
+     * @param text Text what will be decrypting.
+     * @return Decrypted text.
+     */
     public String decrypt(String text) {
-        /* Decrypt string */
         StringBuilder decryptedText = new StringBuilder();
-        String[] shuffledAlf = shuffle(alf).split("");
+        String[] shuffledAlf = shuffle(pack).split("");
         for (String s : text.split("\\.")) decryptedText.append(shuffledAlf[Integer.parseInt(s)]);
         return decryptedText.toString();
     }
 
-    public int findIndex(String[] arr, String c) {
-        /* Find index of symbol */
+    /**
+     * This method is finding symbol index in array.
+     *
+     * @param arr    Array with symbols.
+     * @param symbol Finding symbol.
+     * @return Symbol index.
+     */
+    private int findIndex(String[] arr, String symbol) {
         if (arr == null) return -1;
         int len = arr.length;
         int i = 0;
         while (i < len) {
-            if (arr[i].equals(c)) return i;
+            if (arr[i].equals(symbol)) return i;
             else i = i + 1;
         }
         return -1;

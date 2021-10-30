@@ -1,18 +1,16 @@
 package com.merive.securepass.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
+import static com.merive.securepass.elements.TypingTextView.typingAnimation;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,19 +20,29 @@ import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
 
-import static com.merive.securepass.elements.TypingTextView.typingAnimation;
-
 public class UpdateFragment extends DialogFragment {
 
     TypingTextView title, version;
     ImageView download;
 
+    /**
+     * UpdateFragment Constructor.
+     * Using for creating DialogFragment in MainActivity.
+     *
+     * @see DialogFragment
+     * @see MainActivity
+     */
     public UpdateFragment() {
-        /* Empty constructor (Needs) */
     }
 
+    /**
+     * This method is setting UpdateFragment Arguments.
+     *
+     * @param oldVersion Using SecurePass' Version
+     * @param newVersion Actual Version on Website
+     * @return UpdateFragment with necessary arguments.
+     */
     public static UpdateFragment newInstance(String oldVersion, String newVersion) {
-        /* newInstance method */
         UpdateFragment frag = new UpdateFragment();
         Bundle args = new Bundle();
         args.putString("oldVersion", oldVersion);
@@ -43,63 +51,79 @@ public class UpdateFragment extends DialogFragment {
         return frag;
     }
 
-    /* **************** */
-    /* Override methods */
-    /* **************** */
-
+    /**
+     * This method is creating UpdateFragment.
+     *
+     * @param inflater           Needs for getting Fragment View.
+     * @param parent             Argument of inflater.inflate().
+     * @param savedInstanceState Save Fragment Values.
+     * @return Fragment View.
+     * @see View
+     * @see Bundle
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.update_fragment, container);
+        return inflater.inflate(R.layout.update_fragment, parent);
     }
 
-
-    @SuppressLint("SetTextI18n")
+    /**
+     * This method is executing after Fragment View was created.
+     * In this method will be setting DialogAnimation, layout variables will be initializing,
+     * will be setting UpdateFragment title and version text.
+     * Also will be setting onClickListener for Download Button.
+     *
+     * @param view               Fragment View Value.
+     * @param savedInstanceState Saving Fragment Values.
+     * @see View
+     * @see Bundle
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
         initVariables(view);
         setTitle();
         setVersion();
 
-        download.setOnClickListener(this::clickDownload);
+        download.setOnClickListener(v -> clickDownload());
     }
 
-    /* ************ */
-    /* Init methods */
-    /* ************ */
-
-    public void initVariables(View view) {
-        /* Init main variables */
-        title = view.findViewById(R.id.updateTitle);
-        version = view.findViewById(R.id.version);
-        download = view.findViewById(R.id.download);
+    /**
+     * This method is initializing layout variables.
+     *
+     * @param view Needs for finding elements on Layout.
+     * @see View
+     */
+    private void initVariables(View view) {
+        title = view.findViewById(R.id.update_title);
+        version = view.findViewById(R.id.version_text);
+        download = view.findViewById(R.id.download_update_button);
     }
 
-    /* ************* */
-    /* Click methods */
-    /* ************* */
+    /**
+     * This method is setting Title of UpdateFragment.
+     */
+    private void setTitle() {
+        typingAnimation(title, getResources().getString(R.string.new_version_released));
+    }
 
-    public void clickDownload(View view) {
-        /* Click Download Button */
+    /**
+     * This method is setting text to version_text element.
+     */
+    private void setVersion() {
+        typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
+                getArguments().getString("newVersion")));
+    }
+
+    /**
+     * This method is open SecurePass Download Page in Browser.
+     */
+    private void clickDownload() {
         dismiss();
         ((MainActivity) getActivity()).makeVibration();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website)));
         startActivity(browserIntent);
-    }
-
-    /* *************** */
-    /* Another methods */
-    /* *************** */
-
-    public void setTitle() {
-        typingAnimation(title, getResources().getString(R.string.new_version_released));
-    }
-
-    public void setVersion() {
-        /* Set Version Text */
-        typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
-                getArguments().getString("newVersion")));
     }
 }
