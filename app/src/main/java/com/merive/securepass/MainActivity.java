@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is assigns main layout variables.
      */
-    public void initLayoutVariables() {
+    private void initLayoutVariables() {
         title = findViewById(R.id.main_title);
         empty = findViewById(R.id.main_empty_message);
         passwords = findViewById(R.id.password_recycler_view);
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see BarFragment
      */
-    public void setBarFragment() {
+    private void setBarFragment() {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see CheckKeyActivity
      */
-    public void checkKeyStatus() {
+    private void checkKeyStatus() {
         if (getIntent().getBooleanExtra("status", false)) {
             db.passwordDao().deleteAll();
             finish();
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see SettingsFragment
      */
-    public void getSettingsData() {
+    private void getSettingsData() {
         deleting = getIntent().getBooleanExtra("delete", false);
         key = getIntent().getIntExtra("key", 0);
         encrypting = sharedPreferences.getBoolean("encrypting", false);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see UpdateFragment
      */
-    public void checkVersion() {
+    private void checkVersion() {
         new Thread(() -> {
             try {
                 if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME))
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
      * @throws IOException Input/Output Exception.
      * @see IOException
      */
-    public String getVersionOnSite() throws IOException {
+    private String getVersionOnSite() throws IOException {
         URL url = new URL(getResources().getString(R.string.website));
         BufferedReader reader = null;
         StringBuilder builder = new StringBuilder();
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
      * @param newVersion Actual Application Version.
      * @see UpdateFragment
      */
-    public void openUpdateFragment(String oldVersion, String newVersion) {
+    private void openUpdateFragment(String oldVersion, String newVersion) {
         FragmentManager fm = getSupportFragmentManager();
         UpdateFragment updateFragment = UpdateFragment.newInstance(oldVersion, newVersion);
         updateFragment.show(fm, "update_fragment");
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see android.widget.TextView
      */
-    public void checkEmpty() {
+    private void checkEmpty() {
         if (db.passwordDao().checkEmpty()) {
             empty.setVisibility(View.VISIBLE);
             typingAnimation(empty, getResources().getString(R.string.list_is_empty));
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return If mode isn't mute, return True.
      */
-    public boolean checkSoundMode() {
+    private boolean checkSoundMode() {
         return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
     }
 
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
      * @return Value from Bundle by Value Name.
      * @see Bundle
      */
-    public String getData(Bundle data, String name) {
+    private String getData(Bundle data, String name) {
         return data.getString(name);
     }
 
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
      * @see Bundle
      * @see Crypt
      */
-    public void addPasswordInDatabase(Bundle data) {
+    private void addPasswordInDatabase(Bundle data) {
         db.passwordDao().insertItem(
                 new Password(
                         getData(data, "name"),
@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
      * @see RecyclerView
      * @see PasswordFragment
      */
-    public void clickEditPassword(String name) {
+    private void clickEditPassword(String name) {
         makeVibration();
         FragmentManager fm = getSupportFragmentManager();
         PasswordFragment passwordFragment = PasswordFragment.newInstance(
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
      * @see Crypt
      * @see Bundle
      */
-    public void editPasswordInDatabase(Bundle data) {
+    private void editPasswordInDatabase(Bundle data) {
         db.passwordDao().updateItem(
                 getData(data, "name_before"),
                 getData(data, "edited_name"),
@@ -492,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordFragment
      * @see SharedPreferences
      */
-    public void updateLengthOfPassword(int length) {
+    private void updateLengthOfPassword(int length) {
         if (!String.valueOf(length).isEmpty())
             sharedPreferences.edit().putInt("length", length).apply();
         else sharedPreferences.edit().putInt("length", 16).apply();
@@ -505,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordFragment
      * @see SharedPreferences
      */
-    public void updateShowPassword(boolean show) {
+    private void updateShowPassword(boolean show) {
         sharedPreferences.edit()
                 .putBoolean("showPassword", show)
                 .apply();
@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
      * @see CheckKeyActivity
      * @see SharedPreferences
      */
-    public void updateDeleting(boolean deleting) {
+    private void updateDeleting(boolean deleting) {
         if (deleting != getIntent().getBooleanExtra("delete", false)) {
             startActivity(new Intent(this, CheckKeyActivity.class)
                     .putExtra("status", true)
@@ -555,7 +555,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void encryptAllLogins() {
+    private void encryptAllLogins() {
         List<String> data = db.passwordDao().getAllNames();
         for (String s : data) encryptLogin(s);
     }
@@ -567,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void encryptLogin(String name) {
+    private void encryptLogin(String name) {
         db.passwordDao().updateLoginByName(name, new Crypt(key).encrypt(db.passwordDao().getLoginByName(name)));
     }
 
@@ -577,7 +577,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void encryptAllPasswords() {
+    private void encryptAllPasswords() {
         List<String> data = db.passwordDao().getAllNames();
         for (String s : data) {
             encryptPassword(s);
@@ -591,7 +591,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void encryptPassword(String name) {
+    private void encryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
     }
 
@@ -601,7 +601,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void decryptAllLogins() {
+    private void decryptAllLogins() {
         List<String> data = db.passwordDao().getAllNames();
         for (String s : data) {
             decryptLogin(s);
@@ -615,7 +615,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void decryptLogin(String name) {
+    private void decryptLogin(String name) {
         db.passwordDao().updateLoginByName(name, new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)));
     }
 
@@ -625,7 +625,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void decryptAllPasswords() {
+    private void decryptAllPasswords() {
         List<String> data = db.passwordDao().getAllNames();
         for (String s : data) {
             decryptPassword(s);
@@ -639,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      * @see com.merive.securepass.database.PasswordDao
      */
-    public void decryptPassword(String name) {
+    private void decryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
@@ -651,7 +651,7 @@ public class MainActivity extends AppCompatActivity {
      * @param value Password value
      * @see ClipboardManager
      */
-    public void clickAddToClipboard(String label, String value) {
+    private void clickAddToClipboard(String label, String value) {
         makeVibration();
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);
@@ -669,7 +669,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordFragment
      * @see com.merive.securepass.database.PasswordDao
      */
-    public boolean checkNotExist(String name) {
+    private boolean checkNotExist(String name) {
         if (db.passwordDao().checkNotExist(name)) return true;
         else {
             makeToast(name + " already in database");
@@ -720,7 +720,7 @@ public class MainActivity extends AppCompatActivity {
         passwords.setAdapter(adapter);
     }
 
-    public class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {
+    private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {
 
         /**
          * This method is loading Password Data.

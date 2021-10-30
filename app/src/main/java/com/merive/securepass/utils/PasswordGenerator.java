@@ -26,7 +26,7 @@ public class PasswordGenerator {
         lowerLength = (int) Math.round(0.4 * length);
         upperLength = (int) Math.round(0.4 * length);
         numberLength = (int) Math.round(0.1 * length);
-        symbolsLength = (int) Math.round(0.1 * length) + (length % 2 == 0 ? 0 : 1);
+        symbolsLength = (int) Math.round(0.1 * length) + ((length % 2 == 0) ? 0 : 1);
     }
 
     /**
@@ -45,7 +45,7 @@ public class PasswordGenerator {
      * @param length Length for Symbol set.
      * @return Symbol set.
      */
-    public String generateSetString(String[] set, int length) {
+    private String generateSetString(String[] set, int length) {
         StringBuilder string = new StringBuilder();
         while (string.length() != length)
             string.append(set[new Random().nextInt(set.length)]);
@@ -58,7 +58,7 @@ public class PasswordGenerator {
      *
      * @return Symbol pack.
      */
-    public String generatePackString() {
+    private String generatePackString() {
         return generateSetString(lowerAlf, lowerLength)
                 + generateSetString(upperAlf, upperLength)
                 + generateSetString(numberAlf, numberLength)
@@ -71,7 +71,7 @@ public class PasswordGenerator {
      * @param pack Pack of using symbols.
      * @return Password String.
      */
-    public String shuffle(String pack) {
+    private String shuffle(String pack) {
         List<Character> characters = new ArrayList<>();
         for (char c : pack.toCharArray()) characters.add(c);
         StringBuilder output = new StringBuilder(pack.length());

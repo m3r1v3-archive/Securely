@@ -31,38 +31,79 @@ public class SettingsFragment extends DialogFragment {
     SwitchCompat showPasswordSwitch, deletingSwitch, encryptingSwitch;
     ImageView cancel, deleteAll, save;
 
+    /**
+     * SettingsFragment Constructor.
+     * Using for creating DialogFragment in MainActivity.
+     *
+     * @see DialogFragment
+     * @see MainActivity
+     */
     public SettingsFragment() {
     }
 
+    /**
+     * This method is setting SettingsFragment Arguments.
+     *
+     * @param length     Password Generator Length.
+     * @param show       Always Show Password in PasswordFragment.
+     * @param delete     Delete all passwords after 15 errors in CheckKeyActivity.
+     * @param encrypting Encrypt Login and Password Values in Database.
+     * @return SettingsFragment with necessary arguments.
+     * @see PasswordFragment
+     * @see com.merive.securepass.CheckKeyActivity
+     * @see com.merive.securepass.utils.Crypt
+     * @see com.merive.securepass.database.PasswordDB
+     */
     public static SettingsFragment newInstance(int length, boolean show,
-                                               boolean deleting, boolean encrypting) {
+                                               boolean delete, boolean encrypting) {
         SettingsFragment frag = new SettingsFragment();
         Bundle args = new Bundle();
         args.putInt("length", length);
         args.putBoolean("show", show);
-        args.putBoolean("deleting", deleting);
+        args.putBoolean("delete", delete);
         args.putBoolean("encrypting", encrypting);
         frag.setArguments(args);
         return frag;
     }
 
+    /**
+     * This method is creating SettingsFragment.
+     *
+     * @param inflater           Needs for getting Fragment View.
+     * @param parent             Argument of inflater.inflate().
+     * @param savedInstanceState Saving Fragment Values.
+     * @return Fragment View.
+     * @see View
+     * @see Bundle
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.settings_fragment, container);
+        return inflater.inflate(R.layout.settings_fragment, parent);
     }
 
+    /**
+     * This method is executing after Fragment View was created.
+     * In this method will be setting DialogAnimation, layout variables will be initializing,
+     * will set title and info values, will set length edit and switches values.
+     * Also will be setting onClickListeners for Buttons.
+     *
+     * @param view               Fragment View Value.
+     * @param savedInstanceState Saving Fragment Values.
+     * @see View
+     * @see Bundle
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         initVariables(view);
-        typingAnimation(title, getResources().getString(R.string.settings));
-        typingAnimation(info, "SecurePass " + BuildConfig.VERSION_NAME + ", " + Calendar.getInstance().get(Calendar.YEAR));
 
-        setEdits();
+        setTitle();
+        setInfo();
+
+        setLengthEdit();
         setSwitches();
 
         cancel.setOnClickListener(this::clickCancel);
@@ -70,49 +111,102 @@ public class SettingsFragment extends DialogFragment {
         save.setOnClickListener(this::clickSave);
     }
 
-    public void initVariables(View view) {
+    /**
+     * This method is initializing layout variables.
+     *
+     * @param view Needs for finding elements on Layout.
+     * @see View
+     */
+    private void initVariables(View view) {
         title = view.findViewById(R.id.settings_title);
         info = view.findViewById(R.id.info_text);
+
         passwordLengthEdit = view.findViewById(R.id.password_length_edit);
+
         showPasswordSwitch = view.findViewById(R.id.show_password_switch);
         deletingSwitch = view.findViewById(R.id.delete_password_switch);
         encryptingSwitch = view.findViewById(R.id.encrypt_data_switch);
+
         cancel = view.findViewById(R.id.settings_cancel_button);
         deleteAll = view.findViewById(R.id.delete_passwords_button);
         save = view.findViewById(R.id.save_settings_button);
     }
 
-    public void setEdits() {
+    /**
+     * This method is setting title.
+     */
+    private void setTitle() {
+        typingAnimation(title, getResources().getString(R.string.settings));
+    }
+
+    /**
+     * This method is setting info.
+     */
+    private void setInfo() {
+        typingAnimation(info, "SecurePass " + BuildConfig.VERSION_NAME + ", " + Calendar.getInstance().get(Calendar.YEAR));
+    }
+
+    /**
+     * This method is setting Password Generator Length value to passwordLengthEdit.
+     */
+    private void setLengthEdit() {
         passwordLengthEdit.setText(String.valueOf(getArguments().getInt("length")));
     }
 
-    public void setSwitches() {
+    /**
+     * This method is setting Switches states.
+     */
+    private void setSwitches() {
         showPasswordSwitch.setChecked(getArguments().getBoolean("show"));
-        deletingSwitch.setChecked(getArguments().getBoolean("deleting"));
+        deletingSwitch.setChecked(getArguments().getBoolean("delete"));
         encryptingSwitch.setChecked(getArguments().getBoolean("encrypting"));
     }
 
-    public void clickCancel(View view) {
+    /**
+     * This method is executing after clicking on Cancel Button.
+     *
+     * @param view Needs for clear focus from Fragment.
+     * @see MainActivity
+     */
+    private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         dismiss();
     }
 
-    public void clickDeleteAllPasswords(View view) {
+    /**
+     * This method is executing after clicking on Delete All Passwords Button.
+     * The method is making vibration and open ConfirmFragment for confirming All Password Deleting.
+     *
+     * @param view Needs for clear focus from Fragment.
+     * @see MainActivity
+     */
+    private void clickDeleteAllPasswords(View view) {
+        view.clearFocus();
+        ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
-        view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
         dismiss();
     }
 
-    public void clickSave(View view) {
-        ((MainActivity) getActivity()).makeVibration();
-        int length = passwordLengthEdit.getText().toString().isEmpty() ?
-                16 : Integer.parseInt(passwordLengthEdit.getText().toString());
-        ((MainActivity) getActivity()).saveSettings(
-                length, showPasswordSwitch.isChecked(),
-                deletingSwitch.isChecked(), encryptingSwitch.isChecked());
+    /**
+     * This method is executing after clicking on Save Settings Button.
+     * If passwordLength is empty will be saving default password generator value (16).
+     * Will be saving Password Generator Length, Always Show Password,
+     * Delete after 15 errors and Encrypt Login and Password Values in MainActivity SharedPreference.
+     *
+     * @param view Needs for clear focus from Fragment.
+     * @see MainActivity
+     * @see android.content.SharedPreferences
+     */
+    private void clickSave(View view) {
         view.clearFocus();
+        ((MainActivity) getActivity()).makeVibration();
+        ((MainActivity) getActivity()).saveSettings(
+                passwordLengthEdit.getText().toString().isEmpty() ?
+                        16 : Integer.parseInt(passwordLengthEdit.getText().toString()),
+                showPasswordSwitch.isChecked(),
+                deletingSwitch.isChecked(),
+                encryptingSwitch.isChecked());
         dismiss();
     }
 }

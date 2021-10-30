@@ -64,7 +64,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     /**
      * This method is assigns main layout variables.
      */
-    public void initLayoutVariables() {
+    private void initLayoutVariables() {
         title = findViewById(R.id.check_key_title);
         key = findViewById(R.id.key_edit);
         key_hint = findViewById(R.id.check_key_hint);
@@ -76,7 +76,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @see SharedPreferences
      */
-    public void checkKeyOnAbsence() {
+    private void checkKeyOnAbsence() {
         if (sharedPreferences.getString("hash", "-1").equals("-1")) {
             typingAnimation(key_hint, getResources().getString(R.string.create_a_new_key));
         }
@@ -87,7 +87,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @see MainActivity
      */
-    public void checkDeleteAfterErrorsEdit() {
+    private void checkDeleteAfterErrorsEdit() {
         if (getIntent().getBooleanExtra("status", false)) {
             sharedPreferences.edit().putBoolean("delete",
                     getIntent().getBooleanExtra("delete", false)).apply();
@@ -102,7 +102,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      * @see MainActivity
      * @see com.merive.securepass.fragments.ConfirmFragment
      */
-    public void checkKeyEdit() {
+    private void checkKeyEdit() {
         if (getIntent().getBooleanExtra("changeKey", false)) {
             typingAnimation(key_hint, getResources().getString(R.string.enter_old_key));
             changeKey = true;
@@ -113,7 +113,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      * This method is setting listener for done button on keyboard.
      * If after dialing the key you press the button done, key will checked.
      */
-    public void setKeyOnEditorListener() {
+    private void setKeyOnEditorListener() {
         key.setOnEditorActionListener((v, actionId, event) -> {
             boolean handled = false;
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -144,7 +144,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @see VibrationManager
      */
-    public void makeVibration() {
+    private void makeVibration() {
         if (checkSoundMode())
             VibrationManager.makeVibration(getApplicationContext());
     }
@@ -154,7 +154,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @return If mode isn't mute, return true.
      */
-    public boolean checkSoundMode() {
+    private boolean checkSoundMode() {
         return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
     }
 
@@ -166,7 +166,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @see SharedPreferences
      */
-    public void changeKey() {
+    private void changeKey() {
         if (checkKeyHash()) {
             resetKey();
             checkKeyOnAbsence();
@@ -181,7 +181,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @return true if hashes are equal, else False.
      */
-    public boolean checkKeyHash() {
+    private boolean checkKeyHash() {
         if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
             typingAnimation(key_hint, getResources().getString(R.string.all_right));
             pressed = true;
@@ -193,7 +193,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     /**
      * This method is resetting key in sharedPreference to default ("-1")
      */
-    public void resetKey() {
+    private void resetKey() {
         sharedPreferences.edit().putString("hash", "-1").apply();
     }
 
@@ -207,7 +207,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @see MainActivity
      */
-    public void login() {
+    private void login() {
         if (!pressed) {
             if (!key.getText().toString().equals("")) {
                 if (checkOnNoKey()) openMain();
@@ -228,7 +228,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      * @return If hash equals "-1", will set hash from key field, will edit key_hint,
      * pressed will assign true and return true, else will return false.
      */
-    public boolean checkOnNoKey() {
+    private boolean checkOnNoKey() {
         if (sharedPreferences.getString("hash", "-1").equals("-1")) {
             sharedPreferences.edit().putString("hash", generateHash(key.getText().toString())).apply();
             typingAnimation(key_hint, getResources().getString(R.string.key_set));
@@ -244,14 +244,14 @@ public class CheckKeyActivity extends AppCompatActivity {
      * @param key Hashing value
      * @return Hash String
      */
-    public String generateHash(String key) {
+    private String generateHash(String key) {
         return BCrypt.hashpw(key, BCrypt.gensalt());
     }
 
     /**
      * This method is opening MainActivity and put necessary values for it.
      */
-    public void openMain() {
+    private void openMain() {
         new Handler().postDelayed(() -> {
             resetErrors();
             startActivity(new Intent(this, MainActivity.class)
@@ -267,7 +267,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      * This method is resetting errors value.
      * The method is assigning 15 to errors and edit errors sharedPreference value.
      */
-    public void resetErrors() {
+    private void resetErrors() {
         errors = 15;
         sharedPreferences.edit().putInt("errors", errors).apply();
     }
@@ -277,14 +277,14 @@ public class CheckKeyActivity extends AppCompatActivity {
      *
      * @return True if errors more than 0.
      */
-    public boolean checkErrorsCount() {
+    private boolean checkErrorsCount() {
         return errors > 0;
     }
 
     /**
      * This method is decrement for errors and edit errors value in sharedPreference.
      */
-    public void errorDec() {
+    private void errorDec() {
         sharedPreferences.edit().putInt("errors", --errors).apply();
     }
 
@@ -292,7 +292,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      * This method is opening MainActivity for deleting all passwords.
      * It edit key_hint and assign true to pressed.
      */
-    public void deleteAllPasswords() {
+    private void deleteAllPasswords() {
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra("status", true)
         );
@@ -303,7 +303,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     /**
      * This method is hiding keyboard from screen.
      */
-    public void hideKeyboard() {
+    private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

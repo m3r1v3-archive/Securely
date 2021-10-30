@@ -59,7 +59,7 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
      *
      * @param text Assigns to this.text.
      */
-    public void animateText(CharSequence text) {
+    private void animateText(CharSequence text) {
         this.text = text;
         index = 0;
 
@@ -73,7 +73,7 @@ public class TypingTextView extends androidx.appcompat.widget.AppCompatTextView 
      *
      * @param millis Character delay.
      */
-    public void setCharacterDelay(long millis) {
+    private void setCharacterDelay(long millis) {
         delay = millis;
     }
 }

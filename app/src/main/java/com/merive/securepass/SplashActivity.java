@@ -13,7 +13,7 @@ public class SplashActivity extends AppCompatActivity {
      * @param savedInstanceState Used by super.onCreate method.
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startActivity(new Intent(SplashActivity.this, CheckKeyActivity.class));
         finish();

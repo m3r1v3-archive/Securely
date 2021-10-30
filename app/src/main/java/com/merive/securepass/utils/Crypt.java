@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class Crypt {
 
-    final String pack = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
     final String shuffledPack;
     final int seed;
+    private final String pack = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
 
     /**
      * Crypt Constructor.
@@ -21,12 +21,12 @@ public class Crypt {
     }
 
     /**
-     * This method is shuffling symbol pack.
+     * This method is shuffling symbol PACK.
      *
-     * @param string Symbol pack.
-     * @return Shuffled symbol pack.
+     * @param string Symbol PACK.
+     * @return Shuffled symbol PACK.
      */
-    public String shuffle(String string) {
+    private String shuffle(String string) {
         Random random = new Random(seed);
         List<Character> characters = new ArrayList<>();
         for (char c : string.toCharArray()) characters.add(c);
@@ -39,7 +39,7 @@ public class Crypt {
     }
 
     /**
-     * This method is encrypt text using generated symbol pack.
+     * This method is encrypt text using generated symbol PACK.
      *
      * @param text Text what will be encrypting.
      * @return Encrypted text.
@@ -52,7 +52,7 @@ public class Crypt {
     }
 
     /**
-     * This method is decrypt text using generated symbol pack.
+     * This method is decrypt text using generated symbol PACK.
      *
      * @param text Text what will be decrypting.
      * @return Decrypted text.
@@ -71,7 +71,7 @@ public class Crypt {
      * @param symbol Finding symbol.
      * @return Symbol index.
      */
-    public int findIndex(String[] arr, String symbol) {
+    private int findIndex(String[] arr, String symbol) {
         if (arr == null) return -1;
         int len = arr.length;
         int i = 0;
