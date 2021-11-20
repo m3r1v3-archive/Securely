@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.merive.securepass">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,6 +16,7 @@
 
         <activity
             android:name=".SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -27,6 +28,7 @@
 
         <activity
             android:name=".CheckKeyActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SecurePass">
             <intent-filter>
@@ -36,6 +38,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SecurePass">
             <intent-filter>
