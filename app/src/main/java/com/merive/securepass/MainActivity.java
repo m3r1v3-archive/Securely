@@ -42,14 +42,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static boolean toast = false;
     TypingTextView title, empty;
     RecyclerView passwords;
-
     PasswordAdapter adapter;
     PasswordDB db;
-
     SharedPreferences sharedPreferences;
-
     boolean deleting, encrypting;
     int key;
 
@@ -283,11 +281,13 @@ public class MainActivity extends AppCompatActivity {
      * @see RecyclerView
      */
     public void addNewPassword(Bundle data) {
-        if (checkNotExist(getData(data, "name"))) {
-            addPasswordInDatabase(data);
-            makeToast(getData(data, "name") + " was " + "added");
-            new GetPasswordData().execute();
-            checkEmpty();
+        if (!MainActivity.toast) {
+            if (checkNotExist(getData(data, "name"))) {
+                addPasswordInDatabase(data);
+                makeToast(getData(data, "name") + " was " + "added");
+                new GetPasswordData().execute();
+                checkEmpty();
+            }
         }
     }
 
@@ -358,11 +358,13 @@ public class MainActivity extends AppCompatActivity {
      * @see Bundle
      */
     public void editPassword(Bundle data) {
-        if (getData(data, "name_before").equals(getData(data, "edited_name"))
-                || checkNotExist(getData(data, "edited_name"))) {
-            editPasswordInDatabase(data);
-            makeToast(getData(data, "edited_name") + " was " + "edited");
-            new GetPasswordData().execute();
+        if (!MainActivity.toast) {
+            if (getData(data, "name_before").equals(getData(data, "edited_name"))
+                    || checkNotExist(getData(data, "edited_name"))) {
+                editPasswordInDatabase(data);
+                makeToast(getData(data, "edited_name") + " was " + "edited");
+                new GetPasswordData().execute();
+            }
         }
     }
 
@@ -397,10 +399,12 @@ public class MainActivity extends AppCompatActivity {
      * @see ToastFragment
      */
     public void deletePasswordByName(String name) {
-        db.passwordDao().deleteByName(name);
-        new GetPasswordData().execute();
-        checkEmpty();
-        makeToast(name + " was deleted");
+        if (!MainActivity.toast) {
+            db.passwordDao().deleteByName(name);
+            new GetPasswordData().execute();
+            checkEmpty();
+            makeToast(name + " was deleted");
+        }
     }
 
     /**
@@ -462,11 +466,13 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      */
     public void saveSettings(int length, boolean show, boolean deleting, boolean encrypt) {
-        updateShowPassword(show);
-        updateLengthOfPassword(length);
-        updateDeleting(deleting);
-        updateEncrypting(encrypt);
-        makeToast("Settings saved");
+        if (!MainActivity.toast) {
+            updateShowPassword(show);
+            updateLengthOfPassword(length);
+            updateDeleting(deleting);
+            updateEncrypting(encrypt);
+            makeToast("Settings saved");
+        }
     }
 
     /**
@@ -478,10 +484,12 @@ public class MainActivity extends AppCompatActivity {
      * @see CheckKeyActivity
      */
     public void deleteAllPasswords() {
-        db.passwordDao().deleteAll();
-        new GetPasswordData().execute();
-        checkEmpty();
-        makeToast("All passwords have been deleted");
+        if (!MainActivity.toast) {
+            db.passwordDao().deleteAll();
+            new GetPasswordData().execute();
+            checkEmpty();
+            makeToast("All passwords have been deleted");
+        }
     }
 
     /**
@@ -652,12 +660,14 @@ public class MainActivity extends AppCompatActivity {
      * @see ClipboardManager
      */
     private void clickAddToClipboard(String label, String value) {
-        makeVibration();
-        ClipboardManager clipboard = (ClipboardManager)
-                getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(label, value);
-        clipboard.setPrimaryClip(clip);
-        makeToast(label + " Password was copied");
+        if (!MainActivity.toast) {
+            makeVibration();
+            ClipboardManager clipboard = (ClipboardManager)
+                    getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(label, value);
+            clipboard.setPrimaryClip(clip);
+            makeToast(label + " was copied");
+        }
     }
 
     /**
@@ -672,7 +682,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean checkNotExist(String name) {
         if (db.passwordDao().checkNotExist(name)) return true;
         else {
-            makeToast(name + " already in database");
+            if (!MainActivity.toast) makeToast(name + " already in database");
             return false;
         }
     }

@@ -63,13 +63,15 @@ public class ToastFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        MainActivity.toast = true;
         initVariables(view);
         setText();
 
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             ((MainActivity) getActivity()).openBarFragment();
-        }, 5750);
+            MainActivity.toast = false;
+        }, 4250);
     }
 
     /**

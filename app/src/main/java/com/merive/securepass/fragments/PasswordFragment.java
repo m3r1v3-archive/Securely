@@ -257,7 +257,7 @@ public class PasswordFragment extends DialogFragment {
     private void saveEditPassword() {
         if (checkEditsOnEmpty())
             ((MainActivity) getActivity()).editPassword(putEditedDataInBundle());
-        else ((MainActivity) getActivity()).makeToast("You have empty fields");
+        else if (!MainActivity.toast) ((MainActivity) getActivity()).makeToast("You have empty fields");
     }
 
     /**
@@ -298,7 +298,7 @@ public class PasswordFragment extends DialogFragment {
     private void saveNewPassword() {
         if (checkEditsOnEmpty()) {
             ((MainActivity) getActivity()).addNewPassword(putNewDataInBundle());
-        } else ((MainActivity) getActivity()).makeToast("You have empty fields");
+        } else if (!MainActivity.toast) ((MainActivity) getActivity()).makeToast("You have empty fields");
     }
 
     /**

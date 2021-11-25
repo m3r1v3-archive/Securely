@@ -46,7 +46,7 @@
     <EditText
         android:id="@+id/key_edit"
         android:layout_width="235sp"
-        android:layout_height="48sp"
+        android:layout_height="50sp"
         android:layout_marginStart="24sp"
         android:layout_marginEnd="24sp"
         android:background="@xml/background_light"
@@ -71,19 +71,29 @@
         app:layout_constraintVertical_bias="0.6"
         tools:ignore="LabelFor" />
 
-    <ImageView
-        android:id="@+id/check_key_button"
-        android:layout_width="56sp"
-        android:layout_height="56sp"
-        android:background="@xml/background_light"
-        android:contentDescription="@string/todo"
-        android:onClick="clickCheckKey"
-        android:padding="12sp"
+    <View
+        android:id="@+id/check_key_background"
+        android:layout_width="116sp"
+        android:layout_height="58sp"
+        android:background="@xml/background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <ImageView
+        android:id="@+id/check_key_button"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:background="@xml/background_light"
+        android:contentDescription="@string/todo"
+        android:onClick="clickCheckKey"
+        android:padding="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/check_key_background"
+        app:layout_constraintEnd_toEndOf="@+id/check_key_background"
+        app:layout_constraintStart_toStartOf="@+id/check_key_background"
+        app:layout_constraintTop_toTopOf="@+id/check_key_background"
         app:srcCompat="@drawable/check"
         app:tint="@color/green" />
 
