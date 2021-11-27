@@ -38,11 +38,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static boolean toast = false;
+    public static LinkedList<String> toastMessages = new LinkedList<>();
     TypingTextView title, empty;
     RecyclerView passwords;
     PasswordAdapter adapter;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         transaction.setReorderingAllowed(true);
-        transaction.replace(R.id.bar_fragment, BarFragment.class, null);
+        transaction.replace(R.id.bar_fragment, new BarFragment(), null);
         transaction.commit();
     }
 
@@ -261,13 +262,15 @@ public class MainActivity extends AppCompatActivity {
      * @see ToastFragment
      */
     public void makeToast(String message) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        transaction.setReorderingAllowed(true);
-
-        transaction.replace(R.id.bar_fragment, ToastFragment.newInstance(message), null);
-        transaction.commit();
+        MainActivity.toastMessages.add(message);
+        if (MainActivity.toastMessages.size() == 1) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            transaction.setReorderingAllowed(true);
+            transaction.replace(R.id.bar_fragment, new ToastFragment(), null);
+            transaction.commit();
+        }
     }
 
     /**
@@ -281,13 +284,11 @@ public class MainActivity extends AppCompatActivity {
      * @see RecyclerView
      */
     public void addNewPassword(Bundle data) {
-        if (!MainActivity.toast) {
-            if (checkNotExist(getData(data, "name"))) {
-                addPasswordInDatabase(data);
-                makeToast(getData(data, "name") + " was " + "added");
-                new GetPasswordData().execute();
-                checkEmpty();
-            }
+        if (checkNotExist(getData(data, "name"))) {
+            addPasswordInDatabase(data);
+            makeToast(getData(data, "name") + " was " + "added");
+            new GetPasswordData().execute();
+            checkEmpty();
         }
     }
 
@@ -358,13 +359,11 @@ public class MainActivity extends AppCompatActivity {
      * @see Bundle
      */
     public void editPassword(Bundle data) {
-        if (!MainActivity.toast) {
-            if (getData(data, "name_before").equals(getData(data, "edited_name"))
-                    || checkNotExist(getData(data, "edited_name"))) {
-                editPasswordInDatabase(data);
-                makeToast(getData(data, "edited_name") + " was " + "edited");
-                new GetPasswordData().execute();
-            }
+        if (getData(data, "name_before").equals(getData(data, "edited_name"))
+                || checkNotExist(getData(data, "edited_name"))) {
+            editPasswordInDatabase(data);
+            makeToast(getData(data, "edited_name") + " was " + "edited");
+            new GetPasswordData().execute();
         }
     }
 
@@ -399,12 +398,10 @@ public class MainActivity extends AppCompatActivity {
      * @see ToastFragment
      */
     public void deletePasswordByName(String name) {
-        if (!MainActivity.toast) {
-            db.passwordDao().deleteByName(name);
-            new GetPasswordData().execute();
-            checkEmpty();
-            makeToast(name + " was deleted");
-        }
+        db.passwordDao().deleteByName(name);
+        new GetPasswordData().execute();
+        checkEmpty();
+        makeToast(name + " was deleted");
     }
 
     /**
@@ -466,13 +463,11 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordDB
      */
     public void saveSettings(int length, boolean show, boolean deleting, boolean encrypt) {
-        if (!MainActivity.toast) {
-            updateShowPassword(show);
-            updateLengthOfPassword(length);
-            updateDeleting(deleting);
-            updateEncrypting(encrypt);
-            makeToast("Settings saved");
-        }
+        updateShowPassword(show);
+        updateLengthOfPassword(length);
+        updateDeleting(deleting);
+        updateEncrypting(encrypt);
+        makeToast("Settings saved");
     }
 
     /**
@@ -484,12 +479,10 @@ public class MainActivity extends AppCompatActivity {
      * @see CheckKeyActivity
      */
     public void deleteAllPasswords() {
-        if (!MainActivity.toast) {
-            db.passwordDao().deleteAll();
-            new GetPasswordData().execute();
-            checkEmpty();
-            makeToast("All passwords have been deleted");
-        }
+        db.passwordDao().deleteAll();
+        new GetPasswordData().execute();
+        checkEmpty();
+        makeToast("All passwords have been deleted");
     }
 
     /**
@@ -660,14 +653,12 @@ public class MainActivity extends AppCompatActivity {
      * @see ClipboardManager
      */
     private void clickAddToClipboard(String label, String value) {
-        if (!MainActivity.toast) {
-            makeVibration();
-            ClipboardManager clipboard = (ClipboardManager)
-                    getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(label, value);
-            clipboard.setPrimaryClip(clip);
-            makeToast(label + " was copied");
-        }
+        makeVibration();
+        ClipboardManager clipboard = (ClipboardManager)
+                getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, value);
+        clipboard.setPrimaryClip(clip);
+        makeToast(label + " was copied");
     }
 
     /**
@@ -682,7 +673,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean checkNotExist(String name) {
         if (db.passwordDao().checkNotExist(name)) return true;
         else {
-            if (!MainActivity.toast) makeToast(name + " already in database");
+            makeToast(name + " already in database");
             return false;
         }
     }

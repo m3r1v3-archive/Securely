@@ -4,7 +4,6 @@ import static com.merive.securepass.elements.TypingTextView.typingAnimation;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +17,6 @@ import com.merive.securepass.elements.TypingTextView;
 public class ToastFragment extends Fragment {
 
     TypingTextView text;
-
-    /**
-     * This method is setting ToastFragment Arguments for making a message.
-     *
-     * @param message Message value.
-     * @return ToastFragment with necessary arguments.
-     */
-    public static ToastFragment newInstance(String message) {
-        ToastFragment frag = new ToastFragment();
-        Bundle args = new Bundle();
-        args.putString("message", message);
-        frag.setArguments(args);
-        return frag;
-    }
 
     /**
      * This method is creating ToastFragment.
@@ -63,15 +48,8 @@ public class ToastFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        MainActivity.toast = true;
         initVariables(view);
-        setText();
-
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> {
-            ((MainActivity) getActivity()).openBarFragment();
-            MainActivity.toast = false;
-        }, 4250);
+        showToast();
     }
 
     /**
@@ -86,9 +64,23 @@ public class ToastFragment extends Fragment {
 
     /**
      * This method is setting message value to TypingTextView.
+     *
+     * @param message Toast message value.
      */
-    private void setText() {
-        typingAnimation(text, getArguments().getString("message"));
+    private void setText(String message) {
+        typingAnimation(text, message);
+    }
+
+    private void showToast() {
+        try {
+            if (MainActivity.toastMessages.isEmpty()) {
+                ((MainActivity) getActivity()).openBarFragment();
+            } else {
+                setText(MainActivity.toastMessages.getFirst());
+                MainActivity.toastMessages.removeFirst();
+                new Handler().postDelayed(() -> showToast(), 4250);
+            }
+        } catch (NullPointerException ignored) {}
     }
 }
 
