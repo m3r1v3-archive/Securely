@@ -94,7 +94,7 @@
         app:layout_constraintEnd_toEndOf="@+id/check_key_background"
         app:layout_constraintStart_toStartOf="@+id/check_key_background"
         app:layout_constraintTop_toTopOf="@+id/check_key_background"
-        app:srcCompat="@drawable/check"
+        app:srcCompat="@drawable/confirm"
         app:tint="@color/green" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

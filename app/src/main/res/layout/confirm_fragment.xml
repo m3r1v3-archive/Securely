@@ -68,7 +68,7 @@
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="@+id/confirm_bar_background"
         app:layout_constraintTop_toTopOf="@+id/confirm_bar_background"
-        app:srcCompat="@drawable/okay"
+        app:srcCompat="@drawable/confirm"
         app:tint="@color/green" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
