@@ -17,6 +17,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.merive.securepass.BuildConfig;
+import com.merive.securepass.LoginActivity;
 import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
@@ -46,11 +47,11 @@ public class SettingsFragment extends DialogFragment {
      *
      * @param length     Password Generator Length.
      * @param show       Always Show Password in PasswordFragment.
-     * @param delete     Delete all passwords after 15 errors in CheckKeyActivity.
+     * @param delete     Delete all passwords after 15 errors in LoginActivity.
      * @param encrypting Encrypt Login and Password Values in Database.
      * @return SettingsFragment with necessary arguments.
      * @see PasswordFragment
-     * @see com.merive.securepass.CheckKeyActivity
+     * @see LoginActivity
      * @see com.merive.securepass.utils.Crypt
      * @see com.merive.securepass.database.PasswordDB
      */

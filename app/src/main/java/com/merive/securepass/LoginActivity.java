@@ -21,7 +21,7 @@ import com.merive.securepass.utils.VibrationManager;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class CheckKeyActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     TypingTextView title, key_hint;
@@ -30,7 +30,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     boolean deleteAfterErrors, pressed, changeKey;
 
     /**
-     * This method is the start point at the CheckKeyActivity.
+     * This method is the start point at the LoginActivity.
      *
      * @param savedInstanceState Used by super.onCreate method.
      */
@@ -38,7 +38,7 @@ public class CheckKeyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        setContentView(R.layout.activity_check_key);
+        setContentView(R.layout.activity_login);
 
         sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
@@ -65,9 +65,9 @@ public class CheckKeyActivity extends AppCompatActivity {
      * This method is assigns main layout variables.
      */
     private void initLayoutVariables() {
-        title = findViewById(R.id.check_key_title);
+        title = findViewById(R.id.login_key_title);
         key = findViewById(R.id.key_edit);
-        key_hint = findViewById(R.id.check_key_hint);
+        key_hint = findViewById(R.id.login_key_hint);
     }
 
     /**
@@ -104,7 +104,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      */
     private void checkKeyEdit() {
         if (getIntent().getBooleanExtra("changeKey", false)) {
-            typingAnimation(key_hint, getResources().getString(R.string.enter_old_key));
+            typingAnimation(key_hint, getResources().getString(R.string.enter_previous_key));
             changeKey = true;
         }
     }
@@ -117,7 +117,7 @@ public class CheckKeyActivity extends AppCompatActivity {
         key.setOnEditorActionListener((v, actionId, event) -> {
             boolean handled = false;
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                clickCheckKey(key);
+                clickLogin(key);
                 hideKeyboard();
                 handled = true;
             }
@@ -132,7 +132,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      * @param view Not use
      * @see View
      */
-    public void clickCheckKey(View view) {
+    public void clickLogin(View view) {
         makeVibration();
         if (changeKey) changeKey();
         else login();
@@ -183,7 +183,7 @@ public class CheckKeyActivity extends AppCompatActivity {
      */
     private boolean checkKeyHash() {
         if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
-            typingAnimation(key_hint, getResources().getString(R.string.all_right));
+            typingAnimation(key_hint, getResources().getString(R.string.successful_login));
             pressed = true;
             return true;
         }

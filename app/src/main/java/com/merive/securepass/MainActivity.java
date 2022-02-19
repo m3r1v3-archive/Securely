@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
 
-        checkKeyStatus();
+        checkLoginStatus();
         getSettingsData();
         checkVersion();
     }
@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is checking key status on breaking in CheckKeyActivity.
+     * This method is checking key status on breaking in LoginActivity.
      *
-     * @see CheckKeyActivity
+     * @see LoginActivity
      */
-    private void checkKeyStatus() {
+    private void checkLoginStatus() {
         if (getIntent().getBooleanExtra("status", false)) {
             db.passwordDao().deleteAll();
             finish();
@@ -406,15 +406,15 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method is using by BarFragment. The method executes after clicking on Lock Button.
-     * After click, will execute makeVibration() and will start opening CheckKeyActivity.
+     * After click, will execute makeVibration() and will start opening LoginActivity.
      * MainActivity will close.
      *
      * @see BarFragment
-     * @see CheckKeyActivity
+     * @see LoginActivity
      */
     public void clickLock() {
         makeVibration();
-        startActivity(new Intent(this, CheckKeyActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
@@ -455,11 +455,11 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param length   Password Generator length.
      * @param show     Always show password in PasswordFragment.
-     * @param deleting Delete all passwords after 15 errors in CheckKeyActivity.
+     * @param deleting Delete all passwords after 15 errors in LoginActivity.
      * @param encrypt  Encrypt Login and Password Values in Database.
      * @see SettingsFragment
      * @see PasswordFragment
-     * @see CheckKeyActivity
+     * @see LoginActivity
      * @see PasswordDB
      */
     public void saveSettings(int length, boolean show, boolean deleting, boolean encrypt) {
@@ -472,11 +472,11 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method is deleting all passwords from Database.
-     * The method can be executing in SettingsFragment or CheckKeyActivity after 15 errors.
+     * The method can be executing in SettingsFragment or LoginActivity after 15 errors.
      *
      * @see PasswordDB
      * @see SettingsFragment
-     * @see CheckKeyActivity
+     * @see LoginActivity
      */
     public void deleteAllPasswords() {
         db.passwordDao().deleteAll();
@@ -516,12 +516,12 @@ public class MainActivity extends AppCompatActivity {
      * This method is updating Delete After 15 Errors in sharedPreference.
      *
      * @param deleting New Delete After 15 Errors Value.
-     * @see CheckKeyActivity
+     * @see LoginActivity
      * @see SharedPreferences
      */
     private void updateDeleting(boolean deleting) {
         if (deleting != getIntent().getBooleanExtra("delete", false)) {
-            startActivity(new Intent(this, CheckKeyActivity.class)
+            startActivity(new Intent(this, LoginActivity.class)
                     .putExtra("status", true)
                     .putExtra("delete", deleting));
             this.deleting = deleting;

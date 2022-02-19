@@ -5,16 +5,16 @@
     <!--  MainActivity  -->
     <string name="list_is_empty">List is Empty</string>
 
-    <!--  CheckPasswordActivity  -->
+    <!--  LoginActivity  -->
     <string name="welcome_to_securepass">Welcome to SecurePass</string>
-    <string name="enter_the_key_in_the_field">Enter the key in the field.</string>
-    <string name="create_a_new_key">Create a new key\nTip: Use more than 4 numbers.</string>
-    <string name="all_passwords_was_deleted">All Passwords was deleted.\nHave a nice day xD</string>
-    <string name="invalid_key">Invalid key. Try again.</string>
-    <string name="enter_old_key">Enter old key</string>
-    <string name="key_set">Key set. Welcome!</string>
-    <string name="all_right">All right. Welcome!</string>
-    <string name="enter_the_key">Enter the key</string>
+    <string name="enter_the_key_in_the_field">Enter the key to the field</string>
+    <string name="create_a_new_key">Create new key\nTip: Use more than 4 numbers</string>
+    <string name="all_passwords_was_deleted">All passwords has deleted</string>
+    <string name="invalid_key">Invalid key</string>
+    <string name="enter_previous_key">Enter old key</string>
+    <string name="key_set">Key has been set</string>
+    <string name="successful_login">Successful login</string>
+    <string name="enter">Enter key</string>
 
     <!--  ConfirmFragment  -->
     <string name="change_key">Change key?</string>
