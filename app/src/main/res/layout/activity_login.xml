@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.075" />
 
     <ImageView
         android:id="@+id/login_title_separator"
@@ -29,7 +29,7 @@
         android:layout_marginLeft="48sp"
         android:layout_marginRight="48sp"
         android:layout_marginBottom="12sp"
-        android:src="@xml/line"
+        android:src="@xml/horizontal_line"
         app:layout_constraintBottom_toTopOf="@id/login_key_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -87,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.925"
         app:srcCompat="@drawable/confirm"
         app:tint="@color/green" />
 

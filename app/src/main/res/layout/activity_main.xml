@@ -7,73 +7,81 @@
     android:background="@color/dark"
     tools:context=".MainActivity">
 
-    <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/main_title"
-        android:layout_width="0sp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12sp"
-        android:layout_marginRight="12sp"
-        android:fontFamily="@font/share_tech_mono"
-        android:padding="12sp"
-        android:text=""
-        android:textAlignment="center"
-        android:textColor="@color/green"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06" />
-
-    <com.merive.securepass.elements.TypingTextView
-        android:id="@+id/main_empty_message"
-        android:layout_width="0sp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16sp"
-        android:background="@xml/background_light"
-        android:fontFamily="@font/share_tech_mono"
-        android:padding="16sp"
-        android:textAlignment="center"
-        android:textColor="@color/green"
-        android:textSize="36sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/password_recycler_view"
-        android:layout_width="0sp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_marginLeft="12sp"
-        android:layout_marginTop="18sp"
-        android:layout_marginRight="12sp"
-        android:layout_marginBottom="18sp"
+        android:layout_margin="12sp"
         android:background="@xml/background"
-        android:padding="12sp"
-        android:scrollbarSize="2sp"
-        android:scrollbarThumbVertical="@xml/scrollbar"
-        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bar_fragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_title"
-        tools:listitem="@layout/password_row" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.merive.securepass.elements.TypingTextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/share_tech_mono"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/green"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.075" />
+
+        <ImageView
+            android:id="@+id/main_title_separator"
+            android:layout_width="match_parent"
+            android:layout_height="12sp"
+            android:layout_marginLeft="48sp"
+            android:layout_marginRight="48sp"
+            android:layout_marginBottom="12sp"
+            android:src="@xml/horizontal_line"
+            app:layout_constraintBottom_toTopOf="@id/password_recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/password_recycler_view"
+            android:layout_width="0sp"
+            android:layout_height="0sp"
+            android:layout_marginLeft="12sp"
+            android:layout_marginTop="36sp"
+            android:layout_marginRight="12sp"
+            android:paddingBottom="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_title"
+            tools:listitem="@layout/password_row" />
+
+        <com.merive.securepass.elements.TypingTextView
+            android:id="@+id/main_empty_message"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_margin="24sp"
+            android:background="@xml/background"
+            android:fontFamily="@font/share_tech_mono"
+            android:padding="12sp"
+            android:textAlignment="center"
+            android:textColor="@color/green"
+            android:textSize="36sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/bar_fragment"
         android:layout_width="0sp"
         android:layout_height="58sp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
         android:layout_marginBottom="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
