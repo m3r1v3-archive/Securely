@@ -99,7 +99,7 @@ public class PasswordFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.password_fragment, parent);
+        return inflater.inflate(R.layout.fragment_password, parent);
     }
 
     /**

@@ -80,7 +80,7 @@ public class SettingsFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.settings_fragment, parent);
+        return inflater.inflate(R.layout.fragment_settings, parent);
     }
 
     /**
