@@ -32,7 +32,7 @@
 
         <ImageView
             android:id="@+id/main_title_separator"
-            android:layout_width="match_parent"
+            android:layout_width="0sp"
             android:layout_height="12sp"
             android:layout_marginLeft="48sp"
             android:layout_marginRight="48sp"

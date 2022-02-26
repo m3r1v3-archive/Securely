@@ -36,7 +36,7 @@
     <string name="encrypt_passwords">Encrypt the data</string>
 
     <!--  UpdateFragment  -->
-    <string name="new_version_released">New version released</string>
+    <string name="update_released">Update Released</string>
 
     <!--  Website Link  -->
     <string name="website">https://merive.herokuapp.com/SecurePass/Download/</string>

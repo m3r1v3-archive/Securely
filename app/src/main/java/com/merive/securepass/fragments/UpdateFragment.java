@@ -98,7 +98,7 @@ public class UpdateFragment extends DialogFragment {
      */
     private void initVariables(View view) {
         title = view.findViewById(R.id.update_title);
-        version = view.findViewById(R.id.version_text);
+        version = view.findViewById(R.id.update_version_title);
         download = view.findViewById(R.id.download_update_button);
     }
 
@@ -106,15 +106,14 @@ public class UpdateFragment extends DialogFragment {
      * This method is setting Title of UpdateFragment.
      */
     private void setTitle() {
-        typingAnimation(title, getResources().getString(R.string.new_version_released));
+        typingAnimation(title, getResources().getString(R.string.update_released));
     }
 
     /**
      * This method is setting text to version_text element.
      */
     private void setVersion() {
-        typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
-                getArguments().getString("newVersion")));
+        typingAnimation(version, ("Act: " + getArguments().getString("oldVersion") + " / Inst: " + getArguments().getString("newVersion")));
     }
 
     /**
