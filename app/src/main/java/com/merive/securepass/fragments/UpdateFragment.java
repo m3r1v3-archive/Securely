@@ -113,7 +113,7 @@ public class UpdateFragment extends DialogFragment {
      * This method is setting text to version_text element.
      */
     private void setVersion() {
-        typingAnimation(version, ("Act: " + getArguments().getString("oldVersion") + " / Inst: " + getArguments().getString("newVersion")));
+        typingAnimation(version, ("Old: " + getArguments().getString("oldVersion") + " / New: " + getArguments().getString("newVersion")));
     }
 
     /**
