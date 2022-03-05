@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="342sp"
+    android:layout_width="372sp"
     android:layout_height="158sp"
     android:layout_gravity="center"
     android:background="@xml/background"
-    android:minWidth="342sp"
+    android:minWidth="372sp"
     android:minHeight="158sp">
 
     <com.merive.securepass.elements.TypingTextView

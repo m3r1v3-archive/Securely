@@ -144,7 +144,7 @@ public class SettingsFragment extends DialogFragment {
      * This method is setting info.
      */
     private void setInfo() {
-        typingAnimation(info, "SecurePass " + BuildConfig.VERSION_NAME + ", " + Calendar.getInstance().get(Calendar.YEAR));
+        typingAnimation(info, "SecurePass / " + BuildConfig.VERSION_NAME);
     }
 
     /**
