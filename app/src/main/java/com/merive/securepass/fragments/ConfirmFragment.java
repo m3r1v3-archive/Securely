@@ -93,8 +93,7 @@ public class ConfirmFragment extends DialogFragment {
 
     /**
      * This method is executing after Fragment View was created.
-     * In this method will be setting DialogAnimation, layout variables will be initializing,
-     * will be checking key changing and will be setting click listeners for them.
+     * In this method will be setting DialogAnimation, layout variables will be initializing.
      *
      * @param view               Fragment View Value.
      * @param savedInstanceState Saving Fragment Values.
@@ -111,7 +110,6 @@ public class ConfirmFragment extends DialogFragment {
 
         cancel.setOnClickListener(v -> clickCancel());
         confirm.setOnClickListener(v -> clickConfirm());
-
     }
 
     /**

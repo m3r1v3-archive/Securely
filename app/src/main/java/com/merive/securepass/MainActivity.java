@@ -26,6 +26,7 @@ import com.merive.securepass.database.PasswordDB;
 import com.merive.securepass.elements.TypingTextView;
 import com.merive.securepass.fragments.BarFragment;
 import com.merive.securepass.fragments.ConfirmFragment;
+import com.merive.securepass.fragments.PasswordActionsFragment;
 import com.merive.securepass.fragments.PasswordFragment;
 import com.merive.securepass.fragments.SettingsFragment;
 import com.merive.securepass.fragments.ToastFragment;
@@ -648,17 +649,17 @@ public class MainActivity extends AppCompatActivity {
      * This method is adding Password Value to Clipboard.
      * After click will make vibration and Password Value will add to Clipboard.
      *
-     * @param label Name of Password Row
-     * @param value Password value
+     * @param name Name of Password Row
      * @see ClipboardManager
      */
-    private void clickAddToClipboard(String label, String value) {
-        makeVibration();
+    public void addToClipboard(String name) {
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(label, value);
+        ClipData clip = ClipData.newPlainText(name, encrypting ?
+                new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
+                : db.passwordDao().getPasswordByName(name));
         clipboard.setPrimaryClip(clip);
-        makeToast(label + " was copied");
+        makeToast(name + " was copied");
     }
 
     /**
@@ -713,12 +714,15 @@ public class MainActivity extends AppCompatActivity {
         passwords.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PasswordAdapter(passwordList,
                 this::clickEditPassword,
-                name -> clickAddToClipboard(
-                        name,
-                        encrypting ?
-                                new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
-                                : db.passwordDao().getPasswordByName(name)));
+                this::openPasswordActionsFragment);
         passwords.setAdapter(adapter);
+    }
+
+    private void openPasswordActionsFragment(String name) {
+        makeVibration();
+        FragmentManager fm = getSupportFragmentManager();
+        PasswordActionsFragment passwordActionsFragment = PasswordActionsFragment.newInstance(name);
+        passwordActionsFragment.show(fm, "password_actions_fragment");
     }
 
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {

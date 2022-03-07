@@ -78,7 +78,7 @@
     <FrameLayout
         android:id="@+id/bar_fragment"
         android:layout_width="0sp"
-        android:layout_height="58sp"
+        android:layout_height="60sp"
         android:layout_marginBottom="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

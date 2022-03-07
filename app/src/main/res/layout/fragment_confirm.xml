@@ -21,10 +21,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.175" />
 
     <ImageView
-        android:id="@+id/password_title_separator"
+        android:id="@+id/confirm_title_separator"
         android:layout_width="0sp"
         android:layout_height="12sp"
         android:layout_marginLeft="36sp"

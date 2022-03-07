@@ -13,7 +13,7 @@
         android:padding="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lock_button"
+        app:layout_constraintStart_toEndOf="@id/lock_button"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/add"
         app:tint="?colorAccent" />
@@ -40,7 +40,7 @@
         android:contentDescription="@string/todo"
         android:padding="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/lock_button"
+        app:layout_constraintEnd_toStartOf="@id/lock_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings"
