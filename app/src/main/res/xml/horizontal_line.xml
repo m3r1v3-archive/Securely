@@ -3,7 +3,7 @@
     android:shape="line">
     <stroke
         android:width="2sp"
-        android:color="@color/green" />
+        android:color="?colorAccent" />
     <size android:width="128sp" />
     <corners android:radius="16sp" />
 </shape>

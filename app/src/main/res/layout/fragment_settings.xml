@@ -15,7 +15,7 @@
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
         android:textAllCaps="true"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
             android:fontFamily="@font/share_tech_mono"
             android:gravity="center_vertical"
             android:text="@string/symbols"
-            android:textColor="@color/green"
+            android:textColor="?colorAccent"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/password_length_edit"
@@ -69,11 +69,12 @@
             android:layout_marginEnd="8sp"
             android:background="#00000000"
             android:fontFamily="@font/share_tech_mono"
-            android:gravity="center"
+            android:gravity="center|end"
             android:hint="@string/def"
             android:inputType="number"
             android:maxLength="2"
-            android:textColor="@color/green"
+            android:textColor="?colorAccent"
+            android:textColorHint="?colorAccent"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,13 +95,13 @@
         android:gravity="center_vertical"
         android:padding="8sp"
         android:text="@string/show"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/password_length"
         app:layout_constraintTop_toBottomOf="@id/settings_title"
-        app:thumbTint="@color/gray"
-        app:trackTint="@color/green" />
+        app:thumbTint="@color/colorPrimaryDark"
+        app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/delete_password_switch"
@@ -114,13 +115,13 @@
         android:gravity="center_vertical"
         android:padding="8sp"
         android:text="@string/delete_after_15_errors"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/encrypt_data_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_length"
-        app:thumbTint="@color/gray"
-        app:trackTint="@color/green" />
+        app:thumbTint="@color/colorPrimaryDark"
+        app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/encrypt_data_switch"
@@ -134,13 +135,13 @@
         android:gravity="center_vertical"
         android:padding="8sp"
         android:text="@string/encrypt"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/delete_password_switch"
         app:layout_constraintTop_toBottomOf="@+id/show_password_switch"
-        app:thumbTint="@color/gray"
-        app:trackTint="@color/green" />
+        app:thumbTint="@color/colorPrimaryDark"
+        app:trackTint="?colorAccent" />
 
     <com.merive.securepass.elements.TypingTextView
         android:id="@+id/info_text"
@@ -151,7 +152,7 @@
         android:layout_marginRight="18sp"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -191,7 +192,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/cancel"
-            app:tint="@color/green" />
+            app:tint="?colorAccent" />
 
         <ImageView
             android:id="@+id/delete_passwords_button"
@@ -206,7 +207,7 @@
             app:layout_constraintStart_toEndOf="@id/settings_cancel_button"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/delete"
-            app:tint="@color/green" />
+            app:tint="?colorAccent" />
 
         <ImageView
             android:id="@+id/save_settings_button"
@@ -220,7 +221,7 @@
             app:layout_constraintStart_toEndOf="@+id/delete_passwords_button"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/save"
-            app:tint="@color/green" />
+            app:tint="?colorAccent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

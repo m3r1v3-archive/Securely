@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark"
+    android:background="?colorPrimary"
     tools:context=".LoginActivity">
 
     <com.merive.securepass.elements.TypingTextView
@@ -14,7 +14,7 @@
         android:fontFamily="@font/share_tech_mono"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,7 @@
         android:layout_marginTop="36sp"
         android:fontFamily="@font/share_tech_mono"
         android:textAlignment="center"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,8 @@
         android:inputType="numberPassword"
         android:maxLength="10"
         android:singleLine="true"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
+        android:textColorHint="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/login_key_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +90,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.925"
         app:srcCompat="@drawable/confirm"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

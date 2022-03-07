@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark"
+    android:background="?colorPrimary"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             android:fontFamily="@font/share_tech_mono"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textColor="@color/green"
+            android:textColor="?colorAccent"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,7 @@
             android:fontFamily="@font/share_tech_mono"
             android:padding="12sp"
             android:textAlignment="center"
-            android:textColor="@color/green"
+            android:textColor="?colorAccent"
             android:textSize="36sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"

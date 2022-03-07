@@ -14,7 +14,7 @@
         android:layout_marginLeft="12sp"
         android:fontFamily="@font/share_tech_mono"
         android:padding="12sp"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/toast_text_separator"
@@ -43,6 +43,6 @@
         app:layout_constraintStart_toEndOf="@id/toast_text_separator"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
         android:textAllCaps="true"
-        android:textColor="@color/green"
+        android:textColor="?colorAccent"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirm_title"
         app:srcCompat="@drawable/cancel"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
     <ImageView
         android:id="@+id/confirm_okay_button"
@@ -61,6 +61,6 @@
         app:layout_constraintStart_toEndOf="@id/confirm_cancel_button"
         app:layout_constraintTop_toBottomOf="@id/confirm_title"
         app:srcCompat="@drawable/confirm"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@
         app:layout_constraintStart_toEndOf="@+id/lock_button"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/add"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
     <ImageView
         android:id="@+id/lock_button"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/lock"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
     <ImageView
         android:id="@+id/settings_button"
@@ -44,6 +44,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
