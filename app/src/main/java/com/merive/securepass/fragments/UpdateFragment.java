@@ -83,7 +83,7 @@ public class UpdateFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        initVariables(view);
+        initVariables();
         setTitle();
         setVersion();
 
@@ -92,14 +92,11 @@ public class UpdateFragment extends DialogFragment {
 
     /**
      * This method is initializing layout variables.
-     *
-     * @param view Needs for finding elements on Layout.
-     * @see View
      */
-    private void initVariables(View view) {
-        title = view.findViewById(R.id.update_title);
-        version = view.findViewById(R.id.update_version_title);
-        download = view.findViewById(R.id.download_update_button);
+    private void initVariables() {
+        title = getView().findViewById(R.id.update_title);
+        version = getView().findViewById(R.id.update_version_title);
+        download = getView().findViewById(R.id.download_update_button);
     }
 
     /**

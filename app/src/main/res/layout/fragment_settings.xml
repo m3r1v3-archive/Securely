@@ -31,7 +31,7 @@
         android:layout_marginRight="36sp"
         android:layout_marginBottom="12sp"
         android:src="@xml/horizontal_line"
-        app:layout_constraintBottom_toTopOf="@+id/password_length"
+        app:layout_constraintBottom_toTopOf="@id/password_length"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -43,7 +43,7 @@
         android:layout_marginTop="36sp"
         android:layout_marginEnd="6sp"
         android:background="@xml/background"
-        app:layout_constraintEnd_toStartOf="@+id/show_password_switch"
+        app:layout_constraintEnd_toStartOf="@id/show_password_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/settings_title">
 
@@ -58,7 +58,7 @@
             android:textColor="?colorAccent"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/password_length_edit"
+            app:layout_constraintEnd_toStartOf="@id/password_length_edit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,7 +78,7 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/password_length_text"
+            app:layout_constraintStart_toEndOf="@id/password_length_text"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -98,7 +98,7 @@
         android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/password_length"
+        app:layout_constraintStart_toEndOf="@id/password_length"
         app:layout_constraintTop_toBottomOf="@id/settings_title"
         app:thumbTint="@color/colorPrimaryDark"
         app:trackTint="?colorAccent" />
@@ -117,9 +117,9 @@
         android:text="@string/delete"
         android:textColor="?colorAccent"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/encrypt_data_switch"
+        app:layout_constraintEnd_toStartOf="@id/encrypt_data_switch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_length"
+        app:layout_constraintTop_toBottomOf="@id/password_length"
         app:thumbTint="@color/colorPrimaryDark"
         app:trackTint="?colorAccent" />
 
@@ -138,8 +138,8 @@
         android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/delete_password_switch"
-        app:layout_constraintTop_toBottomOf="@+id/show_password_switch"
+        app:layout_constraintStart_toEndOf="@id/delete_password_switch"
+        app:layout_constraintTop_toBottomOf="@id/show_password_switch"
         app:thumbTint="@color/colorPrimaryDark"
         app:trackTint="?colorAccent" />
 
@@ -156,7 +156,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/delete_password_switch" />
+        app:layout_constraintTop_toBottomOf="@id/delete_password_switch" />
 
     <ImageView
         android:id="@+id/settings_switch_separator"
@@ -168,7 +168,7 @@
         android:src="@xml/horizontal_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_text" />
+        app:layout_constraintTop_toBottomOf="@id/info_text" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/settings_buttons"
@@ -188,7 +188,7 @@
             android:background="@xml/background"
             android:padding="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/delete_passwords_button"
+            app:layout_constraintEnd_toStartOf="@id/delete_passwords_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/cancel"
@@ -218,7 +218,7 @@
             android:padding="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/delete_passwords_button"
+            app:layout_constraintStart_toEndOf="@id/delete_passwords_button"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/save"
             app:tint="?colorAccent" />

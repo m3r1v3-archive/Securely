@@ -13,6 +13,8 @@
         android:layout_margin="12sp"
         android:background="@xml/background"
         app:layout_constraintBottom_toTopOf="@+id/bar_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.merive.securepass.elements.TypingTextView
@@ -53,7 +55,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_title"
+            app:layout_constraintTop_toBottomOf="@id/main_title"
             tools:listitem="@layout/password_row" />
 
         <com.merive.securepass.elements.TypingTextView
