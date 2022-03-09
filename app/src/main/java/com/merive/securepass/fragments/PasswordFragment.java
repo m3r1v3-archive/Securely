@@ -17,8 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
+import com.merive.securepass.ScannerActivity;
 import com.merive.securepass.elements.TypingTextView;
 import com.merive.securepass.utils.PasswordGenerator;
 
@@ -26,7 +28,7 @@ public class PasswordFragment extends DialogFragment {
 
     TypingTextView title;
     EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
-    ImageView save, cancel, delete, generate;
+    ImageView save, cancel, scan, delete, generate;
     boolean edit, show;
 
 
@@ -120,7 +122,7 @@ public class PasswordFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        initVariables(view);
+        initVariables();
         setEdit();
         setTitle();
         setEditMode();
@@ -129,6 +131,7 @@ public class PasswordFragment extends DialogFragment {
         cancel.setOnClickListener(this::clickCancel);
         delete.setOnClickListener(this::clickDeletePassword);
         save.setOnClickListener(this::clickSave);
+        scan.setOnClickListener(this::clickScan);
 
         generate.setOnClickListener(v -> clickGeneratePassword());
         passwordEdit.setOnLongClickListener(v -> {
@@ -139,23 +142,21 @@ public class PasswordFragment extends DialogFragment {
 
     /**
      * This method is initializing layout variables.
-     *
-     * @param view Needs for finding elements on Layout.
-     * @see View
      */
-    private void initVariables(View view) {
-        title = view.findViewById(R.id.password_title);
+    private void initVariables() {
+        title = getView().findViewById(R.id.password_title);
 
-        nameEdit = view.findViewById(R.id.name_edit);
-        loginEdit = view.findViewById(R.id.login_edit);
-        passwordEdit = view.findViewById(R.id.password_edit);
-        descriptionEdit = view.findViewById(R.id.description_edit);
+        nameEdit = getView().findViewById(R.id.name_edit);
+        loginEdit = getView().findViewById(R.id.login_edit);
+        passwordEdit = getView().findViewById(R.id.password_edit);
+        descriptionEdit = getView().findViewById(R.id.description_edit);
 
-        delete = view.findViewById(R.id.password_delete_button);
-        cancel = view.findViewById(R.id.password_cancel_button);
-        save = view.findViewById(R.id.password_save_button);
+        delete = getView().findViewById(R.id.password_delete_button);
+        scan = getView().findViewById(R.id.password_scan_button);
+        cancel = getView().findViewById(R.id.password_cancel_button);
+        save = getView().findViewById(R.id.password_save_button);
 
-        generate = view.findViewById(R.id.generate_password_button);
+        generate = getView().findViewById(R.id.generate_password_button);
     }
 
     /**
@@ -181,6 +182,7 @@ public class PasswordFragment extends DialogFragment {
     private void setEditMode() {
         if (edit) {
             delete.setVisibility(View.VISIBLE);
+            scan.setVisibility(View.INVISIBLE);
             setEditsData();
         }
     }
@@ -340,5 +342,29 @@ public class PasswordFragment extends DialogFragment {
             }, 5000);
             show = false;
         }
+    }
+
+    /**
+     * This method executes when clicking Scan Button.
+     */
+    private void clickScan(View view) {
+        ((MainActivity) getActivity()).makeVibration();
+        openScanner();
+        dismiss();
+    }
+
+    /**
+     * This method opens QR scanner.
+     */
+    private void openScanner() {
+        new IntentIntegrator(getActivity())
+                .setBarcodeImageEnabled(false)
+                .setPrompt("Find and Scan SecurePassQR")
+                .setCameraId(0)
+                .setCaptureActivity(ScannerActivity.class)
+                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+                .setBeepEnabled(false)
+                .setOrientationLocked(true)
+                .initiateScan();
     }
 }

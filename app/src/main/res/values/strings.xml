@@ -4,6 +4,7 @@
 
     <!--  MainActivity  -->
     <string name="list_is_empty">List is Empty</string>
+    <string name="error">Something went wrong!</string>
 
     <!--  LoginActivity  -->
     <string name="welcome_to_securepass">Welcome to SecurePass</string>
@@ -37,9 +38,6 @@
 
     <!--  UpdateFragment  -->
     <string name="update_released">Update Released</string>
-
-    <!--  PasswordActionsFragment  -->
-    <string name="password_actions">Password actions</string>
 
     <!--  Website Link  -->
     <string name="website">https://merive.herokuapp.com/SecurePass/Download/</string>
