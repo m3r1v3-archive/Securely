@@ -30,7 +30,7 @@ public class ToastFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.toast, parent, false);
+        return inflater.inflate(R.layout.fragment_toast, parent, false);
     }
 
     /**
@@ -48,18 +48,15 @@ public class ToastFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        initVariables(view);
+        initVariables();
         showToast();
     }
 
     /**
      * This method is initializing layout variables.
-     *
-     * @param view Needs for finding elements on Layout.
-     * @see View
      */
-    private void initVariables(View view) {
-        text = view.findViewById(R.id.toast_text);
+    private void initVariables() {
+        text = getView().findViewById(R.id.toast_text);
     }
 
     /**
@@ -80,7 +77,8 @@ public class ToastFragment extends Fragment {
                 MainActivity.toastMessages.removeFirst();
                 new Handler().postDelayed(() -> showToast(), 4250);
             }
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+        }
     }
 }
 

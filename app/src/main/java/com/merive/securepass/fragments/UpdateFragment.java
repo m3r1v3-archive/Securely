@@ -64,7 +64,7 @@ public class UpdateFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.update_fragment, parent);
+        return inflater.inflate(R.layout.fragment_update, parent);
     }
 
     /**
@@ -83,7 +83,7 @@ public class UpdateFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        initVariables(view);
+        initVariables();
         setTitle();
         setVersion();
 
@@ -92,29 +92,25 @@ public class UpdateFragment extends DialogFragment {
 
     /**
      * This method is initializing layout variables.
-     *
-     * @param view Needs for finding elements on Layout.
-     * @see View
      */
-    private void initVariables(View view) {
-        title = view.findViewById(R.id.update_title);
-        version = view.findViewById(R.id.version_text);
-        download = view.findViewById(R.id.download_update_button);
+    private void initVariables() {
+        title = getView().findViewById(R.id.update_title);
+        version = getView().findViewById(R.id.update_version_title);
+        download = getView().findViewById(R.id.download_update_button);
     }
 
     /**
      * This method is setting Title of UpdateFragment.
      */
     private void setTitle() {
-        typingAnimation(title, getResources().getString(R.string.new_version_released));
+        typingAnimation(title, getResources().getString(R.string.update_released));
     }
 
     /**
      * This method is setting text to version_text element.
      */
     private void setVersion() {
-        typingAnimation(version, ("Download: " + getArguments().getString("oldVersion") + " → " +
-                getArguments().getString("newVersion")));
+        typingAnimation(version, ("Old: " + getArguments().getString("oldVersion") + " / New: " + getArguments().getString("newVersion")));
     }
 
     /**

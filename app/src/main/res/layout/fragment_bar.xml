@@ -4,56 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="58sp">
 
-    <View
-        android:id="@+id/bar_background"
-        android:layout_width="0sp"
-        android:layout_height="0sp"
-        android:background="@xml/background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/add_button"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:background="@xml/background_light"
+        android:layout_width="112sp"
+        android:layout_height="56sp"
+        android:background="@xml/background"
         android:contentDescription="@string/todo"
         android:padding="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lock_button"
+        app:layout_constraintStart_toEndOf="@id/lock_button"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/add"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
     <ImageView
         android:id="@+id/lock_button"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:background="@xml/background_light"
-        android:contentDescription="@string/todo"
-        android:padding="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/bar_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/lock"
-        app:tint="@color/green" />
-
-    <ImageView
-        android:id="@+id/settings_button"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:background="@xml/background_light"
+        android:layout_width="112sp"
+        android:layout_height="56sp"
+        android:background="@xml/background"
         android:contentDescription="@string/todo"
         android:padding="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/lock_button"
+        app:layout_constraintEnd_toStartOf="@id/add_button"
+        app:layout_constraintStart_toEndOf="@id/settings_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/lock"
+        app:tint="?colorAccent" />
+
+    <ImageView
+        android:id="@+id/settings_button"
+        android:layout_width="112sp"
+        android:layout_height="56sp"
+        android:background="@xml/background"
+        android:contentDescription="@string/todo"
+        android:padding="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lock_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings"
-        app:tint="@color/green" />
+        app:tint="?colorAccent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,48 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toastLayout"
+    android:layout_width="match_parent"
+    android:layout_height="56sp"
+    android:layout_gravity="center"
+    android:layout_margin="12sp"
+    android:background="@xml/background">
+
+    <com.merive.securepass.elements.TypingTextView
+        android:id="@+id/toast_text"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12sp"
+        android:fontFamily="@font/share_tech_mono"
+        android:padding="12sp"
+        android:textColor="?colorAccent"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/toast_text_separator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/toast_text_separator"
+        android:layout_width="32sp"
+        android:layout_height="48sp"
+        android:src="@xml/vertical_line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/toast_image"
+        app:layout_constraintStart_toEndOf="@id/toast_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/toast_image"
+        android:layout_width="48sp"
+        android:layout_height="48sp"
+        android:layout_marginEnd="12sp"
+        android:background="@xml/background"
+        android:padding="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/toast_text_separator"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon"
+        app:tint="?colorAccent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

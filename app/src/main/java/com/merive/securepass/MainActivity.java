@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.merive.securepass.adapter.PasswordAdapter;
 import com.merive.securepass.database.Password;
 import com.merive.securepass.database.PasswordDB;
@@ -27,10 +31,12 @@ import com.merive.securepass.elements.TypingTextView;
 import com.merive.securepass.fragments.BarFragment;
 import com.merive.securepass.fragments.ConfirmFragment;
 import com.merive.securepass.fragments.PasswordFragment;
+import com.merive.securepass.fragments.PasswordSharingFragment;
 import com.merive.securepass.fragments.SettingsFragment;
 import com.merive.securepass.fragments.ToastFragment;
 import com.merive.securepass.fragments.UpdateFragment;
 import com.merive.securepass.utils.Crypt;
+import com.merive.securepass.utils.Hex;
 import com.merive.securepass.utils.VibrationManager;
 
 import java.io.BufferedReader;
@@ -40,6 +46,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
 
-        checkKeyStatus();
+        checkLoginStatus();
         getSettingsData();
         checkVersion();
     }
@@ -90,6 +97,42 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         checkEmpty();
         new GetPasswordData().execute();
+    }
+
+    /**
+     * This method checks result of QR scanning.
+     *
+     * @param requestCode The code what was requested.
+     * @param resultCode  The code what was returned.
+     * @param intent      Intent object.
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            try {
+                checkPatternQR(intent.getStringExtra("SCAN_RESULT").replace("SecurePass:", ""));
+            } catch (Exception exc) {
+                makeToast(getResources().getString(R.string.error));
+            }
+        }
+    }
+
+    /**
+     * This method checks QR result on pattern.
+     *
+     * @param result QR result.
+     * @see Pattern
+     */
+    private void checkPatternQR(String result) {
+        if (result.split("-").length == 3) {
+            Bundle values = new Bundle();
+            values.putString("name", Hex.decrypt(result.split("-")[0]));
+            values.putString("login", Hex.decrypt(result.split("-")[1]));
+            values.putString("password", Hex.decrypt(result.split("-")[2]));
+            values.putString("description", "");
+            addNewPassword(values);
+        } else makeToast(getResources().getString(R.string.error));
     }
 
     /**
@@ -129,11 +172,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is checking key status on breaking in CheckKeyActivity.
+     * This method is checking key status on breaking in LoginActivity.
      *
-     * @see CheckKeyActivity
+     * @see LoginActivity
      */
-    private void checkKeyStatus() {
+    private void checkLoginStatus() {
         if (getIntent().getBooleanExtra("status", false)) {
             db.passwordDao().deleteAll();
             finish();
@@ -406,15 +449,15 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method is using by BarFragment. The method executes after clicking on Lock Button.
-     * After click, will execute makeVibration() and will start opening CheckKeyActivity.
+     * After click, will execute makeVibration() and will start opening LoginActivity.
      * MainActivity will close.
      *
      * @see BarFragment
-     * @see CheckKeyActivity
+     * @see LoginActivity
      */
     public void clickLock() {
         makeVibration();
-        startActivity(new Intent(this, CheckKeyActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
@@ -455,11 +498,11 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param length   Password Generator length.
      * @param show     Always show password in PasswordFragment.
-     * @param deleting Delete all passwords after 15 errors in CheckKeyActivity.
+     * @param deleting Delete all passwords after 15 errors in LoginActivity.
      * @param encrypt  Encrypt Login and Password Values in Database.
      * @see SettingsFragment
      * @see PasswordFragment
-     * @see CheckKeyActivity
+     * @see LoginActivity
      * @see PasswordDB
      */
     public void saveSettings(int length, boolean show, boolean deleting, boolean encrypt) {
@@ -472,11 +515,11 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method is deleting all passwords from Database.
-     * The method can be executing in SettingsFragment or CheckKeyActivity after 15 errors.
+     * The method can be executing in SettingsFragment or LoginActivity after 15 errors.
      *
      * @see PasswordDB
      * @see SettingsFragment
-     * @see CheckKeyActivity
+     * @see LoginActivity
      */
     public void deleteAllPasswords() {
         db.passwordDao().deleteAll();
@@ -516,12 +559,12 @@ public class MainActivity extends AppCompatActivity {
      * This method is updating Delete After 15 Errors in sharedPreference.
      *
      * @param deleting New Delete After 15 Errors Value.
-     * @see CheckKeyActivity
+     * @see LoginActivity
      * @see SharedPreferences
      */
     private void updateDeleting(boolean deleting) {
         if (deleting != getIntent().getBooleanExtra("delete", false)) {
-            startActivity(new Intent(this, CheckKeyActivity.class)
+            startActivity(new Intent(this, LoginActivity.class)
                     .putExtra("status", true)
                     .putExtra("delete", deleting));
             this.deleting = deleting;
@@ -648,17 +691,17 @@ public class MainActivity extends AppCompatActivity {
      * This method is adding Password Value to Clipboard.
      * After click will make vibration and Password Value will add to Clipboard.
      *
-     * @param label Name of Password Row
-     * @param value Password value
+     * @param name Name of Password Row
      * @see ClipboardManager
      */
-    private void clickAddToClipboard(String label, String value) {
-        makeVibration();
+    public void addToClipboard(String name) {
         ClipboardManager clipboard = (ClipboardManager)
                 getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(label, value);
+        ClipData clip = ClipData.newPlainText(name, encrypting ?
+                new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
+                : db.passwordDao().getPasswordByName(name));
         clipboard.setPrimaryClip(clip);
-        makeToast(label + " was copied");
+        makeToast(name + " was copied");
     }
 
     /**
@@ -673,7 +716,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean checkNotExist(String name) {
         if (db.passwordDao().checkNotExist(name)) return true;
         else {
-            makeToast(name + " already in database");
+            makeToast("Name already taken");
             return false;
         }
     }
@@ -701,6 +744,13 @@ public class MainActivity extends AppCompatActivity {
         confirmFragment.show(fm, "confirm_fragment");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getEncryptedValues(String name) {
+        return ("SecurePass:" + Hex.encrypt(name) + "-" +
+                Hex.encrypt(encrypting ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name)) + "-" +
+                Hex.encrypt(encrypting ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
+    }
+
     /**
      * This method is loading RecyclerView, load values, set clickListeners.
      *
@@ -713,12 +763,15 @@ public class MainActivity extends AppCompatActivity {
         passwords.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PasswordAdapter(passwordList,
                 this::clickEditPassword,
-                name -> clickAddToClipboard(
-                        name,
-                        encrypting ?
-                                new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name))
-                                : db.passwordDao().getPasswordByName(name)));
+                this::openPasswordSharingFragment);
         passwords.setAdapter(adapter);
+    }
+
+    private void openPasswordSharingFragment(String name) {
+        makeVibration();
+        FragmentManager fm = getSupportFragmentManager();
+        PasswordSharingFragment passwordSharingFragment = PasswordSharingFragment.newInstance(name);
+        passwordSharingFragment.show(fm, "password_sharing_fragment");
     }
 
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {

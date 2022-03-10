@@ -17,6 +17,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.merive.securepass.BuildConfig;
+import com.merive.securepass.LoginActivity;
 import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
@@ -46,11 +47,11 @@ public class SettingsFragment extends DialogFragment {
      *
      * @param length     Password Generator Length.
      * @param show       Always Show Password in PasswordFragment.
-     * @param delete     Delete all passwords after 15 errors in CheckKeyActivity.
+     * @param delete     Delete all passwords after 15 errors in LoginActivity.
      * @param encrypting Encrypt Login and Password Values in Database.
      * @return SettingsFragment with necessary arguments.
      * @see PasswordFragment
-     * @see com.merive.securepass.CheckKeyActivity
+     * @see LoginActivity
      * @see com.merive.securepass.utils.Crypt
      * @see com.merive.securepass.database.PasswordDB
      */
@@ -79,7 +80,7 @@ public class SettingsFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.settings_fragment, parent);
+        return inflater.inflate(R.layout.fragment_settings, parent);
     }
 
     /**
@@ -98,7 +99,7 @@ public class SettingsFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        initVariables(view);
+        initVariables();
 
         setTitle();
         setInfo();
@@ -113,23 +114,20 @@ public class SettingsFragment extends DialogFragment {
 
     /**
      * This method is initializing layout variables.
-     *
-     * @param view Needs for finding elements on Layout.
-     * @see View
      */
-    private void initVariables(View view) {
-        title = view.findViewById(R.id.settings_title);
-        info = view.findViewById(R.id.info_text);
+    private void initVariables() {
+        title = getView().findViewById(R.id.settings_title);
+        info = getView().findViewById(R.id.info_text);
 
-        passwordLengthEdit = view.findViewById(R.id.password_length_edit);
+        passwordLengthEdit = getView().findViewById(R.id.password_length_edit);
 
-        showPasswordSwitch = view.findViewById(R.id.show_password_switch);
-        deletingSwitch = view.findViewById(R.id.delete_password_switch);
-        encryptingSwitch = view.findViewById(R.id.encrypt_data_switch);
+        showPasswordSwitch = getView().findViewById(R.id.show_password_switch);
+        deletingSwitch = getView().findViewById(R.id.delete_password_switch);
+        encryptingSwitch = getView().findViewById(R.id.encrypt_data_switch);
 
-        cancel = view.findViewById(R.id.settings_cancel_button);
-        deleteAll = view.findViewById(R.id.delete_passwords_button);
-        save = view.findViewById(R.id.save_settings_button);
+        cancel = getView().findViewById(R.id.settings_cancel_button);
+        deleteAll = getView().findViewById(R.id.delete_passwords_button);
+        save = getView().findViewById(R.id.save_settings_button);
     }
 
     /**
@@ -143,7 +141,7 @@ public class SettingsFragment extends DialogFragment {
      * This method is setting info.
      */
     private void setInfo() {
-        typingAnimation(info, "SecurePass " + BuildConfig.VERSION_NAME + ", " + Calendar.getInstance().get(Calendar.YEAR));
+        typingAnimation(info, "SecurePass / " + BuildConfig.VERSION_NAME);
     }
 
     /**

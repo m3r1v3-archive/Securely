@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.merive.securepass.CheckKeyActivity;
+import com.merive.securepass.LoginActivity;
 import com.merive.securepass.MainActivity;
 import com.merive.securepass.R;
 import com.merive.securepass.elements.TypingTextView;
@@ -88,13 +88,12 @@ public class ConfirmFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.confirm_fragment, parent);
+        return inflater.inflate(R.layout.fragment_confirm, parent);
     }
 
     /**
      * This method is executing after Fragment View was created.
-     * In this method will be setting DialogAnimation, layout variables will be initializing,
-     * will be checking key changing and will be setting click listeners for them.
+     * In this method will be setting DialogAnimation, layout variables will be initializing.
      *
      * @param view               Fragment View Value.
      * @param savedInstanceState Saving Fragment Values.
@@ -111,7 +110,6 @@ public class ConfirmFragment extends DialogFragment {
 
         cancel.setOnClickListener(v -> clickCancel());
         confirm.setOnClickListener(v -> clickConfirm());
-
     }
 
     /**
@@ -176,11 +174,11 @@ public class ConfirmFragment extends DialogFragment {
 
     /**
      * This method is disable encrypting (to prevent errors)
-     * and starting CheckKeyActivity for key changing.
+     * and starting LoginActivity for key changing.
      */
     private void changeKey() {
         ((MainActivity) getActivity()).updateEncrypting(false);
-        startActivity(new Intent(getActivity(), CheckKeyActivity.class)
+        startActivity(new Intent(getActivity(), LoginActivity.class)
                 .putExtra("changeKey", true));
     }
 }

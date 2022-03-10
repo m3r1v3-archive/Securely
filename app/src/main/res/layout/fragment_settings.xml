@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="372sp"
+    android:layout_height="372sp"
+    android:layout_gravity="center"
+    android:background="@xml/background"
+    android:minWidth="372sp"
+    android:minHeight="372sp">
+
+    <com.merive.securepass.elements.TypingTextView
+        android:id="@+id/settings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/share_tech_mono"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textColor="?colorAccent"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <ImageView
+        android:id="@+id/settings_title_separator"
+        android:layout_width="0sp"
+        android:layout_height="12sp"
+        android:layout_marginLeft="36sp"
+        android:layout_marginRight="36sp"
+        android:layout_marginBottom="12sp"
+        android:src="@xml/horizontal_line"
+        app:layout_constraintBottom_toTopOf="@id/password_length"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/password_length"
+        android:layout_width="0sp"
+        android:layout_height="56sp"
+        android:layout_marginStart="18sp"
+        android:layout_marginTop="36sp"
+        android:layout_marginEnd="6sp"
+        android:background="@xml/background"
+        app:layout_constraintEnd_toStartOf="@id/show_password_switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_title">
+
+        <com.merive.securepass.elements.TypingTextView
+            android:id="@+id/password_length_text"
+            android:layout_width="0sp"
+            android:layout_height="0sp"
+            android:layout_marginStart="12sp"
+            android:fontFamily="@font/share_tech_mono"
+            android:gravity="center_vertical"
+            android:text="@string/symbols"
+            android:textColor="?colorAccent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/password_length_edit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/password_length_edit"
+            android:layout_width="0sp"
+            android:layout_height="0sp"
+            android:layout_marginEnd="12sp"
+            android:background="#00000000"
+            android:fontFamily="@font/share_tech_mono"
+            android:gravity="center|end"
+            android:hint="@string/def"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textColor="?colorAccent"
+            android:textColorHint="?colorAccent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/password_length_text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/show_password_switch"
+        android:layout_width="0sp"
+        android:layout_height="56sp"
+        android:layout_marginStart="6sp"
+        android:layout_marginTop="36sp"
+        android:layout_marginEnd="18sp"
+        android:background="@xml/background"
+        android:fontFamily="@font/share_tech_mono"
+        android:gravity="center_vertical"
+        android:padding="12sp"
+        android:text="@string/show"
+        android:textColor="?colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/password_length"
+        app:layout_constraintTop_toBottomOf="@id/settings_title"
+        app:thumbTint="@color/colorPrimaryDark"
+        app:trackTint="?colorAccent" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/delete_password_switch"
+        android:layout_width="0sp"
+        android:layout_height="56sp"
+        android:layout_marginStart="18sp"
+        android:layout_marginTop="16sp"
+        android:layout_marginEnd="6sp"
+        android:background="@xml/background"
+        android:fontFamily="@font/share_tech_mono"
+        android:gravity="center_vertical"
+        android:padding="12sp"
+        android:text="@string/delete"
+        android:textColor="?colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/encrypt_data_switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_length"
+        app:thumbTint="@color/colorPrimaryDark"
+        app:trackTint="?colorAccent" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/encrypt_data_switch"
+        android:layout_width="0sp"
+        android:layout_height="56sp"
+        android:layout_marginStart="6sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="18sp"
+        android:background="@xml/background"
+        android:fontFamily="@font/share_tech_mono"
+        android:gravity="center_vertical"
+        android:padding="12sp"
+        android:text="@string/encrypt"
+        android:textColor="?colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/delete_password_switch"
+        app:layout_constraintTop_toBottomOf="@id/show_password_switch"
+        app:thumbTint="@color/colorPrimaryDark"
+        app:trackTint="?colorAccent" />
+
+    <com.merive.securepass.elements.TypingTextView
+        android:id="@+id/info_text"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="18sp"
+        android:fontFamily="@font/share_tech_mono"
+        android:gravity="center"
+        android:textColor="?colorAccent"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/delete_password_switch" />
+
+    <ImageView
+        android:id="@+id/settings_switch_separator"
+        android:layout_width="0sp"
+        android:layout_height="12sp"
+        android:layout_marginLeft="36sp"
+        android:layout_marginTop="12sp"
+        android:layout_marginRight="36sp"
+        android:src="@xml/horizontal_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/info_text" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_buttons"
+        android:layout_width="0sp"
+        android:layout_height="58sp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/settings_cancel_button"
+            android:layout_width="0sp"
+            android:layout_height="56sp"
+            android:layout_marginStart="32sp"
+            android:background="@xml/background"
+            android:padding="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete_passwords_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/cancel"
+            app:tint="?colorAccent" />
+
+        <ImageView
+            android:id="@+id/delete_passwords_button"
+            android:layout_width="0sp"
+            android:layout_height="56sp"
+            android:layout_marginStart="16sp"
+            android:layout_marginEnd="16sp"
+            android:background="@xml/background"
+            android:padding="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/save_settings_button"
+            app:layout_constraintStart_toEndOf="@id/settings_cancel_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/delete"
+            app:tint="?colorAccent" />
+
+        <ImageView
+            android:id="@+id/save_settings_button"
+            android:layout_width="0sp"
+            android:layout_height="56sp"
+            android:layout_marginEnd="32sp"
+            android:background="@xml/background"
+            android:padding="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/delete_passwords_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/save"
+            app:tint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

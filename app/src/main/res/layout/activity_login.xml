@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorPrimary"
+    tools:context=".LoginActivity">
+
+    <com.merive.securepass.elements.TypingTextView
+        android:id="@+id/login_key_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/share_tech_mono"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="?colorAccent"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <ImageView
+        android:id="@+id/login_title_separator"
+        android:layout_width="0sp"
+        android:layout_height="12sp"
+        android:layout_marginLeft="48sp"
+        android:layout_marginRight="48sp"
+        android:layout_marginBottom="12sp"
+        android:src="@xml/horizontal_line"
+        app:layout_constraintBottom_toTopOf="@id/login_key_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.merive.securepass.elements.TypingTextView
+        android:id="@+id/login_key_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36sp"
+        android:fontFamily="@font/share_tech_mono"
+        android:textAlignment="center"
+        android:textColor="?colorAccent"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_key_title" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="128sp"
+        android:layout_height="128sp"
+        android:src="@drawable/icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/key_edit"
+        android:layout_width="224sp"
+        android:layout_height="56sp"
+        android:layout_marginBottom="36sp"
+        android:background="@xml/background"
+        android:fontFamily="@font/share_tech_mono"
+        android:gravity="center"
+        android:hint="@string/enter"
+        android:imeOptions="actionDone"
+        android:inputType="numberPassword"
+        android:maxLength="10"
+        android:singleLine="true"
+        android:textColor="?colorAccent"
+        android:textColorHint="?colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/login_key_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/login_key_button"
+        android:layout_width="112sp"
+        android:layout_height="56sp"
+        android:background="@xml/background"
+        android:onClick="clickLogin"
+        android:padding="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.925"
+        app:srcCompat="@drawable/confirm"
+        app:tint="?colorAccent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
