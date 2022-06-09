@@ -1,13 +1,13 @@
 <resources>
     <!--  Basic Strings  -->
-    <string name="app_name">SecurePass</string>
+    <string name="app_name">Securely</string>
 
     <!--  MainActivity  -->
     <string name="list_is_empty">List is Empty</string>
     <string name="error">Something went wrong!</string>
 
     <!--  LoginActivity  -->
-    <string name="welcome_to_securepass">Welcome to SecurePass</string>
+    <string name="welcome_to_securely">Welcome to Securely</string>
     <string name="enter_the_key_in_the_field">Enter the key to the field</string>
     <string name="create_a_new_key">Create new key\nTip: Use more than 4 numbers</string>
     <string name="all_passwords_was_deleted">All passwords has deleted</string>
@@ -40,7 +40,7 @@
     <string name="update_released">Update Released</string>
 
     <!--  Website Link  -->
-    <string name="website">https://merive.herokuapp.com/SecurePass/Download/</string>
+    <string name="website">https://merive.herokuapp.com/Securely/Download/</string>
 
     <!--  TODO  -->
     <string name="todo">TODO</string>

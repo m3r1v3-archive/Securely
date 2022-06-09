@@ -8,7 +8,7 @@
     android:minWidth="372sp"
     android:minHeight="372sp">
 
-    <com.merive.securepass.elements.TypingTextView
+    <com.merive.securely.elements.TypingTextView
         android:id="@+id/settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/settings_title">
 
-        <com.merive.securepass.elements.TypingTextView
+        <com.merive.securely.elements.TypingTextView
             android:id="@+id/password_length_text"
             android:layout_width="0sp"
             android:layout_height="0sp"
@@ -143,7 +143,7 @@
         app:thumbTint="@color/colorPrimaryDark"
         app:trackTint="?colorAccent" />
 
-    <com.merive.securepass.elements.TypingTextView
+    <com.merive.securely.elements.TypingTextView
         android:id="@+id/info_text"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
