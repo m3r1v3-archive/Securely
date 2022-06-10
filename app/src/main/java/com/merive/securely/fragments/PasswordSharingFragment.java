@@ -132,7 +132,7 @@ public class PasswordSharingFragment extends DialogFragment {
             int[] pixels = new int[width * height];
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
-                    pixels[y * width + x] = bitMatrix.get(x, y) ? 0xFF323232 : Color.TRANSPARENT;
+                    pixels[y * width + x] = bitMatrix.get(x, y) ? 0xFF1D201D : Color.TRANSPARENT;
             Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             bmp.setPixels(pixels, 0, width, 0, 0, width, height);
             return bmp;
