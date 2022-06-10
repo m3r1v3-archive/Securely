@@ -51,7 +51,7 @@ import java.util.regex.Pattern;
 public class MainActivity extends AppCompatActivity {
 
     public static LinkedList<String> toastMessages = new LinkedList<>();
-    TypingTextView title, empty;
+    TypingTextView empty;
     RecyclerView passwords;
     PasswordAdapter adapter;
     PasswordDB db;
@@ -74,10 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         setBarFragment();
 
-        typingAnimation(title, getResources().getString(R.string.app_name));
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
-
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
 
@@ -139,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
      * This method is assigns main layout variables.
      */
     private void initLayoutVariables() {
-        title = findViewById(R.id.main_title);
         empty = findViewById(R.id.main_empty_message);
         passwords = findViewById(R.id.password_recycler_view);
     }
