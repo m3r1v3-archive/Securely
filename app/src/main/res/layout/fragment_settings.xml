@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
+        android:singleLine="true"
         android:textAllCaps="true"
         android:textColor="?colorAccent"
         android:textSize="28sp"
@@ -54,6 +55,7 @@
             android:layout_marginStart="12sp"
             android:fontFamily="@font/share_tech_mono"
             android:gravity="center_vertical"
+            android:singleLine="true"
             android:text="@string/symbols"
             android:textColor="?colorAccent"
             android:textSize="18sp"
@@ -94,13 +96,14 @@
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center_vertical"
         android:padding="12sp"
+        android:singleLine="true"
         android:text="@string/show"
         android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/password_length"
         app:layout_constraintTop_toBottomOf="@id/settings_title"
-        app:thumbTint="@color/colorPrimaryDark"
+        app:thumbTint="@color/colorPrimary"
         app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
@@ -114,13 +117,14 @@
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center_vertical"
         android:padding="12sp"
+        android:singleLine="true"
         android:text="@string/delete"
         android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@id/encrypt_data_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/password_length"
-        app:thumbTint="@color/colorPrimaryDark"
+        app:thumbTint="@color/colorPrimary"
         app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
@@ -134,13 +138,14 @@
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center_vertical"
         android:padding="12sp"
+        android:singleLine="true"
         android:text="@string/encrypt"
         android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/delete_password_switch"
         app:layout_constraintTop_toBottomOf="@id/show_password_switch"
-        app:thumbTint="@color/colorPrimaryDark"
+        app:thumbTint="@color/colorPrimary"
         app:trackTint="?colorAccent" />
 
     <com.merive.securely.elements.TypingTextView
@@ -152,6 +157,7 @@
         android:layout_marginRight="18sp"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
+        android:singleLine="true"
         android:textColor="?colorAccent"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

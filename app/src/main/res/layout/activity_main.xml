@@ -36,6 +36,7 @@
             android:background="@xml/background"
             android:fontFamily="@font/share_tech_mono"
             android:padding="12sp"
+            android:singleLine="true"
             android:textAlignment="center"
             android:textColor="?colorAccent"
             android:textSize="32sp"
