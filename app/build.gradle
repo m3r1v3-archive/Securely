@@ -5,17 +5,10 @@ plugins {
 android {
     signingConfigs {
         realise {
-            storeFile file('src\\main\\res\\SecurePass.jks')
-            keyAlias 'SecurePassKey'
-            storePassword '1[SecurePass]3'
-            keyPassword '1[SecurePass]3'
-        }
-
-        debug {
-            storeFile file('src\\main\\res\\SecurePass.jks')
-            keyAlias 'SecurePassKey'
-            storePassword '1[SecurePass]3'
-            keyPassword '1[SecurePass]3'
+            storeFile = file("keystore/SecurelyKey.jks")
+            storePassword System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
         }
     }
     compileSdkVersion 32
@@ -38,8 +31,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
