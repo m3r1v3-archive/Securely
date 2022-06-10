@@ -5,28 +5,21 @@ plugins {
 android {
     signingConfigs {
         realise {
-            storeFile file('src\\main\\res\\SecurePass.jks')
-            keyAlias 'SecurePassKey'
-            storePassword '1[SecurePass]3'
-            keyPassword '1[SecurePass]3'
-        }
-
-        debug {
-            storeFile file('src\\main\\res\\SecurePass.jks')
-            keyAlias 'SecurePassKey'
-            storePassword '1[SecurePass]3'
-            keyPassword '1[SecurePass]3'
+            storeFile = file("keystore/SecurelyKey.jks")
+            storePassword System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
         }
     }
-    compileSdkVersion 31
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.merive.securepass"
+        applicationId "com.merive.securely"
         minSdkVersion 24
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 37
-        versionName "1.4.0"
+        versionName "1.4.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,19 +31,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
 
     implementation 'com.google.zxing:core:3.4.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0@aar'
 
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation "androidx.room:room-runtime:2.4.2"
     implementation "androidx.transition:transition:1.4.1"
