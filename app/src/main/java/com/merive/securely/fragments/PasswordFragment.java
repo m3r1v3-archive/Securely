@@ -254,7 +254,6 @@ public class PasswordFragment extends DialogFragment {
      * This method is saving edited values to database and make Toast message.
      *
      * @see com.merive.securely.database.PasswordDB
-     * @see ToastFragment
      */
     private void saveEditPassword() {
         if (checkEditsOnEmpty())
@@ -295,7 +294,6 @@ public class PasswordFragment extends DialogFragment {
      * This method is saving added values to database and make Toast message.
      *
      * @see com.merive.securely.database.PasswordDB
-     * @see ToastFragment
      */
     private void saveNewPassword() {
         if (checkEditsOnEmpty())

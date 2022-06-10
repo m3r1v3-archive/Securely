@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,6 @@ import com.merive.securely.fragments.ConfirmFragment;
 import com.merive.securely.fragments.PasswordFragment;
 import com.merive.securely.fragments.PasswordSharingFragment;
 import com.merive.securely.fragments.SettingsFragment;
-import com.merive.securely.fragments.ToastFragment;
 import com.merive.securely.fragments.UpdateFragment;
 import com.merive.securely.utils.Crypt;
 import com.merive.securely.utils.Hex;
@@ -295,21 +295,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is replace bar_fragment element to ToastFragment.
+     * This method makes toast message
      *
-     * @param message Toast message.
-     * @see ToastFragment
+     * @param message Toast message text
      */
     public void makeToast(String message) {
-        MainActivity.toastMessages.add(message);
-        if (MainActivity.toastMessages.size() == 1) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            transaction.setReorderingAllowed(true);
-            transaction.replace(R.id.bar_fragment, new ToastFragment(), null);
-            transaction.commit();
-        }
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -319,7 +310,6 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param data Bundle with Password Data.
      * @see PasswordFragment
-     * @see ToastFragment
      * @see RecyclerView
      */
     public void addNewPassword(Bundle data) {
@@ -434,7 +424,6 @@ public class MainActivity extends AppCompatActivity {
      * @param name Password Name in Database.
      * @see PasswordDB
      * @see RecyclerView
-     * @see ToastFragment
      */
     public void deletePasswordByName(String name) {
         db.passwordDao().deleteByName(name);
