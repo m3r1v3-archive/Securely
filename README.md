@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/merive/Securely/blob/main/assets/Securely.svg" width="64">
+    <img src="https://github.com/merive-inc/Securely/blob/main/assets/Securely.svg" width="64">
     <h1 align="center">Securely</h1>
     <h2 align="center">A Good Enough Password Manager</h2>
     <p>
@@ -26,7 +26,7 @@
     <h3>Method #2 (Build application from source code)</h3>
     <p>
         1. Download and Launch <a href="https://developer.android.com/studio">Android Studio</a><br>
-        2. Clone Securely Repository (<i>git clone https://github.com/merive/Securely.git</i>) and open repository in Android Studio<br>
+        2. Clone Securely Repository (<i>git clone https://github.com/merive-inc/Securely.git</i>) and open repository in Android Studio<br>
         3. Start Release Build & Run installation on your connected Android Device<br>
         4. Launch application after installation
     </p>
