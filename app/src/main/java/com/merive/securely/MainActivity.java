@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,9 +51,9 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static LinkedList<String> toastMessages = new LinkedList<>();
-    TypingTextView empty;
+    TypingTextView emptyTitle, emptyMessage, emptyHint;
     RecyclerView passwords;
+    ConstraintLayout emptyLayout;
     PasswordAdapter adapter;
     PasswordDB db;
     SharedPreferences sharedPreferences;
@@ -136,8 +137,12 @@ public class MainActivity extends AppCompatActivity {
      * This method is assigns main layout variables.
      */
     private void initLayoutVariables() {
-        empty = findViewById(R.id.main_empty_message);
         passwords = findViewById(R.id.password_recycler_view);
+
+        emptyLayout = findViewById(R.id.empty_layout);
+        emptyTitle = findViewById(R.id.empty_list_title);
+        emptyMessage = findViewById(R.id.empty_list_empty_message);
+        emptyHint = findViewById(R.id.empty_list_hint);
     }
 
     /**
@@ -253,9 +258,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private void checkEmpty() {
         if (db.passwordDao().checkEmpty()) {
-            empty.setVisibility(View.VISIBLE);
-            typingAnimation(empty, getResources().getString(R.string.list_is_empty));
-        } else empty.setVisibility(View.INVISIBLE);
+            emptyLayout.setVisibility(View.VISIBLE);
+
+            typingAnimation(emptyTitle, getResources().getString(R.string.app_name));
+            typingAnimation(emptyMessage, getResources().getString(R.string.list_is_empty));
+            typingAnimation(emptyHint, getResources().getString(R.string.empty_hint));
+        } else emptyLayout.setVisibility(View.INVISIBLE);
     }
 
     /**

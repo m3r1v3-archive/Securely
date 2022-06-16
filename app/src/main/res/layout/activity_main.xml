@@ -7,52 +7,103 @@
     android:background="?colorPrimary"
     tools:context=".MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/password_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_margin="12sp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
         android:background="@xml/background"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/bar_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/password_row" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        android:background="@xml/background"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/bar_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/password_recycler_view"
-            android:layout_width="0sp"
-            android:layout_height="0sp"
-            android:layout_margin="8sp"
+        <com.merive.securely.elements.TypingTextView
+            android:id="@+id/empty_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/share_tech_mono"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="?colorAccent"
+            android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/password_row" />
+            app:layout_constraintVertical_bias="0.075" />
+
+        <ImageView
+            android:id="@+id/empty_list_title_separator"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginBottom="12dp"
+            android:src="@xml/horizontal_line"
+            app:layout_constraintBottom_toTopOf="@id/empty_list_empty_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.merive.securely.elements.TypingTextView
-            android:id="@+id/main_empty_message"
-            android:layout_width="0sp"
+            android:id="@+id/empty_list_empty_message"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="24sp"
-            android:background="@xml/background"
+            android:layout_marginTop="36dp"
             android:fontFamily="@font/share_tech_mono"
-            android:padding="12sp"
             android:singleLine="true"
             android:textAlignment="center"
             android:textColor="?colorAccent"
-            android:textSize="32sp"
-            android:visibility="invisible"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/empty_list_title" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.merive.securely.elements.TypingTextView
+            android:id="@+id/empty_list_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:textAlignment="center"
+            android:textColor="?colorAccent"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/bar_fragment"
-        android:layout_width="0sp"
-        android:layout_height="60sp"
-        android:layout_marginBottom="12sp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="372sp"
-    android:layout_height="372sp"
+    android:layout_width="372dp"
+    android:layout_height="372dp"
     android:layout_gravity="center"
     android:background="@xml/background"
-    android:minWidth="372sp"
-    android:minHeight="372sp">
+    android:minWidth="372dp"
+    android:minHeight="372dp">
 
     <com.merive.securely.elements.TypingTextView
         android:id="@+id/settings_title"
@@ -26,11 +26,11 @@
 
     <ImageView
         android:id="@+id/settings_title_separator"
-        android:layout_width="0sp"
-        android:layout_height="12sp"
-        android:layout_marginLeft="36sp"
-        android:layout_marginRight="36sp"
-        android:layout_marginBottom="12sp"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginBottom="12dp"
         android:src="@xml/horizontal_line"
         app:layout_constraintBottom_toTopOf="@id/password_length"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +38,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/password_length"
-        android:layout_width="0sp"
-        android:layout_height="56sp"
-        android:layout_marginStart="18sp"
-        android:layout_marginTop="36sp"
-        android:layout_marginEnd="6sp"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="6dp"
         android:background="@xml/background"
         app:layout_constraintEnd_toStartOf="@id/show_password_switch"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
 
         <com.merive.securely.elements.TypingTextView
             android:id="@+id/password_length_text"
-            android:layout_width="0sp"
+            android:layout_width="0dp"
             android:layout_height="0sp"
             android:layout_marginStart="12sp"
             android:fontFamily="@font/share_tech_mono"

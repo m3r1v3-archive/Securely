@@ -4,8 +4,8 @@
     android:opacity="opaque">
     <item android:drawable="?colorPrimary" />
     <item
-        android:width="128sp"
-        android:height="128sp"
+        android:width="128dp"
+        android:height="128dp"
         android:drawable="@drawable/icon"
         android:gravity="center"
         tools:ignore="UnusedAttribute" />

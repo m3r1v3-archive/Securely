@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="372sp"
-    android:layout_height="158sp"
+    android:layout_width="372dp"
+    android:layout_height="158dp"
     android:layout_gravity="center"
     android:background="@xml/background"
-    android:minWidth="372sp"
-    android:minHeight="158sp">
+    android:minWidth="372dp"
+    android:minHeight="158dp">
 
     <com.merive.securely.elements.TypingTextView
         android:id="@+id/confirm_title"
@@ -26,11 +26,11 @@
 
     <ImageView
         android:id="@+id/confirm_title_separator"
-        android:layout_width="0sp"
-        android:layout_height="12sp"
-        android:layout_marginLeft="36sp"
-        android:layout_marginRight="36sp"
-        android:layout_marginBottom="12sp"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginBottom="12dp"
         android:src="@xml/horizontal_line"
         app:layout_constraintBottom_toTopOf="@id/confirm_cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,12 +38,12 @@
 
     <ImageView
         android:id="@+id/confirm_cancel_button"
-        android:layout_width="112sp"
-        android:layout_height="56sp"
-        android:layout_marginTop="36sp"
+        android:layout_width="112dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="36dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
-        android:padding="12sp"
+        android:padding="12dp"
         app:layout_constraintEnd_toStartOf="@id/confirm_okay_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirm_title"
@@ -52,12 +52,12 @@
 
     <ImageView
         android:id="@+id/confirm_okay_button"
-        android:layout_width="112sp"
-        android:layout_height="56sp"
-        android:layout_marginTop="36sp"
+        android:layout_width="112dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="36dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
-        android:padding="12sp"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/confirm_cancel_button"
         app:layout_constraintTop_toBottomOf="@id/confirm_title"

@@ -25,11 +25,11 @@
 
     <ImageView
         android:id="@+id/login_title_separator"
-        android:layout_width="0sp"
-        android:layout_height="12sp"
-        android:layout_marginLeft="48sp"
-        android:layout_marginRight="48sp"
-        android:layout_marginBottom="12sp"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="12dp"
         android:src="@xml/horizontal_line"
         app:layout_constraintBottom_toTopOf="@id/login_key_hint"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,9 +39,8 @@
         android:id="@+id/login_key_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36sp"
+        android:layout_marginTop="36dp"
         android:fontFamily="@font/share_tech_mono"
-        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="?colorAccent"
         android:textSize="22sp"
@@ -51,8 +50,8 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="128sp"
-        android:layout_height="128sp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:src="@drawable/icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,9 +60,9 @@
 
     <EditText
         android:id="@+id/key_edit"
-        android:layout_width="224sp"
-        android:layout_height="56sp"
-        android:layout_marginBottom="36sp"
+        android:layout_width="224dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="36dp"
         android:background="@xml/background"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
@@ -81,11 +80,11 @@
 
     <ImageView
         android:id="@+id/login_key_button"
-        android:layout_width="112sp"
-        android:layout_height="56sp"
+        android:layout_width="112dp"
+        android:layout_height="56dp"
         android:background="@xml/background"
         android:onClick="clickLogin"
-        android:padding="12sp"
+        android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
