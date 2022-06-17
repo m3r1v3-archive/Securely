@@ -45,7 +45,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                .add(R.id.bar_fragment, BarFragment.class, null)
+                .add(R.id.pad_fragment, BarFragment.class, null)
                 .commit();
     }
 
@@ -168,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         transaction.setReorderingAllowed(true);
-        transaction.replace(R.id.bar_fragment, new BarFragment(), null);
+        transaction.replace(R.id.pad_fragment, new BarFragment(), null);
         transaction.commit();
     }
 

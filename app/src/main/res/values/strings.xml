@@ -4,7 +4,7 @@
 
     <!--  MainActivity  -->
     <string name="list_is_empty">List is Empty</string>
-    <string name="empty_hint">Click on <b>+</b> button\nfor add new password</string>
+    <string name="empty_hint">Swipe up, click <b>+</b> button\nfor add new password</string>
     <string name="error">Something went wrong!</string>
 
     <!--  LoginActivity  -->
