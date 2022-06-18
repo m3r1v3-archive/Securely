@@ -1,4 +1,4 @@
-package com.merive.securely;
+package com.merive.securely.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

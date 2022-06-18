@@ -21,7 +21,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.merive.securely.MainActivity;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
 

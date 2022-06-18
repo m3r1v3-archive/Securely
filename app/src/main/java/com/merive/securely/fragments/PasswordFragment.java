@@ -2,8 +2,6 @@ package com.merive.securely.fragments;
 
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.PasswordTransformationMethod;
@@ -16,11 +14,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.merive.securely.MainActivity;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
-import com.merive.securely.ScannerActivity;
+import com.merive.securely.activities.ScannerActivity;
 import com.merive.securely.elements.TypingTextView;
 import com.merive.securely.utils.PasswordGenerator;
 
@@ -30,17 +29,6 @@ public class PasswordFragment extends DialogFragment {
     EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
     ImageView save, cancel, scan, delete, generate;
     boolean edit, show;
-
-
-    /**
-     * PasswordFragment Constructor.
-     * Using for creating DialogFragment in MainActivity.
-     *
-     * @see DialogFragment
-     * @see MainActivity
-     */
-    public PasswordFragment() {
-    }
 
     /**
      * This method is setting PasswordFragment Arguments for adding new password.
@@ -98,10 +86,8 @@ public class PasswordFragment extends DialogFragment {
      * @see Bundle
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_password, parent);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_password, parent, false);
     }
 
     /**
@@ -120,7 +106,6 @@ public class PasswordFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         initVariables();
         setEdit();
@@ -216,7 +201,6 @@ public class PasswordFragment extends DialogFragment {
     private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        dismiss();
     }
 
     /**
@@ -231,7 +215,6 @@ public class PasswordFragment extends DialogFragment {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
-        dismiss();
     }
 
     /**
@@ -247,7 +230,7 @@ public class PasswordFragment extends DialogFragment {
         ((MainActivity) getActivity()).makeVibration();
         if (edit) saveEditPassword();
         else saveNewPassword();
-        dismiss();
+        ((MainActivity) getActivity()).setFragment(new BarFragment());
     }
 
     /**
@@ -348,7 +331,6 @@ public class PasswordFragment extends DialogFragment {
     private void clickScan(View view) {
         ((MainActivity) getActivity()).makeVibration();
         openScanner();
-        dismiss();
     }
 
     /**

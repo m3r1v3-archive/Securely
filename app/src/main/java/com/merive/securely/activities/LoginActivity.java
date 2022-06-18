@@ -1,4 +1,4 @@
-package com.merive.securely;
+package com.merive.securely.activities;
 
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -16,18 +15,19 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.preferences.PreferencesManager;
 import com.merive.securely.utils.VibrationManager;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginActivity extends AppCompatActivity {
 
-    SharedPreferences sharedPreferences;
-    TypingTextView title, key_hint;
-    EditText key;
-    int errors;
-    boolean deleteAfterErrors, pressed, changeKey;
+    public static PreferencesManager preferencesManager;
+    private TypingTextView title, keyHint;
+    private EditText key;
+    private boolean deleteAfterErrors, pressed = false, changeKey = false;
 
     /**
      * This method is the start point at the LoginActivity.
@@ -40,19 +40,12 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_login);
 
-        sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
-
-        errors = sharedPreferences.getInt("errors", 15);
-
-        deleteAfterErrors = sharedPreferences.getBoolean("delete", false);
-        changeKey = false;
-        pressed = false;
+        preferencesManager = new PreferencesManager(this.getBaseContext());
 
         initLayoutVariables();
 
         typingAnimation(title, getResources().getString(R.string.welcome_to_securely));
-        typingAnimation(key_hint, getResources().getString(R.string.enter_the_key_in_the_field));
+        typingAnimation(keyHint, getResources().getString(R.string.enter_the_key_in_the_field));
 
         checkKeyOnAbsence();
         checkDeleteAfterErrorsEdit();
@@ -67,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initLayoutVariables() {
         title = findViewById(R.id.login_key_title);
         key = findViewById(R.id.key_edit);
-        key_hint = findViewById(R.id.login_key_hint);
+        keyHint = findViewById(R.id.login_key_hint);
     }
 
     /**
@@ -77,8 +70,8 @@ public class LoginActivity extends AppCompatActivity {
      * @see SharedPreferences
      */
     private void checkKeyOnAbsence() {
-        if (sharedPreferences.getString("hash", "-1").equals("-1")) {
-            typingAnimation(key_hint, getResources().getString(R.string.create_a_new_key));
+        if (preferencesManager.getHash().equals("-1")) {
+            typingAnimation(keyHint, getResources().getString(R.string.create_a_new_key));
         }
     }
 
@@ -89,8 +82,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void checkDeleteAfterErrorsEdit() {
         if (getIntent().getBooleanExtra("status", false)) {
-            sharedPreferences.edit().putBoolean("delete",
-                    getIntent().getBooleanExtra("delete", false)).apply();
+            preferencesManager.setDelete(getIntent().getBooleanExtra("delete", false));
             deleteAfterErrors = getIntent().getBooleanExtra("delete", false);
             finish();
         }
@@ -104,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void checkKeyEdit() {
         if (getIntent().getBooleanExtra("changeKey", false)) {
-            typingAnimation(key_hint, getResources().getString(R.string.enter_previous_key));
+            typingAnimation(keyHint, getResources().getString(R.string.enter_previous_key));
             changeKey = true;
         }
     }
@@ -173,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
             key.setText("");
             changeKey = false;
             pressed = false;
-        } else typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
+        } else typingAnimation(keyHint, getResources().getString(R.string.invalid_key));
     }
 
     /**
@@ -182,8 +174,8 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if hashes are equal, else False.
      */
     private boolean checkKeyHash() {
-        if (BCrypt.checkpw(key.getText().toString(), sharedPreferences.getString("hash", "-1"))) {
-            typingAnimation(key_hint, getResources().getString(R.string.successful_login));
+        if (BCrypt.checkpw(key.getText().toString(), preferencesManager.getHash())) {
+            typingAnimation(keyHint, getResources().getString(R.string.successful_login));
             pressed = true;
             return true;
         }
@@ -194,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
      * This method is resetting key in sharedPreference to default ("-1")
      */
     private void resetKey() {
-        sharedPreferences.edit().putString("hash", "-1").apply();
+        preferencesManager.setHash();
     }
 
     /**
@@ -214,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                 else if (checkKeyHash()) openMain();
                 else {
                     if (checkErrorsCount()) {
-                        typingAnimation(key_hint, getResources().getString(R.string.invalid_key));
+                        typingAnimation(keyHint, getResources().getString(R.string.invalid_key));
                         if (deleteAfterErrors) errorDec();
                     } else deleteAllPasswords();
                 }
@@ -229,9 +221,9 @@ public class LoginActivity extends AppCompatActivity {
      * pressed will assign true and return true, else will return false.
      */
     private boolean checkOnNoKey() {
-        if (sharedPreferences.getString("hash", "-1").equals("-1")) {
-            sharedPreferences.edit().putString("hash", generateHash(key.getText().toString())).apply();
-            typingAnimation(key_hint, getResources().getString(R.string.key_set));
+        if (preferencesManager.getHash().equals("-1")) {
+            preferencesManager.setHash(generateHash(key.getText().toString()));
+            typingAnimation(keyHint, getResources().getString(R.string.key_set));
             pressed = true;
             return true;
         }
@@ -268,8 +260,7 @@ public class LoginActivity extends AppCompatActivity {
      * The method is assigning 15 to errors and edit errors sharedPreference value.
      */
     private void resetErrors() {
-        errors = 15;
-        sharedPreferences.edit().putInt("errors", errors).apply();
+        preferencesManager.setErrors();
     }
 
     /**
@@ -278,14 +269,14 @@ public class LoginActivity extends AppCompatActivity {
      * @return True if errors more than 0.
      */
     private boolean checkErrorsCount() {
-        return errors > 0;
+        return preferencesManager.getErrors() > 0;
     }
 
     /**
      * This method is decrement for errors and edit errors value in sharedPreference.
      */
     private void errorDec() {
-        sharedPreferences.edit().putInt("errors", --errors).apply();
+        preferencesManager.setErrors(preferencesManager.getErrors() - 1);
     }
 
     /**
@@ -293,10 +284,8 @@ public class LoginActivity extends AppCompatActivity {
      * It edit key_hint and assign true to pressed.
      */
     private void deleteAllPasswords() {
-        startActivity(new Intent(this, MainActivity.class)
-                .putExtra("status", true)
-        );
-        typingAnimation(key_hint, getResources().getString(R.string.all_passwords_was_deleted));
+        startActivity(new Intent(this, MainActivity.class).putExtra("status", true));
+        typingAnimation(keyHint, getResources().getString(R.string.all_passwords_was_deleted));
         pressed = true;
     }
 

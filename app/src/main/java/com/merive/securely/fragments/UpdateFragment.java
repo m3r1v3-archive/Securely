@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.merive.securely.MainActivity;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
 

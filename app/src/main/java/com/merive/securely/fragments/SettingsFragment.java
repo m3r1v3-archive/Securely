@@ -17,8 +17,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.merive.securely.BuildConfig;
-import com.merive.securely.LoginActivity;
-import com.merive.securely.MainActivity;
+import com.merive.securely.activities.LoginActivity;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
 

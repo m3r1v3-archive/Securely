@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
-import com.merive.securely.MainActivity;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 
 public class BarFragment extends Fragment {
