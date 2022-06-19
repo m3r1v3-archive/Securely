@@ -267,11 +267,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void clickAdd() {
         makeVibration();
-        FragmentManager fm = getSupportFragmentManager();
-        PasswordFragment passwordFragment = PasswordFragment.newInstance(
-                preferencesManager.getLength(),
-                preferencesManager.getShow());
-        passwordFragment.show(fm, "password_fragment");
+        setFragment(PasswordFragment.newInstance(preferencesManager.getLength(), preferencesManager.getShow()));
     }
 
     /**
@@ -344,17 +340,17 @@ public class MainActivity extends AppCompatActivity {
      */
     private void clickEditPassword(String name) {
         makeVibration();
-        FragmentManager fm = getSupportFragmentManager();
-        PasswordFragment passwordFragment = PasswordFragment.newInstance(
+        setFragment(PasswordFragment.newInstance(
                 name,
-                preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) :
+                preferencesManager.getEncrypt() ?
+                        new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) :
                         db.passwordDao().getLoginByName(name),
-                preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
+                preferencesManager.getEncrypt() ?
+                        new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
                         db.passwordDao().getPasswordByName(name),
                 db.passwordDao().getDescriptionByName(name),
                 preferencesManager.getLength(),
-                preferencesManager.getShow());
-        passwordFragment.show(fm, "password_fragment");
+                preferencesManager.getShow()));
     }
 
     /**
@@ -538,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void updateEncrypting(boolean encrypting) {
         if (encrypting != preferencesManager.getEncrypt()) {
-            if (preferencesManager.getEncrypt()) {
+            if (encrypting) {
                 encryptAllLogins();
                 encryptAllPasswords();
             } else {
@@ -556,8 +552,7 @@ public class MainActivity extends AppCompatActivity {
      * @see com.merive.securely.database.PasswordDao
      */
     private void encryptAllLogins() {
-        List<String> data = db.passwordDao().getAllNames();
-        for (String s : data) encryptLogin(s);
+        for (String s : db.passwordDao().getAllNames()) encryptLogin(s);
     }
 
     /**

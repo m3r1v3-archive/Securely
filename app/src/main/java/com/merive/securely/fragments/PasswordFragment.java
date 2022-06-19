@@ -23,7 +23,7 @@ import com.merive.securely.activities.ScannerActivity;
 import com.merive.securely.elements.TypingTextView;
 import com.merive.securely.utils.PasswordGenerator;
 
-public class PasswordFragment extends DialogFragment {
+public class PasswordFragment extends Fragment {
 
     TypingTextView title;
     EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
@@ -201,6 +201,7 @@ public class PasswordFragment extends DialogFragment {
     private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
+        ((MainActivity) getActivity()).setFragment(new BarFragment());
     }
 
     /**
@@ -215,6 +216,7 @@ public class PasswordFragment extends DialogFragment {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
+        ((MainActivity) getActivity()).setFragment(new BarFragment());
     }
 
     /**
@@ -331,6 +333,7 @@ public class PasswordFragment extends DialogFragment {
     private void clickScan(View view) {
         ((MainActivity) getActivity()).makeVibration();
         openScanner();
+        ((MainActivity) getActivity()).setFragment(new BarFragment());
     }
 
     /**

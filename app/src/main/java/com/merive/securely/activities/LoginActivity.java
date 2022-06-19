@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     public static PreferencesManager preferencesManager;
     private TypingTextView title, keyHint;
     private EditText key;
-    private boolean deleteAfterErrors, pressed = false, changeKey = false;
+    private boolean pressed = false, changeKey = false;
 
     /**
      * This method is the start point at the LoginActivity.
@@ -83,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
     private void checkDeleteAfterErrorsEdit() {
         if (getIntent().getBooleanExtra("status", false)) {
             preferencesManager.setDelete(getIntent().getBooleanExtra("delete", false));
-            deleteAfterErrors = getIntent().getBooleanExtra("delete", false);
             finish();
         }
     }
@@ -207,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     if (checkErrorsCount()) {
                         typingAnimation(keyHint, getResources().getString(R.string.invalid_key));
-                        if (deleteAfterErrors) errorDec();
+                        if (preferencesManager.getDelete()) errorDec();
                     } else deleteAllPasswords();
                 }
             }
@@ -248,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
             resetErrors();
             startActivity(new Intent(this, MainActivity.class)
                     .putExtra("status", false)
-                    .putExtra("delete", deleteAfterErrors)
+                    .putExtra("delete", preferencesManager.getDelete())
                     .putExtra("key", Integer.parseInt(key.getText().toString()))
             );
             finish();
