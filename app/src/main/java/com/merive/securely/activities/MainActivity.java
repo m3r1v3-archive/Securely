@@ -1,7 +1,5 @@
 package com.merive.securely.activities;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -11,15 +9,12 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -31,9 +26,9 @@ import com.merive.securely.R;
 import com.merive.securely.adapter.PasswordAdapter;
 import com.merive.securely.database.Password;
 import com.merive.securely.database.PasswordDB;
-import com.merive.securely.elements.TypingTextView;
 import com.merive.securely.fragments.BarFragment;
 import com.merive.securely.fragments.ConfirmFragment;
+import com.merive.securely.fragments.EmptyFragment;
 import com.merive.securely.fragments.PasswordFragment;
 import com.merive.securely.fragments.PasswordSharingFragment;
 import com.merive.securely.fragments.SettingsFragment;
@@ -53,9 +48,7 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
-    TypingTextView emptyTitle, emptyMessage, emptyHint;
     RecyclerView passwords;
-    ConstraintLayout emptyLayout;
     PasswordAdapter adapter;
     PasswordDB db;
     PreferencesManager preferencesManager;
@@ -73,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initLayoutVariables();
-        setFragment(new BarFragment());
+        setPadFragment(new BarFragment());
 
         preferencesManager = new PreferencesManager(this.getBaseContext());
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
@@ -138,11 +131,19 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initLayoutVariables() {
         passwords = findViewById(R.id.password_recycler_view);
+    }
 
-        emptyLayout = findViewById(R.id.empty_layout);
-        emptyTitle = findViewById(R.id.empty_list_title);
-        emptyMessage = findViewById(R.id.empty_list_empty_message);
-        emptyHint = findViewById(R.id.empty_list_hint);
+    /**
+     * This method set Fragment to main_fragment element in layout.
+     *
+     * @see Fragment
+     */
+    public void setFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .replace(R.id.main_fragment, fragment, null)
+                .commit();
     }
 
     /**
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see Fragment
      */
-    public void setFragment(Fragment fragment) {
+    public void setPadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -180,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME))
-                    openUpdateFragment(BuildConfig.VERSION_NAME, getVersionOnSite());
+                    openUpdateFragment(getVersionOnSite());
             } catch (Exception ignored) {
             }
         }).start();
@@ -213,12 +214,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is opening UpdateFragment.
      *
-     * @param oldVersion Using Application Version.
      * @param newVersion Actual Application Version.
      * @see UpdateFragment
      */
-    private void openUpdateFragment(String oldVersion, String newVersion) {
-        UpdateFragment.newInstance(oldVersion, newVersion).show(getSupportFragmentManager(), "update_fragment");
+    private void openUpdateFragment(String newVersion) {
+        UpdateFragment.newInstance(BuildConfig.VERSION_NAME, newVersion).show(getSupportFragmentManager(), "update_fragment");
     }
 
     /**
@@ -230,12 +230,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void checkEmpty() {
         if (db.passwordDao().checkEmpty()) {
-            emptyLayout.setVisibility(View.VISIBLE);
-
-            typingAnimation(emptyTitle, getResources().getString(R.string.app_name));
-            typingAnimation(emptyMessage, getResources().getString(R.string.list_is_empty));
-            typingAnimation(emptyHint, getResources().getString(R.string.empty_hint));
-        } else emptyLayout.setVisibility(View.INVISIBLE);
+            setFragment(new EmptyFragment());
+            findViewById(R.id.main_fragment_container).setVisibility(View.VISIBLE);
+        } else findViewById(R.id.main_fragment_container).setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -267,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void clickAdd() {
         makeVibration();
-        setFragment(PasswordFragment.newInstance(preferencesManager.getLength(), preferencesManager.getShow()));
+        setPadFragment(PasswordFragment.newInstance(preferencesManager.getLength(), preferencesManager.getShow()));
     }
 
     /**
@@ -340,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void clickEditPassword(String name) {
         makeVibration();
-        setFragment(PasswordFragment.newInstance(
+        setPadFragment(PasswordFragment.newInstance(
                 name,
                 preferencesManager.getEncrypt() ?
                         new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) :

@@ -13,12 +13,11 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.activities.ScannerActivity;
 import com.merive.securely.elements.TypingTextView;
 import com.merive.securely.utils.PasswordGenerator;
@@ -201,7 +200,7 @@ public class PasswordFragment extends Fragment {
     private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).setFragment(new BarFragment());
+        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
     }
 
     /**
@@ -216,7 +215,7 @@ public class PasswordFragment extends Fragment {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
-        ((MainActivity) getActivity()).setFragment(new BarFragment());
+        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
     }
 
     /**
@@ -232,7 +231,7 @@ public class PasswordFragment extends Fragment {
         ((MainActivity) getActivity()).makeVibration();
         if (edit) saveEditPassword();
         else saveNewPassword();
-        ((MainActivity) getActivity()).setFragment(new BarFragment());
+        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
     }
 
     /**
@@ -333,7 +332,7 @@ public class PasswordFragment extends Fragment {
     private void clickScan(View view) {
         ((MainActivity) getActivity()).makeVibration();
         openScanner();
-        ((MainActivity) getActivity()).setFragment(new BarFragment());
+        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
     }
 
     /**

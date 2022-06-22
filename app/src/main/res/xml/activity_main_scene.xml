@@ -15,9 +15,9 @@
     <ConstraintSet android:id="@+id/base_state">
         <Constraint
             android:id="@id/pad"
-            android:layout_height="0sp">
+            android:layout_height="0dp">
             <Layout
-                android:layout_width="0sp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 motion:layout_constraintBottom_toBottomOf="parent"
                 motion:layout_constraintEnd_toEndOf="parent"
@@ -28,9 +28,9 @@
     <ConstraintSet android:id="@+id/end_state">
         <Constraint android:id="@id/pad">
             <Layout
-                android:layout_width="0sp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0sp"
+                android:layout_marginTop="0dp"
                 motion:layout_constraintEnd_toEndOf="parent"
                 motion:layout_constraintStart_toStartOf="parent"
                 motion:layout_constraintTop_toBottomOf="parent" />
