@@ -467,11 +467,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public void clickSettings() {
         makeVibration();
-        SettingsFragment.newInstance(
+        setPadFragment(SettingsFragment.newInstance(
                 preferencesManager.getLength(),
                 preferencesManager.getShow(),
                 getIntent().getBooleanExtra("delete", false),
-                preferencesManager.getEncrypt()).show(getSupportFragmentManager(), "settings_fragment");
+                preferencesManager.getEncrypt()));
     }
 
     /**

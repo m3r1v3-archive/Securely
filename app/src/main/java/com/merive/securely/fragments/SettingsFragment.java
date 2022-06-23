@@ -2,8 +2,6 @@ package com.merive.securely.fragments;
 
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.merive.securely.BuildConfig;
+import com.merive.securely.R;
 import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
-import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
 
 
-public class SettingsFragment extends DialogFragment {
+public class SettingsFragment extends Fragment {
 
     TypingTextView title, info;
     EditText passwordLengthEdit;
@@ -77,8 +76,7 @@ public class SettingsFragment extends DialogFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_settings, parent);
+        return inflater.inflate(R.layout.fragment_settings, parent, false);
     }
 
     /**
@@ -95,7 +93,6 @@ public class SettingsFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         initVariables();
 
@@ -167,7 +164,7 @@ public class SettingsFragment extends DialogFragment {
     private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        dismiss();
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**
@@ -181,7 +178,7 @@ public class SettingsFragment extends DialogFragment {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
-        dismiss();
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**
@@ -203,6 +200,6 @@ public class SettingsFragment extends DialogFragment {
                 showPasswordSwitch.isChecked(),
                 deletingSwitch.isChecked(),
                 encryptingSwitch.isChecked());
-        dismiss();
+        ((MainActivity) getActivity()).removePadFragment();
     }
 }

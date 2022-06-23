@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="372dp"
-    android:layout_height="372dp"
-    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@xml/background"
-    android:minWidth="372dp"
-    android:minHeight="372dp">
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
 
     <com.merive.securely.elements.TypingTextView
         android:id="@+id/settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
         android:singleLine="true"
         android:textAllCaps="true"
         android:textColor="?colorAccent"
         android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.075" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/settings_title_separator"
@@ -48,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/settings_title">
 
-        <com.merive.securely.elements.TypingTextView
+        <TextView
             android:id="@+id/password_length_text"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -103,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/password_length"
         app:layout_constraintTop_toBottomOf="@id/settings_title"
-        app:thumbTint="@color/colorPrimary"
+        app:thumbTint="?colorAccent"
         app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
@@ -124,7 +122,7 @@
         app:layout_constraintEnd_toStartOf="@id/encrypt_data_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/password_length"
-        app:thumbTint="@color/colorPrimary"
+        app:thumbTint="?colorAccent"
         app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
@@ -145,7 +143,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/delete_password_switch"
         app:layout_constraintTop_toBottomOf="@id/show_password_switch"
-        app:thumbTint="@color/colorPrimary"
+        app:thumbTint="?colorAccent"
         app:trackTint="?colorAccent" />
 
     <com.merive.securely.elements.TypingTextView
@@ -180,11 +178,10 @@
         android:id="@+id/settings_buttons"
         android:layout_width="0dp"
         android:layout_height="58dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_text">
 
         <ImageView
             android:id="@+id/settings_cancel_button"
