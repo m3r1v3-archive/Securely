@@ -4,7 +4,6 @@ import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,19 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.elements.TypingTextView;
 
-public class PasswordSharingFragment extends DialogFragment {
+public class PasswordSharingFragment extends Fragment {
 
     TypingTextView title;
-    ImageView QRCode, copy;
+    ImageView QRCode, copy, cancel;
 
     /**
      * PasswordSharingFragment Constructor.
@@ -66,8 +66,7 @@ public class PasswordSharingFragment extends DialogFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_password_sharing, parent);
+        return inflater.inflate(R.layout.fragment_password_sharing, parent, false);
     }
 
     /**
@@ -83,13 +82,12 @@ public class PasswordSharingFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         initVariables();
         setTitle();
+        setListeners();
 
         QRCode.setImageBitmap(makeQRCode(((MainActivity) getActivity()).getEncryptedValues(getArguments().getString("name"))));
-        copy.setOnClickListener(v -> clickCopy());
     }
 
     /**
@@ -98,7 +96,13 @@ public class PasswordSharingFragment extends DialogFragment {
     private void initVariables() {
         title = getView().findViewById(R.id.password_sharing_title);
         copy = getView().findViewById(R.id.password_sharing_copy_button);
+        cancel = getView().findViewById(R.id.password_sharing_cancel_button);
         QRCode = getView().findViewById(R.id.qr_code);
+    }
+
+    private void setListeners() {
+        copy.setOnClickListener(v -> clickCopy());
+        cancel.setOnClickListener(v -> clickCancel());
     }
 
     /**
@@ -114,7 +118,12 @@ public class PasswordSharingFragment extends DialogFragment {
     private void clickCopy() {
         ((MainActivity) getActivity()).addToClipboard(getArguments().getString("name"));
         ((MainActivity) getActivity()).makeVibration();
-        dismiss();
+        ((MainActivity) getActivity()).removePadFragment();
+    }
+
+    private void clickCancel() {
+        ((MainActivity) getActivity()).makeVibration();
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**

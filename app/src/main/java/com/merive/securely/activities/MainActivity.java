@@ -728,7 +728,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openPasswordSharingFragment(String name) {
         makeVibration();
-        PasswordSharingFragment.newInstance(name).show(getSupportFragmentManager(), "password_sharing_fragment");
+        setPadFragment(PasswordSharingFragment.newInstance(name));
     }
 
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {
