@@ -455,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
      * @see ConfirmFragment
      */
     public void longClickLock() {
-        ConfirmFragment.newInstance(true).show(getSupportFragmentManager(), "confirm_fragment");
+        setPadFragment(ConfirmFragment.newInstance(true));
     }
 
     /**
@@ -691,7 +691,7 @@ public class MainActivity extends AppCompatActivity {
      * @see ConfirmFragment
      */
     public void openConfirmPasswordDelete(String name) {
-        ConfirmFragment.newInstance(name).show(getSupportFragmentManager(), "confirm_fragment");
+        setPadFragment(ConfirmFragment.newInstance(name));
     }
 
     /**
@@ -700,7 +700,7 @@ public class MainActivity extends AppCompatActivity {
      * @see ConfirmFragment
      */
     public void openConfirmAllPasswordsDelete() {
-        ConfirmFragment.newInstance().show(getSupportFragmentManager(), "confirm_fragment");
+        setPadFragment(ConfirmFragment.newInstance());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

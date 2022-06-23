@@ -3,8 +3,6 @@ package com.merive.securely.fragments;
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,27 +11,17 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
+import com.merive.securely.R;
 import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
-import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
 
-public class ConfirmFragment extends DialogFragment {
+public class ConfirmFragment extends Fragment {
 
     TypingTextView title;
     ImageView cancel, confirm;
-
-    /**
-     * ConfirmFragment Constructor.
-     * Using for creating DialogFragment in MainActivity.
-     *
-     * @see DialogFragment
-     * @see MainActivity
-     */
-    public ConfirmFragment() {
-    }
 
     /**
      * This method is setting ConfirmFragment Arguments for deleting one password.
@@ -63,7 +51,7 @@ public class ConfirmFragment extends DialogFragment {
     }
 
     /**
-     * This method is setting ConfirmFragment Arguments for deleting all passwords.
+     * This method is setting ConfirmFragment Arguments for changing key.
      *
      * @return ConfirmFragment.
      */
@@ -87,8 +75,7 @@ public class ConfirmFragment extends DialogFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_confirm, parent);
+        return inflater.inflate(R.layout.fragment_confirm, parent, false);
     }
 
     /**
@@ -103,7 +90,6 @@ public class ConfirmFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         initVariables(view);
         setTitle();
@@ -147,7 +133,7 @@ public class ConfirmFragment extends DialogFragment {
      */
     private void clickCancel() {
         ((MainActivity) getActivity()).makeVibration();
-        dismiss();
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**
@@ -169,7 +155,7 @@ public class ConfirmFragment extends DialogFragment {
             else ((MainActivity) getActivity())
                     .deletePasswordByName(getArguments().getString("name"));
         }
-        dismiss();
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**

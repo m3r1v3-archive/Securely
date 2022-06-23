@@ -5,7 +5,6 @@ import static com.merive.securely.elements.TypingTextView.typingAnimation;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.PasswordTransformationMethod;
-import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,8 +214,8 @@ public class PasswordFragment extends Fragment {
     private void clickDeletePassword(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
         ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
     }
 
     /**

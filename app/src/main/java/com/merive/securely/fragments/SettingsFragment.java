@@ -177,8 +177,8 @@ public class SettingsFragment extends Fragment {
     private void clickDeleteAllPasswords(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
         ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
     }
 
     /**
