@@ -44,6 +44,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initLayoutVariables();
-        setPadFragment(new BarFragment());
+        setBarFragment();
 
         preferencesManager = new PreferencesManager(this.getBaseContext());
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
@@ -138,11 +139,24 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see Fragment
      */
-    public void setFragment(Fragment fragment) {
+    private void setFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
                 .replace(R.id.main_fragment, fragment, null)
+                .commit();
+    }
+
+    /**
+     * This method set Fragment to bar_fragment element in layout.
+     *
+     * @see Fragment
+     */
+    private void setBarFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
+                .replace(R.id.bar_fragment, new BarFragment(), null)
                 .commit();
     }
 
@@ -154,8 +168,22 @@ public class MainActivity extends AppCompatActivity {
     public void setPadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
                 .replace(R.id.pad_fragment, fragment, null)
+                .commit();
+    }
+
+    /**
+     * This method remove Fragment to pad_fragment element in layout.
+     *
+     * @see Fragment
+     */
+    public void removePadFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
+                .replace(R.id.pad_fragment, new BarFragment(), null)
+                .remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.pad_fragment)))
                 .commit();
     }
 
@@ -652,7 +680,7 @@ public class MainActivity extends AppCompatActivity {
      * @see com.merive.securely.database.PasswordDao
      */
     private boolean checkNotExist(String name) {
-        if (db.passwordDao().checkNotExist(name)) makeToast("Name already taken");
+        if (!db.passwordDao().checkNotExist(name)) makeToast("Name already taken");
         return db.passwordDao().checkNotExist(name);
     }
 

@@ -5,6 +5,7 @@ import static com.merive.securely.elements.TypingTextView.typingAnimation;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.PasswordTransformationMethod;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -200,7 +201,7 @@ public class PasswordFragment extends Fragment {
     private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**
@@ -215,7 +216,7 @@ public class PasswordFragment extends Fragment {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
-        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**
@@ -231,7 +232,7 @@ public class PasswordFragment extends Fragment {
         ((MainActivity) getActivity()).makeVibration();
         if (edit) saveEditPassword();
         else saveNewPassword();
-        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**
@@ -332,7 +333,7 @@ public class PasswordFragment extends Fragment {
     private void clickScan(View view) {
         ((MainActivity) getActivity()).makeVibration();
         openScanner();
-        ((MainActivity) getActivity()).setPadFragment(new BarFragment());
+        ((MainActivity) getActivity()).removePadFragment();
     }
 
     /**
