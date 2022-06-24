@@ -16,7 +16,7 @@
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="?colorAccent"
-        android:textSize="28sp"
+        android:textSize="@dimen/text_title_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
         android:fontFamily="@font/share_tech_mono"
         android:textAlignment="center"
         android:textColor="?colorAccent"
-        android:textSize="22sp"
+        android:textSize="@dimen/text_label_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_title_text" />
@@ -75,7 +75,7 @@
         android:singleLine="true"
         android:textColor="?colorAccent"
         android:textColorHint="?colorAccent"
-        android:textSize="18sp"
+        android:textSize="@dimen/text_size"
         app:layout_constraintBottom_toTopOf="@id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
