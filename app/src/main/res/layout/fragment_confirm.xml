@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toStartOf="@id/confirm_confirm_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirm_title_text"
-        app:srcCompat="@drawable/cancel"
+        app:srcCompat="@drawable/ic_cancel"
         app:tint="?colorAccent" />
 
     <ImageView
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/confirm_cancel_button"
         app:layout_constraintTop_toBottomOf="@id/confirm_title_text"
-        app:srcCompat="@drawable/confirm"
+        app:srcCompat="@drawable/ic_confirm"
         app:tint="?colorAccent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

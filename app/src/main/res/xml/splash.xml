@@ -6,7 +6,7 @@
     <item
         android:width="128dp"
         android:height="128dp"
-        android:drawable="@drawable/icon"
+        android:drawable="@drawable/ic_icon"
         android:gravity="center"
         tools:ignore="UnusedAttribute" />
 </layer-list>

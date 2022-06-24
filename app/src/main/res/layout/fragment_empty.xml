@@ -53,7 +53,7 @@
         android:layout_height="128dp"
         android:background="@xml/background"
         android:padding="12dp"
-        android:src="@drawable/icon"
+        android:src="@drawable/ic_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
