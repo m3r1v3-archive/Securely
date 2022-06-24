@@ -50,8 +50,12 @@
 <div>
     <h2>Version Scheme</h2>
     <p>
-        In Securely we're using the next version scheme - v<i>x.y.z</i>,
-            where <i>x</i> - <b>Major</b> update, <i>y</i> - <b>Minor</b> update, <i>z</i> - <b>Patch</b> update.
+        In Securely Repository we're using the next version scheme - v<i>x.y.z</i>, where
+        <table>
+            <tr><th>X</th><th>Major Update Version</th></tr>
+            <tr><td>Y</td><td>Minor Update Version</td></tr>
+            <tr><td>Z</td><td>Patch Update Version</td></tr>
+        </table>
     </p>
 </div>
 
