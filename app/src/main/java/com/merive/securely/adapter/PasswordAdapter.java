@@ -44,7 +44,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
     @NonNull
     @Override
     public PasswordAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.password_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_password, parent, false);
         return new ViewHolder(view);
     }
 
