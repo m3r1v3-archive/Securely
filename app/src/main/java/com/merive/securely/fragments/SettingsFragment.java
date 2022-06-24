@@ -112,13 +112,13 @@ public class SettingsFragment extends Fragment {
      */
     private void initVariables() {
         title = getView().findViewById(R.id.settings_title);
-        info = getView().findViewById(R.id.info_text);
+        info = getView().findViewById(R.id.settings_info_text);
 
-        passwordLengthEdit = getView().findViewById(R.id.password_length_edit);
+        passwordLengthEdit = getView().findViewById(R.id.settings_password_length_edit);
 
-        showPasswordSwitch = getView().findViewById(R.id.show_password_switch);
-        deletingSwitch = getView().findViewById(R.id.delete_password_switch);
-        encryptingSwitch = getView().findViewById(R.id.encrypt_data_switch);
+        showPasswordSwitch = getView().findViewById(R.id.settings_show_switch);
+        deletingSwitch = getView().findViewById(R.id.settings_delete_switch);
+        encryptingSwitch = getView().findViewById(R.id.settings_encrypt_switch);
 
         cancel = getView().findViewById(R.id.settings_cancel_button);
         deleteAll = getView().findViewById(R.id.delete_passwords_button);

@@ -55,9 +55,9 @@ public class BarFragment extends Fragment {
      * @see View
      */
     private void initVariables(View view) {
-        settings = view.findViewById(R.id.settings_button);
-        add = view.findViewById(R.id.add_button);
-        lock = view.findViewById(R.id.lock_button);
+        settings = view.findViewById(R.id.bar_settings_button);
+        add = view.findViewById(R.id.bar_add_button);
+        lock = view.findViewById(R.id.bar_lock_button);
     }
 
     /**

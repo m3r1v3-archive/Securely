@@ -58,9 +58,9 @@ public class LoginActivity extends AppCompatActivity {
      * This method is assigns main layout variables.
      */
     private void initLayoutVariables() {
-        title = findViewById(R.id.login_key_title);
-        key = findViewById(R.id.key_edit);
-        keyHint = findViewById(R.id.login_key_hint);
+        title = findViewById(R.id.login_title_text);
+        key = findViewById(R.id.login_key_edit);
+        keyHint = findViewById(R.id.login_hint_text);
     }
 
     /**

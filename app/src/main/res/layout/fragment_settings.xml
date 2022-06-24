@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_settings"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@xml/background"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp">
+    android:layout_height="wrap_content">
 
     <com.merive.securely.elements.TypingTextView
         android:id="@+id/settings_title"
@@ -30,24 +28,24 @@
         android:layout_marginRight="36dp"
         android:layout_marginBottom="12dp"
         android:src="@xml/horizontal_line"
-        app:layout_constraintBottom_toTopOf="@id/password_length"
+        app:layout_constraintBottom_toTopOf="@id/settings_password_length"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/password_length"
+        android:id="@+id/settings_password_length"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="6dp"
         android:background="@xml/background"
-        app:layout_constraintEnd_toStartOf="@id/show_password_switch"
+        app:layout_constraintEnd_toStartOf="@id/settings_show_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/settings_title">
 
         <TextView
-            android:id="@+id/password_length_text"
+            android:id="@+id/settings_password_length_text"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="12dp"
@@ -58,12 +56,12 @@
             android:textColor="?colorAccent"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/password_length_edit"
+            app:layout_constraintEnd_toStartOf="@id/settings_password_length_edit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/password_length_edit"
+            android:id="@+id/settings_password_length_edit"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="12dp"
@@ -78,13 +76,12 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/password_length_text"
+            app:layout_constraintStart_toEndOf="@id/settings_password_length_text"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/show_password_switch"
+        android:id="@+id/settings_show_switch"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="6dp"
@@ -99,13 +96,13 @@
         android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/password_length"
+        app:layout_constraintStart_toEndOf="@id/settings_password_length"
         app:layout_constraintTop_toBottomOf="@id/settings_title"
         app:thumbTint="?colorAccent"
         app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/delete_password_switch"
+        android:id="@+id/settings_delete_switch"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="18dp"
@@ -119,14 +116,14 @@
         android:text="@string/delete"
         android:textColor="?colorAccent"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@id/encrypt_data_switch"
+        app:layout_constraintEnd_toStartOf="@id/settings_encrypt_switch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_length"
+        app:layout_constraintTop_toBottomOf="@id/settings_password_length"
         app:thumbTint="?colorAccent"
         app:trackTint="?colorAccent" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/encrypt_data_switch"
+        android:id="@+id/settings_encrypt_switch"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="6dp"
@@ -141,13 +138,13 @@
         android:textColor="?colorAccent"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/delete_password_switch"
-        app:layout_constraintTop_toBottomOf="@id/show_password_switch"
+        app:layout_constraintStart_toEndOf="@id/settings_delete_switch"
+        app:layout_constraintTop_toBottomOf="@id/settings_show_switch"
         app:thumbTint="?colorAccent"
         app:trackTint="?colorAccent" />
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/info_text"
+        android:id="@+id/settings_info_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="18dp"
@@ -157,10 +154,10 @@
         android:gravity="center"
         android:singleLine="true"
         android:textColor="?colorAccent"
-        android:textSize="20sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/delete_password_switch" />
+        app:layout_constraintTop_toBottomOf="@id/settings_delete_switch" />
 
     <ImageView
         android:id="@+id/settings_switch_separator"
@@ -172,16 +169,16 @@
         android:src="@xml/horizontal_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/info_text" />
+        app:layout_constraintTop_toBottomOf="@id/settings_info_text" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/settings_buttons"
+        android:id="@+id/settings_bar"
         android:layout_width="0dp"
         android:layout_height="58dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_text">
+        app:layout_constraintTop_toBottomOf="@+id/settings_info_text">
 
         <ImageView
             android:id="@+id/settings_cancel_button"

@@ -128,19 +128,19 @@ public class PasswordFragment extends Fragment {
      * This method is initializing layout variables.
      */
     private void initVariables() {
-        title = getView().findViewById(R.id.password_title);
+        title = getView().findViewById(R.id.password_title_text);
 
-        nameEdit = getView().findViewById(R.id.name_edit);
-        loginEdit = getView().findViewById(R.id.login_edit);
-        passwordEdit = getView().findViewById(R.id.password_edit);
-        descriptionEdit = getView().findViewById(R.id.description_edit);
+        nameEdit = getView().findViewById(R.id.password_name_edit);
+        loginEdit = getView().findViewById(R.id.password_login_edit);
+        passwordEdit = getView().findViewById(R.id.password_password_edit);
+        descriptionEdit = getView().findViewById(R.id.password_description_edit);
 
         delete = getView().findViewById(R.id.password_delete_button);
         scan = getView().findViewById(R.id.password_scan_button);
         cancel = getView().findViewById(R.id.password_cancel_button);
         save = getView().findViewById(R.id.password_save_button);
 
-        generate = getView().findViewById(R.id.generate_password_button);
+        generate = getView().findViewById(R.id.password_generate_button);
     }
 
     /**

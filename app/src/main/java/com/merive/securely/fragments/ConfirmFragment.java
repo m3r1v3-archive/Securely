@@ -105,9 +105,9 @@ public class ConfirmFragment extends Fragment {
      * @see View
      */
     private void initVariables(View view) {
-        title = view.findViewById(R.id.confirm_title);
+        title = view.findViewById(R.id.confirm_title_text);
         cancel = view.findViewById(R.id.confirm_cancel_button);
-        confirm = view.findViewById(R.id.confirm_okay_button);
+        confirm = view.findViewById(R.id.confirm_confirm_button);
     }
 
     /**

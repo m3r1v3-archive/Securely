@@ -50,9 +50,9 @@ public class EmptyFragment extends Fragment {
      * This method is assigns main layout variables.
      */
     private void initLayoutVariables() {
-        title = getView().findViewById(R.id.empty_list_title);
-        message = getView().findViewById(R.id.empty_list_empty_message);
-        hint = getView().findViewById(R.id.empty_list_hint);
+        title = getView().findViewById(R.id.empty_title_text);
+        message = getView().findViewById(R.id.empty_label_text);
+        hint = getView().findViewById(R.id.empty_hint_text);
     }
 
     private void setTexts() {

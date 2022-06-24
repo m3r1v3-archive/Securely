@@ -25,29 +25,29 @@ import com.merive.securely.R;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.elements.TypingTextView;
 
-public class PasswordSharingFragment extends Fragment {
+public class PasswordShareFragment extends Fragment {
 
     TypingTextView title;
     ImageView QRCode, copy, cancel;
 
     /**
-     * PasswordSharingFragment Constructor.
+     * PasswordShareFragment Constructor.
      * Using for creating DialogFragment in MainActivity.
      *
      * @see DialogFragment
      * @see MainActivity
      */
-    public PasswordSharingFragment() {
+    public PasswordShareFragment() {
     }
 
     /**
-     * This method is setting PasswordSharingFragment Arguments.
+     * This method is setting PasswordShareFragment Arguments.
      *
      * @param name Password Name.
-     * @return PasswordSharingFragment with necessary arguments.
+     * @return PasswordShareFragment with necessary arguments.
      */
-    public static PasswordSharingFragment newInstance(String name) {
-        PasswordSharingFragment frag = new PasswordSharingFragment();
+    public static PasswordShareFragment newInstance(String name) {
+        PasswordShareFragment frag = new PasswordShareFragment();
         Bundle args = new Bundle();
         args.putString("name", name);
         frag.setArguments(args);
@@ -55,7 +55,7 @@ public class PasswordSharingFragment extends Fragment {
     }
 
     /**
-     * This method is creating PasswordSharingFragment.
+     * This method is creating PasswordShareFragment.
      *
      * @param inflater           Needs for getting Fragment View.
      * @param parent             Argument of inflater.inflate().
@@ -66,7 +66,7 @@ public class PasswordSharingFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_password_sharing, parent, false);
+        return inflater.inflate(R.layout.fragment_password_share, parent, false);
     }
 
     /**
@@ -94,10 +94,10 @@ public class PasswordSharingFragment extends Fragment {
      * This method is initializing layout variables.
      */
     private void initVariables() {
-        title = getView().findViewById(R.id.password_sharing_title);
-        copy = getView().findViewById(R.id.password_sharing_copy_button);
-        cancel = getView().findViewById(R.id.password_sharing_cancel_button);
-        QRCode = getView().findViewById(R.id.qr_code);
+        title = getView().findViewById(R.id.password_share_title);
+        copy = getView().findViewById(R.id.password_share_copy_button);
+        cancel = getView().findViewById(R.id.password_share_cancel_button);
+        QRCode = getView().findViewById(R.id.password_share_qr_code);
     }
 
     private void setListeners() {

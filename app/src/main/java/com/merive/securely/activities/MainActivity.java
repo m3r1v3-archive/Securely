@@ -30,7 +30,7 @@ import com.merive.securely.fragments.BarFragment;
 import com.merive.securely.fragments.ConfirmFragment;
 import com.merive.securely.fragments.EmptyFragment;
 import com.merive.securely.fragments.PasswordFragment;
-import com.merive.securely.fragments.PasswordSharingFragment;
+import com.merive.securely.fragments.PasswordShareFragment;
 import com.merive.securely.fragments.SettingsFragment;
 import com.merive.securely.fragments.UpdateFragment;
 import com.merive.securely.preferences.PreferencesManager;
@@ -231,8 +231,8 @@ public class MainActivity extends AppCompatActivity {
     private void checkEmpty() {
         if (db.passwordDao().checkEmpty()) {
             setFragment(new EmptyFragment());
-            findViewById(R.id.main_fragment_container).setVisibility(View.VISIBLE);
-        } else findViewById(R.id.main_fragment_container).setVisibility(View.INVISIBLE);
+            findViewById(R.id.main_fragment).setVisibility(View.VISIBLE);
+        } else findViewById(R.id.main_fragment).setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -694,13 +694,13 @@ public class MainActivity extends AppCompatActivity {
         passwords.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PasswordAdapter(passwordList,
                 this::clickEditPassword,
-                this::openPasswordSharingFragment);
+                this::openPasswordShareFragment);
         passwords.setAdapter(adapter);
     }
 
-    private void openPasswordSharingFragment(String name) {
+    private void openPasswordShareFragment(String name) {
         makeVibration();
-        setBarFragment(PasswordSharingFragment.newInstance(name));
+        setBarFragment(PasswordShareFragment.newInstance(name));
     }
 
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {

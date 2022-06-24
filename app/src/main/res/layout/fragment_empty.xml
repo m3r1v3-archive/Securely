@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/empty_list_title"
+        android:id="@+id/empty_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"
@@ -14,7 +14,7 @@
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="?colorAccent"
-        android:textSize="32sp"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,19 +22,19 @@
         app:layout_constraintVertical_bias="0.075" />
 
     <ImageView
-        android:id="@+id/empty_list_title_separator"
+        android:id="@+id/empty_text_separator"
         android:layout_width="0dp"
         android:layout_height="12dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:layout_marginBottom="12dp"
         android:src="@xml/horizontal_line"
-        app:layout_constraintBottom_toTopOf="@id/empty_list_empty_message"
+        app:layout_constraintBottom_toTopOf="@id/empty_label_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/empty_list_empty_message"
+        android:id="@+id/empty_label_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -45,12 +45,14 @@
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/empty_list_title" />
+        app:layout_constraintTop_toBottomOf="@id/empty_title_text" />
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/empty_logo_image"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        android:background="@xml/background"
+        android:padding="12dp"
         android:src="@drawable/icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +60,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/empty_list_hint"
+        android:id="@+id/empty_hint_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -69,6 +71,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

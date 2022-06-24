@@ -8,7 +8,7 @@
     tools:context=".activities.LoginActivity">
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/login_key_title"
+        android:id="@+id/login_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"
@@ -24,19 +24,19 @@
         app:layout_constraintVertical_bias="0.075" />
 
     <ImageView
-        android:id="@+id/login_title_separator"
+        android:id="@+id/login_text_separator"
         android:layout_width="0dp"
         android:layout_height="12dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:layout_marginBottom="12dp"
         android:src="@xml/horizontal_line"
-        app:layout_constraintBottom_toTopOf="@id/login_key_hint"
+        app:layout_constraintBottom_toTopOf="@id/login_hint_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/login_key_hint"
+        android:id="@+id/login_hint_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -46,12 +46,14 @@
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_key_title" />
+        app:layout_constraintTop_toBottomOf="@id/login_title_text" />
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/login_logo_image"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        android:background="@xml/background"
+        android:padding="12dp"
         android:src="@drawable/icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +61,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/key_edit"
+        android:id="@+id/login_key_edit"
         android:layout_width="224dp"
         android:layout_height="56dp"
         android:layout_marginBottom="36dp"
@@ -74,12 +76,12 @@
         android:textColor="?colorAccent"
         android:textColorHint="?colorAccent"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/login_key_button"
+        app:layout_constraintBottom_toTopOf="@id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/login_key_button"
+        android:id="@+id/login_button"
         android:layout_width="112dp"
         android:layout_height="56dp"
         android:background="@xml/background"

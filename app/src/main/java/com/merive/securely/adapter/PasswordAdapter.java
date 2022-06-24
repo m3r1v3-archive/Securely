@@ -74,7 +74,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
             implements View.OnClickListener {
 
         private final TextView name;
-        private final ImageButton sharing;
+        private final ImageButton share;
         private final WeakReference<ClickListener> copyListenerRef;
         private final WeakReference<ClickListener> rowListenerRef;
 
@@ -89,11 +89,11 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
             copyListenerRef = new WeakReference<>(copyListener);
             rowListenerRef = new WeakReference<>(rowListener);
 
-            name = itemView.findViewById(R.id.password_name);
-            sharing = itemView.findViewById(R.id.password_sharing_button);
+            name = itemView.findViewById(R.id.row_password_name);
+            share = itemView.findViewById(R.id.row_options_button);
 
             itemView.setOnClickListener(this);
-            sharing.setOnClickListener(this);
+            share.setOnClickListener(this);
         }
 
         /**
@@ -106,7 +106,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHo
         @Override
         public void onClick(View view) {
             try {
-                if (view.getId() == sharing.getId())
+                if (view.getId() == share.getId())
                     copyListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
                 else
                     rowListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
