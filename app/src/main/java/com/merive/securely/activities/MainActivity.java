@@ -44,7 +44,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initLayoutVariables();
-        setBarFragment();
+        setBarFragment(new BarFragment());
 
         preferencesManager = new PreferencesManager(this.getBaseContext());
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
@@ -152,38 +151,11 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see Fragment
      */
-    private void setBarFragment() {
+    public void setBarFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
-                .replace(R.id.bar_fragment, new BarFragment(), null)
-                .commit();
-    }
-
-    /**
-     * This method set Fragment to pad_fragment element in layout.
-     *
-     * @see Fragment
-     */
-    public void setPadFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
-                .replace(R.id.pad_fragment, fragment, null)
-                .commit();
-    }
-
-    /**
-     * This method remove Fragment to pad_fragment element in layout.
-     *
-     * @see Fragment
-     */
-    public void removePadFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
-                .replace(R.id.pad_fragment, new BarFragment(), null)
-                .remove(Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.pad_fragment)))
+                .replace(R.id.bar_fragment, fragment, null)
                 .commit();
     }
 
@@ -292,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void clickAdd() {
         makeVibration();
-        setPadFragment(PasswordFragment.newInstance(preferencesManager.getLength(), preferencesManager.getShow()));
+        setBarFragment(PasswordFragment.newInstance(preferencesManager.getLength(), preferencesManager.getShow()));
     }
 
     /**
@@ -365,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void clickEditPassword(String name) {
         makeVibration();
-        setPadFragment(PasswordFragment.newInstance(
+        setBarFragment(PasswordFragment.newInstance(
                 name,
                 preferencesManager.getEncrypt() ?
                         new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) :
@@ -455,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
      * @see ConfirmFragment
      */
     public void longClickLock() {
-        setPadFragment(ConfirmFragment.newInstance(true));
+        setBarFragment(ConfirmFragment.newInstance(true));
     }
 
     /**
@@ -467,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void clickSettings() {
         makeVibration();
-        setPadFragment(SettingsFragment.newInstance(
+        setBarFragment(SettingsFragment.newInstance(
                 preferencesManager.getLength(),
                 preferencesManager.getShow(),
                 getIntent().getBooleanExtra("delete", false),
@@ -691,7 +663,7 @@ public class MainActivity extends AppCompatActivity {
      * @see ConfirmFragment
      */
     public void openConfirmPasswordDelete(String name) {
-        setPadFragment(ConfirmFragment.newInstance(name));
+        setBarFragment(ConfirmFragment.newInstance(name));
     }
 
     /**
@@ -700,7 +672,7 @@ public class MainActivity extends AppCompatActivity {
      * @see ConfirmFragment
      */
     public void openConfirmAllPasswordsDelete() {
-        setPadFragment(ConfirmFragment.newInstance());
+        setBarFragment(ConfirmFragment.newInstance());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -728,7 +700,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openPasswordSharingFragment(String name) {
         makeVibration();
-        setPadFragment(PasswordSharingFragment.newInstance(name));
+        setBarFragment(PasswordSharingFragment.newInstance(name));
     }
 
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {

@@ -133,7 +133,7 @@ public class ConfirmFragment extends Fragment {
      */
     private void clickCancel() {
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     /**
@@ -155,7 +155,7 @@ public class ConfirmFragment extends Fragment {
             else ((MainActivity) getActivity())
                     .deletePasswordByName(getArguments().getString("name"));
         }
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     /**

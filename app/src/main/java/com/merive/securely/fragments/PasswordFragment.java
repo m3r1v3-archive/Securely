@@ -200,7 +200,7 @@ public class PasswordFragment extends Fragment {
     private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     /**
@@ -214,7 +214,7 @@ public class PasswordFragment extends Fragment {
     private void clickDeletePassword(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
         ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
     }
 
@@ -231,7 +231,7 @@ public class PasswordFragment extends Fragment {
         ((MainActivity) getActivity()).makeVibration();
         if (edit) saveEditPassword();
         else saveNewPassword();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     /**
@@ -332,7 +332,7 @@ public class PasswordFragment extends Fragment {
     private void clickScan(View view) {
         ((MainActivity) getActivity()).makeVibration();
         openScanner();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     /**

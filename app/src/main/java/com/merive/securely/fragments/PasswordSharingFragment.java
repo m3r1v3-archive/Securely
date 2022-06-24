@@ -118,12 +118,12 @@ public class PasswordSharingFragment extends Fragment {
     private void clickCopy() {
         ((MainActivity) getActivity()).addToClipboard(getArguments().getString("name"));
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     private void clickCancel() {
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     /**

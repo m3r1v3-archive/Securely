@@ -164,7 +164,7 @@ public class SettingsFragment extends Fragment {
     private void clickCancel(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     /**
@@ -177,7 +177,7 @@ public class SettingsFragment extends Fragment {
     private void clickDeleteAllPasswords(View view) {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
         ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
     }
 
@@ -200,6 +200,6 @@ public class SettingsFragment extends Fragment {
                 showPasswordSwitch.isChecked(),
                 deletingSwitch.isChecked(),
                 encryptingSwitch.isChecked());
-        ((MainActivity) getActivity()).removePadFragment();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 }
