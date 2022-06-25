@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
      * @see UpdateFragment
      */
     private void openUpdateFragment(String newVersion) {
-        UpdateFragment.newInstance(BuildConfig.VERSION_NAME, newVersion).show(getSupportFragmentManager(), "update_fragment");
+        setBarFragment(UpdateFragment.newInstance(BuildConfig.VERSION_NAME, newVersion));
     }
 
     /**

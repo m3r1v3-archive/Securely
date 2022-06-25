@@ -15,15 +15,16 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
 
-public class UpdateFragment extends DialogFragment {
+public class UpdateFragment extends Fragment {
 
     TypingTextView title, version;
-    ImageView download;
+    ImageView download, cancel;
 
     /**
      * UpdateFragment Constructor.
@@ -63,8 +64,7 @@ public class UpdateFragment extends DialogFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_update, parent);
+        return inflater.inflate(R.layout.fragment_update, parent, false);
     }
 
     /**
@@ -81,13 +81,11 @@ public class UpdateFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         initVariables();
         setTitle();
         setVersion();
-
-        download.setOnClickListener(v -> clickDownload());
+        setListeners();
     }
 
     /**
@@ -97,6 +95,12 @@ public class UpdateFragment extends DialogFragment {
         title = getView().findViewById(R.id.update_title_text);
         version = getView().findViewById(R.id.update_label_text);
         download = getView().findViewById(R.id.update_download_button);
+        cancel = getView().findViewById(R.id.update_cancel_button);
+    }
+
+    private void setListeners() {
+        download.setOnClickListener(v -> clickDownload());
+        cancel.setOnClickListener(v -> clickCancel());
     }
 
     /**
@@ -117,9 +121,13 @@ public class UpdateFragment extends DialogFragment {
      * This method is open Securely Download Page in Browser.
      */
     private void clickDownload() {
-        dismiss();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
         ((MainActivity) getActivity()).makeVibration();
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website)));
-        startActivity(browserIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website))));
+    }
+
+    private void clickCancel() {
+        ((MainActivity) getActivity()).makeVibration();
+        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 }
