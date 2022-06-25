@@ -7,11 +7,11 @@
 
     <ImageView
         android:id="@+id/bar_add_button"
-        android:layout_width="112sp"
-        android:layout_height="56sp"
+        android:layout_width="@dimen/size_112dp"
+        android:layout_height="@dimen/size_56dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
-        android:padding="12sp"
+        android:padding="@dimen/padding_12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/bar_lock_button"
@@ -21,11 +21,11 @@
 
     <ImageView
         android:id="@+id/bar_lock_button"
-        android:layout_width="112sp"
-        android:layout_height="56sp"
+        android:layout_width="@dimen/size_112dp"
+        android:layout_height="@dimen/size_56dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
-        android:padding="12sp"
+        android:padding="@dimen/padding_12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bar_add_button"
         app:layout_constraintStart_toEndOf="@id/bar_settings_button"
@@ -35,11 +35,11 @@
 
     <ImageView
         android:id="@+id/bar_settings_button"
-        android:layout_width="112sp"
-        android:layout_height="56sp"
+        android:layout_width="@dimen/size_112dp"
+        android:layout_height="@dimen/size_56dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
-        android:padding="12sp"
+        android:padding="@dimen/padding_12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bar_lock_button"
         app:layout_constraintStart_toStartOf="parent"
