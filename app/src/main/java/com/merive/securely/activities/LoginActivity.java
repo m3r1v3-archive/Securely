@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,10 +24,17 @@ import org.mindrot.jbcrypt.BCrypt;
 public class LoginActivity extends AppCompatActivity {
 
     public static PreferencesManager preferencesManager;
-    private TypingTextView title, keyHint;
-    private EditText key;
-    private boolean pressed = false, changeKey = false;
 
+    private ImageView loginButton;
+    private TypingTextView titleTypingText, hintTypingText;
+    private EditText keyEditText;
+    private boolean pressed = false, keyEdit = false;
+
+    /**
+     * Called by the system when the service is first created
+     *
+     * @param savedInstanceState Using by super.onCreate method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,158 +43,201 @@ public class LoginActivity extends AppCompatActivity {
 
         preferencesManager = new PreferencesManager(this.getBaseContext());
 
-        initLayoutVariables();
-
-        typingAnimation(title, getResources().getString(R.string.welcome_to_securely));
-        typingAnimation(keyHint, getResources().getString(R.string.enter_the_key_in_the_field));
+        initComponents();
+        setListeners();
+        setTexts();
 
         checkKeyOnAbsence();
-        checkDeleteAfterErrorsEdit();
+        checkDeleteEdit();
         checkKeyEdit();
-
-        setKeyOnEditorListener();
     }
 
-    private void initLayoutVariables() {
-        title = findViewById(R.id.login_title_text);
-        key = findViewById(R.id.login_key_edit);
-        keyHint = findViewById(R.id.login_hint_text);
+    /**
+     * Initializes basic layout components
+     */
+    private void initComponents() {
+        titleTypingText = findViewById(R.id.login_title_text);
+        hintTypingText = findViewById(R.id.login_hint_text);
+        keyEditText = findViewById(R.id.login_key_edit);
+        loginButton = findViewById(R.id.login_button);
     }
 
+    /**
+     * Sets components listeners (onClickListener for loginButton and onEditorActionListener for keyEditText)
+     */
+    private void setListeners() {
+        loginButton.setOnClickListener(v -> clickLogin());
+        keyEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                clickLogin();
+                hideKeyboard();
+                return false;
+            }
+            return true;
+        });
+    }
+
+    /**
+     * Sets texts to TypingTextView components using typingAnimation() method
+     */
+    private void setTexts() {
+        typingAnimation(titleTypingText, getResources().getString(R.string.welcome_to_securely));
+        typingAnimation(hintTypingText, getResources().getString(R.string.enter_the_key_in_the_field));
+    }
+
+    /**
+     * Sets hint message if hash in SharedPreferences value is "-1" (Default value)
+     */
     private void checkKeyOnAbsence() {
-        if (preferencesManager.getHash().equals("-1")) {
-            typingAnimation(keyHint, getResources().getString(R.string.create_new_key));
-        }
+        if (preferencesManager.getHash().equals("-1"))
+            typingAnimation(hintTypingText, getResources().getString(R.string.create_new_key));
     }
 
-    private void checkDeleteAfterErrorsEdit() {
-        if (getIntent().getBooleanExtra("status", false)) {
-            preferencesManager.setDelete(getIntent().getBooleanExtra("delete", false));
+    /**
+     * Changes delete value in SharedPreferences and close Activity if intent "delete_edit" boolean extra is true
+     */
+    private void checkDeleteEdit() {
+        if (getIntent().getBooleanExtra("delete_edit", false)) {
+            preferencesManager.setDelete(getIntent().getBooleanExtra("delete_value", false));
             finish();
         }
     }
 
+    /**
+     * Sets hintTypingText message and change keyEdit variable value to true if intent "key_edit" boolean extra is true
+     */
     private void checkKeyEdit() {
-        if (getIntent().getBooleanExtra("changeKey", false)) {
-            typingAnimation(keyHint, getResources().getString(R.string.enter_old_key));
-            changeKey = true;
+        if (getIntent().getBooleanExtra("key_edit", false)) {
+            typingAnimation(hintTypingText, getResources().getString(R.string.enter_old_key));
+            keyEdit = true;
         }
     }
 
-    private void setKeyOnEditorListener() {
-        key.setOnEditorActionListener((v, actionId, event) -> {
-            boolean handled = false;
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                clickLogin(key);
-                hideKeyboard();
-                handled = true;
-            }
-            return handled;
-        });
-    }
-
-    public void clickLogin(View view) {
+    /**
+     * Makes vibration, checks keyEdit value: if true start editKey() method, else login() method
+     *
+     * @see LoginActivity
+     */
+    private void clickLogin() {
         makeVibration();
-        if (changeKey) changeKey();
+        if (keyEdit) editKey();
         else login();
     }
 
+    /**
+     * Makes vibration effect if Ringer Mode isn't Mute
+     */
     private void makeVibration() {
-        if (checkSoundMode())
+        if ((((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0))
             VibrationManager.makeVibration(getApplicationContext());
     }
 
-    private boolean checkSoundMode() {
-        return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
-    }
-
-    private void changeKey() {
+    /**
+     * Resets key if checkKeyHash() returns true, starts setting the key.
+     * Else sets hintTypingText message using typingAnimation() method
+     */
+    private void editKey() {
         if (checkKeyHash()) {
-            resetKey();
+            preferencesManager.setHash();
             checkKeyOnAbsence();
-            key.setText("");
-            changeKey = false;
+            keyEditText.setText("");
+            keyEdit = false;
             pressed = false;
-        } else typingAnimation(keyHint, getResources().getString(R.string.invalid_key));
+        } else typingAnimation(hintTypingText, getResources().getString(R.string.invalid_key));
     }
 
+    /**
+     * Checks Key Hash from keyEditText and return result value.
+     * If result is true, sets hintTypingText message using typingAnimation() method and change pressed variable value
+     *
+     * @return Result of hash checking
+     */
     private boolean checkKeyHash() {
-        if (BCrypt.checkpw(key.getText().toString(), preferencesManager.getHash())) {
-            typingAnimation(keyHint, getResources().getString(R.string.successful_login));
+        if (BCrypt.checkpw(keyEditText.getText().toString(), preferencesManager.getHash())) {
+            typingAnimation(hintTypingText, getResources().getString(R.string.successful_login));
             pressed = true;
             return true;
         }
         return false;
     }
 
-    private void resetKey() {
-        preferencesManager.setHash();
-    }
-
+    /**
+     * Logins in MainActivity if pressed isn't true, keyEditText isn't empty.
+     * Checks key hash value, if it is default value, sets key hash and open MainActivity, else differs keyEditText text hash and hash in SharedPreferences
+     * Else if key is invalid, checks errors value and sets message to hintTypingText.
+     * If errors count = 0, delete all passwords
+     */
     private void login() {
         if (!pressed) {
-            if (!key.getText().toString().equals("")) {
-                if (checkOnNoKey()) openMain();
+            if (!keyEditText.getText().toString().isEmpty()) {
+                if (setKey()) openMain();
                 else if (checkKeyHash()) openMain();
                 else {
-                    if (checkErrorsCount()) {
-                        typingAnimation(keyHint, getResources().getString(R.string.invalid_key));
-                        if (preferencesManager.getDelete()) errorDec();
+                    if (preferencesManager.getErrors() > 0) {
+                        typingAnimation(hintTypingText, getResources().getString(R.string.invalid_key));
+                        if (preferencesManager.getDelete())
+                            preferencesManager.setErrors(preferencesManager.getErrors() - 1);
                     } else deleteAllPasswords();
                 }
             }
         }
     }
 
-    private boolean checkOnNoKey() {
+    /**
+     * Sets key hash to SharedPreferences if hash value is "-1" (Default value).
+     * Sets hintTypingText message using typingAnimation() method and change pressed value to true
+     *
+     * @return True if sets new key, else false
+     */
+    private boolean setKey() {
         if (preferencesManager.getHash().equals("-1")) {
-            preferencesManager.setHash(generateHash(key.getText().toString()));
-            typingAnimation(keyHint, getResources().getString(R.string.key_set));
+            preferencesManager.setHash(generateHash(keyEditText.getText().toString()));
+            typingAnimation(hintTypingText, getResources().getString(R.string.key_set));
             pressed = true;
             return true;
         }
         return false;
     }
 
+    /**
+     * Generates key hash
+     *
+     * @param key Key value, that will be hashed
+     * @return Hashed String value
+     */
     private String generateHash(String key) {
         return BCrypt.hashpw(key, BCrypt.gensalt());
     }
 
+    /**
+     * Resets error value, starts MainActivity and closes LoginActivity
+     *
+     * @see MainActivity
+     */
     private void openMain() {
         new Handler().postDelayed(() -> {
-            resetErrors();
+            preferencesManager.setErrors();
             startActivity(new Intent(this, MainActivity.class)
-                    .putExtra("status", false)
-                    .putExtra("delete", preferencesManager.getDelete())
-                    .putExtra("key", Integer.parseInt(key.getText().toString()))
-            );
+                    .putExtra("delete_all", false)
+                    .putExtra("delete_value", preferencesManager.getDelete())
+                    .putExtra("key_value", Integer.parseInt(keyEditText.getText().toString())));
             finish();
         }, 3250);
     }
 
-    private void resetErrors() {
-        preferencesManager.setErrors();
-    }
-
-    private boolean checkErrorsCount() {
-        return preferencesManager.getErrors() > 0;
-    }
-
-    private void errorDec() {
-        preferencesManager.setErrors(preferencesManager.getErrors() - 1);
-    }
-
+    /**
+     * Opens MainActivity for deleting all passwords and sets hintTypingView message
+     */
     private void deleteAllPasswords() {
-        startActivity(new Intent(this, MainActivity.class).putExtra("status", true));
-        typingAnimation(keyHint, getResources().getString(R.string.all_passwords_deleted));
-        pressed = true;
+        startActivity(new Intent(this, MainActivity.class).putExtra("delete_all", true));
+        typingAnimation(hintTypingText, getResources().getString(R.string.all_passwords_deleted));
     }
 
+    /**
+     * Hides keyboard from screen
+     */
     private void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        if (this.getCurrentFocus() != null)
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 }

@@ -85,7 +85,6 @@
         android:layout_width="@dimen/size_112dp"
         android:layout_height="@dimen/size_56dp"
         android:background="@xml/background"
-        android:onClick="clickLogin"
         android:padding="@dimen/padding_12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

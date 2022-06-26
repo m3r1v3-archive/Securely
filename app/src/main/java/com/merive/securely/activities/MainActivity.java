@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         preferencesManager = new PreferencesManager(this.getBaseContext());
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords")
                 .allowMainThreadQueries().build();
-        key = getIntent().getIntExtra("key", 0);
+        key = getIntent().getIntExtra("key_value", 0);
 
         checkLoginStatus();
         checkVersion();
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkLoginStatus() {
-        if (getIntent().getBooleanExtra("status", false)) {
+        if (getIntent().getBooleanExtra("delete_all", false)) {
             db.passwordDao().deleteAll();
             finish();
         }
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         setBarFragment(SettingsFragment.newInstance(
                 preferencesManager.getLength(),
                 preferencesManager.getShow(),
-                getIntent().getBooleanExtra("delete", false),
+                getIntent().getBooleanExtra("delete_value", false),
                 preferencesManager.getEncrypt()));
     }
 
@@ -298,10 +298,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDeleting(boolean deleting) {
-        if (deleting != getIntent().getBooleanExtra("delete", false)) {
+        if (deleting != getIntent().getBooleanExtra("delete_value", false)) {
             startActivity(new Intent(this, LoginActivity.class)
-                    .putExtra("status", true)
-                    .putExtra("delete", deleting));
+                    .putExtra("delete_edit", true)
+                    .putExtra("delete_value", deleting));
         }
     }
 
