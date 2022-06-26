@@ -65,7 +65,7 @@
             android:layout_width="@dimen/size_0dp"
             android:layout_height="@dimen/size_0dp"
             android:layout_marginEnd="@dimen/margin_12dp"
-            android:background="@color/colorTransparent"
+            android:background="@color/color_transparent"
             android:fontFamily="@font/share_tech_mono"
             android:gravity="center|end"
             android:hint="@string/def"

@@ -1,22 +1,22 @@
 <resources>
     <!--  Basic Strings  -->
     <string name="app_name">Securely</string>
+    <string name="error">Something went wrong!</string>
 
-    <!--  MainActivity  -->
+    <!--  EmptyFragment  -->
     <string name="list_is_empty">List is Empty</string>
     <string name="empty_hint">Click <b>+</b> button\nfor add new password</string>
-    <string name="error">Something went wrong!</string>
 
     <!--  LoginActivity  -->
     <string name="welcome_to_securely">Welcome to Securely</string>
     <string name="enter_the_key_in_the_field">Enter the key to the field</string>
-    <string name="create_a_new_key">Create new key\nTip: Use more than 4 numbers</string>
-    <string name="all_passwords_was_deleted">All passwords has deleted</string>
+    <string name="create_new_key">Create new key\nTip: Use more than 4 numbers</string>
+    <string name="all_passwords_deleted">All passwords has been deleted</string>
     <string name="invalid_key">Invalid key</string>
-    <string name="enter_previous_key">Enter old key</string>
+    <string name="enter_old_key">Enter old key</string>
     <string name="key_set">Key has been set</string>
     <string name="successful_login">Successful login</string>
-    <string name="enter">Enter key</string>
+    <string name="enter_key">Enter key</string>
 
     <!--  ConfirmFragment  -->
     <string name="change_key">Change key?</string>
@@ -38,7 +38,7 @@
     <string name="encrypt">Encrypt</string>
 
     <!--  UpdateFragment  -->
-    <string name="update_released">Update Released</string>
+    <string name="update">Update</string>
 
     <!--  Website Link  -->
     <string name="website">https://merive.herokuapp.com/Securely/Download/</string>

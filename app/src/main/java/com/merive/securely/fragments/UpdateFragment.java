@@ -3,8 +3,6 @@ package com.merive.securely.fragments;
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.merive.securely.activities.MainActivity;
@@ -63,7 +60,7 @@ public class UpdateFragment extends Fragment {
     }
 
     private void setTitle() {
-        typingAnimation(title, getResources().getString(R.string.update_released));
+        typingAnimation(title, getResources().getString(R.string.update));
     }
 
     private void setVersion() {

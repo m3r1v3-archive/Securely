@@ -68,7 +68,7 @@
         android:background="@xml/background"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
-        android:hint="@string/enter"
+        android:hint="@string/enter_key"
         android:imeOptions="actionDone"
         android:inputType="numberPassword"
         android:maxLength="10"

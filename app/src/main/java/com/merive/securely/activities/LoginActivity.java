@@ -4,7 +4,6 @@ import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkKeyOnAbsence() {
         if (preferencesManager.getHash().equals("-1")) {
-            typingAnimation(keyHint, getResources().getString(R.string.create_a_new_key));
+            typingAnimation(keyHint, getResources().getString(R.string.create_new_key));
         }
     }
 
@@ -70,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkKeyEdit() {
         if (getIntent().getBooleanExtra("changeKey", false)) {
-            typingAnimation(keyHint, getResources().getString(R.string.enter_previous_key));
+            typingAnimation(keyHint, getResources().getString(R.string.enter_old_key));
             changeKey = true;
         }
     }
@@ -180,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void deleteAllPasswords() {
         startActivity(new Intent(this, MainActivity.class).putExtra("status", true));
-        typingAnimation(keyHint, getResources().getString(R.string.all_passwords_was_deleted));
+        typingAnimation(keyHint, getResources().getString(R.string.all_passwords_deleted));
         pressed = true;
     }
 
