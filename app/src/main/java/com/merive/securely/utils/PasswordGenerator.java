@@ -16,11 +16,6 @@ public class PasswordGenerator {
     final String[] numberAlf = "0123456789".split("");
     final String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
 
-    /**
-     * Password Generator Constructor
-     *
-     * @param length The future password length.
-     */
     public PasswordGenerator(int length) {
         if (length % 2 != 0) length--;
         lowerLength = (int) Math.round(0.4 * length);
@@ -29,22 +24,10 @@ public class PasswordGenerator {
         symbolsLength = (int) Math.round(0.1 * length) + ((length % 2 == 0) ? 0 : 1);
     }
 
-    /**
-     * This method is generating password.
-     *
-     * @return Password Value.
-     */
     public String generatePassword() {
         return shuffle(generatePackString());
     }
 
-    /**
-     * This method is generating alphabet of using symbols.
-     *
-     * @param set    Symbol set.
-     * @param length Length for Symbol set.
-     * @return Symbol set.
-     */
     private String generateSetString(String[] set, int length) {
         StringBuilder string = new StringBuilder();
         while (string.length() != length)
@@ -53,11 +36,6 @@ public class PasswordGenerator {
         return string.toString();
     }
 
-    /**
-     * This method is generating full symbol pack.
-     *
-     * @return Symbol pack.
-     */
     private String generatePackString() {
         return generateSetString(lowerAlf, lowerLength)
                 + generateSetString(upperAlf, upperLength)
@@ -65,12 +43,6 @@ public class PasswordGenerator {
                 + generateSetString(symbolsAlf, symbolsLength);
     }
 
-    /**
-     * This method is shuffling symbol pack.
-     *
-     * @param pack Pack of using symbols.
-     * @return Password String.
-     */
     private String shuffle(String pack) {
         List<Character> characters = new ArrayList<>();
         for (char c : pack.toCharArray()) characters.add(c);

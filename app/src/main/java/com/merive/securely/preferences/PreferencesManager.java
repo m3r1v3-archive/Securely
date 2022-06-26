@@ -77,6 +77,6 @@ public class PreferencesManager {
     }
 
     public void setShow() {
-        sharedPreferences.edit().putBoolean("show", !getEncrypt()).apply();
+        sharedPreferences.edit().putBoolean("show", !getShow()).apply();
     }
 }

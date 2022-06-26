@@ -16,39 +16,17 @@ public class EmptyFragment extends Fragment {
 
     TypingTextView title, message, hint;
 
-    /**
-     * This method is creating EmptyFragment.
-     *
-     * @param inflater           Needs for getting Fragment View.
-     * @param parent             Argument of inflater.inflate().
-     * @param savedInstanceState Saving Fragment Values.
-     * @return Fragment View.
-     * @see View
-     * @see Bundle
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_empty, parent, false);
     }
 
-    /**
-     * This method is executing after Fragment View was created.
-     * In this method will be initializing layout variables and will be setting click listeners for them.
-     *
-     * @param view               Fragment View Value.
-     * @param savedInstanceState Save Fragment Values.
-     * @see View
-     * @see Bundle
-     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initLayoutVariables();
         setTexts();
     }
 
-    /**
-     * This method is assigns main layout variables.
-     */
     private void initLayoutVariables() {
         title = getView().findViewById(R.id.empty_title_text);
         message = getView().findViewById(R.id.empty_label_text);

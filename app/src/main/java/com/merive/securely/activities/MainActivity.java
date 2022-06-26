@@ -54,11 +54,6 @@ public class MainActivity extends AppCompatActivity {
     PreferencesManager preferencesManager;
     int key;
 
-    /**
-     * This method is the start point at the MainActivity.
-     *
-     * @param savedInstanceState Used by super.onCreate method.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +72,6 @@ public class MainActivity extends AppCompatActivity {
         checkVersion();
     }
 
-    /**
-     * This method started after Activity is resumed.
-     * There are checking database on empty and loading values for Password RecyclerView.
-     *
-     * @see RecyclerView
-     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,13 +79,6 @@ public class MainActivity extends AppCompatActivity {
         new GetPasswordData().execute();
     }
 
-    /**
-     * This method checks result of QR scanning.
-     *
-     * @param requestCode The code what was requested.
-     * @param resultCode  The code what was returned.
-     * @param intent      Intent object.
-     */
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
@@ -109,12 +91,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method checks QR result on pattern.
-     *
-     * @param result QR result.
-     * @see Pattern
-     */
     private void checkPatternQR(String result) {
         if (result.split("-").length == 3) {
             Bundle values = new Bundle();
@@ -126,18 +102,10 @@ public class MainActivity extends AppCompatActivity {
         } else makeToast(getResources().getString(R.string.error));
     }
 
-    /**
-     * This method is assigns main layout variables.
-     */
     private void initLayoutVariables() {
         passwords = findViewById(R.id.password_recycler_view);
     }
 
-    /**
-     * This method set Fragment to main_fragment element in layout.
-     *
-     * @see Fragment
-     */
     private void setFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
@@ -146,11 +114,6 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    /**
-     * This method set Fragment to bar_fragment element in layout.
-     *
-     * @see Fragment
-     */
     public void setBarFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
@@ -159,11 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    /**
-     * This method is checking key status on breaking in LoginActivity.
-     *
-     * @see LoginActivity
-     */
     private void checkLoginStatus() {
         if (getIntent().getBooleanExtra("status", false)) {
             db.passwordDao().deleteAll();
@@ -171,12 +129,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method is checking actual version on website.
-     * If Securely got update on website, will open UpdateFragment.
-     *
-     * @see UpdateFragment
-     */
     private void checkVersion() {
         new Thread(() -> {
             try {
@@ -187,13 +139,6 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    /**
-     * This method is getting actual Securely version on website.
-     *
-     * @return Actual Version Code.
-     * @throws IOException Input/Output Exception.
-     * @see IOException
-     */
     private String getVersionOnSite() throws IOException {
         BufferedReader reader = null;
         StringBuilder builder = new StringBuilder();
@@ -211,23 +156,10 @@ public class MainActivity extends AppCompatActivity {
                 builder.substring(builder.indexOf("<i>") + "<i>".length()).indexOf("</i>"));
     }
 
-    /**
-     * This method is opening UpdateFragment.
-     *
-     * @param newVersion Actual Application Version.
-     * @see UpdateFragment
-     */
     private void openUpdateFragment(String newVersion) {
         setBarFragment(UpdateFragment.newInstance(BuildConfig.VERSION_NAME, newVersion));
     }
 
-    /**
-     * This method is checking, that database is empty.
-     * If database is empty, TextView empty set Visible state.
-     * Else TextView empty set Invisible state.
-     *
-     * @see android.widget.TextView
-     */
     private void checkEmpty() {
         if (db.passwordDao().checkEmpty()) {
             setFragment(new EmptyFragment());
@@ -235,56 +167,24 @@ public class MainActivity extends AppCompatActivity {
         } else findViewById(R.id.main_fragment).setVisibility(View.INVISIBLE);
     }
 
-    /**
-     * This method is making vibration.
-     * If checkSoundMode() is true, VibrationManager will make Vibration.
-     *
-     * @see VibrationManager
-     */
     public void makeVibration() {
         if (checkSoundMode())
             VibrationManager.makeVibration(getApplicationContext());
     }
 
-    /**
-     * This method is checking ringer mode of device.
-     *
-     * @return If mode isn't mute, return True.
-     */
     private boolean checkSoundMode() {
         return (((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0);
     }
 
-    /**
-     * This method is using by BarFragment.
-     * The method is make vibration and open PasswordFragment for adding new Password to Database.
-     *
-     * @see BarFragment
-     * @see PasswordFragment
-     */
     public void clickAdd() {
         makeVibration();
         setBarFragment(PasswordFragment.newInstance(preferencesManager.getLength(), preferencesManager.getShow()));
     }
 
-    /**
-     * This method makes toast message
-     *
-     * @param message Toast message text
-     */
     public void makeToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * This method is adding new password to database.
-     * If name already used, the password isn't adding.
-     * Else password will be adding to database, will be making Toast and will be reloading RecyclerView.
-     *
-     * @param data Bundle with Password Data.
-     * @see PasswordFragment
-     * @see RecyclerView
-     */
     public void addNewPassword(Bundle data) {
         if (checkNotExist(getData(data, "name"))) {
             addPasswordInDatabase(data);
@@ -294,26 +194,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method is getting values for Bundle.
-     *
-     * @param data Contains Password Values.
-     * @param name Value Name.
-     * @return Value from Bundle by Value Name.
-     * @see Bundle
-     */
     private String getData(Bundle data, String name) {
         return data.getString(name);
     }
 
-    /**
-     * This method is adding Password Data to Database.
-     * If it necessary, Login and Password values will encrypt.
-     *
-     * @param data Contains Password Data.
-     * @see Bundle
-     * @see Crypt
-     */
     private void addPasswordInDatabase(Bundle data) {
         db.passwordDao().insertItem(
                 new Password(
@@ -326,15 +210,6 @@ public class MainActivity extends AppCompatActivity {
                 ));
     }
 
-    /**
-     * This method is using by RecyclerView Rows.
-     * The method is opening PasswordFragment for editing Password Data.
-     *
-     * @param name Row Name Value
-     * @see PasswordDB
-     * @see RecyclerView
-     * @see PasswordFragment
-     */
     private void clickEditPassword(String name) {
         makeVibration();
         setBarFragment(PasswordFragment.newInstance(
@@ -350,16 +225,6 @@ public class MainActivity extends AppCompatActivity {
                 preferencesManager.getShow()));
     }
 
-    /**
-     * This method is checking Edited Password Data and loading them to Database.
-     * After Loading Edited Data to Database, executes makeToast() and RecyclerView is reloading.
-     *
-     * @param data Contains edited Password Data
-     * @see PasswordFragment
-     * @see PasswordDB
-     * @see RecyclerView
-     * @see Bundle
-     */
     public void editPassword(Bundle data) {
         if (getData(data, "name_before").equals(getData(data, "edited_name"))
                 || checkNotExist(getData(data, "edited_name"))) {
@@ -369,15 +234,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method is rewrite Edited Password Data to Database.
-     * If it necessary, Crypt is Encrypting Login and Password Values.
-     *
-     * @param data Contains edited Password Data.
-     * @see PasswordDB
-     * @see Crypt
-     * @see Bundle
-     */
     private void editPasswordInDatabase(Bundle data) {
         db.passwordDao().updateItem(
                 getData(data, "name_before"),
@@ -390,14 +246,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    /**
-     * This method is deleting Password from Database by Password Name in Database.
-     * After deleting RecyclerView is reloading, Database is checking on empty and will making Toast.
-     *
-     * @param name Password Name in Database.
-     * @see PasswordDB
-     * @see RecyclerView
-     */
     public void deletePasswordByName(String name) {
         db.passwordDao().deleteByName(name);
         new GetPasswordData().execute();
@@ -405,38 +253,16 @@ public class MainActivity extends AppCompatActivity {
         makeToast(name + " was deleted");
     }
 
-    /**
-     * This method is using by BarFragment. The method executes after clicking on Lock Button.
-     * After click, will execute makeVibration() and will start opening LoginActivity.
-     * MainActivity will close.
-     *
-     * @see BarFragment
-     * @see LoginActivity
-     */
     public void clickLock() {
         makeVibration();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
-    /**
-     * This method is using by BarFragment. The method executes after long clicking on Lock Button.
-     * After click, will make vibration, will open ConfirmFragment for changing key.
-     *
-     * @see BarFragment
-     * @see ConfirmFragment
-     */
     public void longClickLock() {
         setBarFragment(ConfirmFragment.newInstance(true));
     }
 
-    /**
-     * This method is using by BarFragment. The method executes after clicking on Settings Button.
-     * After click, will make vibration and will open SettingsFragment.
-     *
-     * @see BarFragment
-     * @see SettingsFragment
-     */
     public void clickSettings() {
         makeVibration();
         setBarFragment(SettingsFragment.newInstance(
@@ -446,19 +272,6 @@ public class MainActivity extends AppCompatActivity {
                 preferencesManager.getEncrypt()));
     }
 
-    /**
-     * This method is saving Settings Values.
-     * The method is update showPassword, deleting, encrypting, and password length values in sharedPreference.
-     *
-     * @param length   Password Generator length.
-     * @param show     Always show password in PasswordFragment.
-     * @param deleting Delete all passwords after 15 errors in LoginActivity.
-     * @param encrypt  Encrypt Login and Password Values in Database.
-     * @see SettingsFragment
-     * @see PasswordFragment
-     * @see LoginActivity
-     * @see PasswordDB
-     */
     public void saveSettings(int length, boolean show, boolean deleting, boolean encrypt) {
         updateShowPassword(show);
         updateLengthOfPassword(length);
@@ -467,14 +280,6 @@ public class MainActivity extends AppCompatActivity {
         makeToast("Settings saved");
     }
 
-    /**
-     * This method is deleting all passwords from Database.
-     * The method can be executing in SettingsFragment or LoginActivity after 15 errors.
-     *
-     * @see PasswordDB
-     * @see SettingsFragment
-     * @see LoginActivity
-     */
     public void deleteAllPasswords() {
         db.passwordDao().deleteAll();
         new GetPasswordData().execute();
@@ -482,38 +287,16 @@ public class MainActivity extends AppCompatActivity {
         makeToast("All passwords have been deleted");
     }
 
-    /**
-     * This method is updating Password Generator Length in sharedPreference.
-     * If length is null, Generator Length is 16 (Default Value).
-     *
-     * @param length New Password Generator Length.
-     * @see PasswordFragment
-     * @see SharedPreferences
-     */
     private void updateLengthOfPassword(int length) {
         if (!String.valueOf(length).isEmpty())
             preferencesManager.setLength(length);
         else preferencesManager.setLength();
     }
 
-    /**
-     * This method is updating Always Show Password in sharedPreference.
-     *
-     * @param show New Always Show Password Value.
-     * @see PasswordFragment
-     * @see SharedPreferences
-     */
     private void updateShowPassword(boolean show) {
         preferencesManager.setShow(show);
     }
 
-    /**
-     * This method is updating Delete After 15 Errors in sharedPreference.
-     *
-     * @param deleting New Delete After 15 Errors Value.
-     * @see LoginActivity
-     * @see SharedPreferences
-     */
     private void updateDeleting(boolean deleting) {
         if (deleting != getIntent().getBooleanExtra("delete", false)) {
             startActivity(new Intent(this, LoginActivity.class)
@@ -522,13 +305,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method is updating Encrypt Login and Password Values in sharedPreference.
-     *
-     * @see SettingsFragment
-     * @see PasswordFragment
-     * @see SharedPreferences
-     */
     public void updateEncrypting(boolean encrypting) {
         if (encrypting != preferencesManager.getEncrypt()) {
             if (encrypting) {
@@ -542,97 +318,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method is encrypting all Logins in Database.
-     *
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void encryptAllLogins() {
         for (String s : db.passwordDao().getAllNames()) encryptLogin(s);
     }
 
-    /**
-     * This method is encrypting Login in Database.
-     *
-     * @param name Password name in Database for encrypting Login
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void encryptLogin(String name) {
         db.passwordDao().updateLoginByName(name, new Crypt(key).encrypt(db.passwordDao().getLoginByName(name)));
     }
 
-    /**
-     * This method is encrypting all Passwords in Database.
-     *
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void encryptAllPasswords() {
         for (String s : db.passwordDao().getAllNames()) encryptPassword(s);
     }
 
-    /**
-     * This method is encrypting Password in Database.
-     *
-     * @param name Password name in Database for encrypting Password
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void encryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
     }
 
-    /**
-     * This method is decrypting all Logins in Database.
-     *
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void decryptAllLogins() {
         for (String s : db.passwordDao().getAllNames()) decryptLogin(s);
     }
 
-    /**
-     * This method is decrypting Login in Database.
-     *
-     * @param name Password name in Database for decrypting Login
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void decryptLogin(String name) {
         db.passwordDao().updateLoginByName(name, new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)));
     }
 
-    /**
-     * This method is decrypting all Passwords in Database.
-     *
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void decryptAllPasswords() {
         for (String s : db.passwordDao().getAllNames()) decryptPassword(s);
     }
 
-    /**
-     * This method is decrypting Password in Database.
-     *
-     * @param name Password name in Database for decrypting Password
-     * @see PasswordDB
-     * @see com.merive.securely.database.PasswordDao
-     */
     private void decryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
-    /**
-     * This method is adding Password Value to Clipboard.
-     * After click will make vibration and Password Value will add to Clipboard.
-     *
-     * @param name Name of Password Row
-     * @see ClipboardManager
-     */
     public void addToClipboard(String name) {
         ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE))
                 .setPrimaryClip(ClipData.newPlainText(name,
@@ -642,35 +359,15 @@ public class MainActivity extends AppCompatActivity {
         makeToast(name + " was copied");
     }
 
-    /**
-     * This method is checking Password Name is exist in Database.
-     *
-     * @param name New Password Name.
-     * @return True is Password Name is exist.
-     * @see PasswordDB
-     * @see PasswordFragment
-     * @see com.merive.securely.database.PasswordDao
-     */
     private boolean checkNotExist(String name) {
         if (!db.passwordDao().checkNotExist(name)) makeToast("Name already taken");
         return db.passwordDao().checkNotExist(name);
     }
 
-    /**
-     * This method is opening ConfirmFragment for confirming password deleting.
-     *
-     * @param name Password Name what will be deleting.
-     * @see ConfirmFragment
-     */
     public void openConfirmPasswordDelete(String name) {
         setBarFragment(ConfirmFragment.newInstance(name));
     }
 
-    /**
-     * This method is opening ConfirmFragment for confirming all passwords deleting.
-     *
-     * @see ConfirmFragment
-     */
     public void openConfirmAllPasswordsDelete() {
         setBarFragment(ConfirmFragment.newInstance());
     }
@@ -682,14 +379,6 @@ public class MainActivity extends AppCompatActivity {
                 Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
     }
 
-    /**
-     * This method is loading RecyclerView, load values, set clickListeners.
-     *
-     * @see RecyclerView
-     * @see PasswordAdapter
-     * @see Crypt
-     * @see PasswordDB
-     */
     private void loadRecyclerView(List<Password> passwordList) {
         passwords.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PasswordAdapter(passwordList,
@@ -705,22 +394,11 @@ public class MainActivity extends AppCompatActivity {
 
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {
 
-        /**
-         * This method is loading Password Data.
-         *
-         * @param params Not using
-         * @return Password Data
-         */
         @Override
         protected List<Password> doInBackground(Void... params) {
             return db.passwordDao().getAll();
         }
 
-        /**
-         * This method is executing after doInBackground() and loadValues to RecyclerView.
-         *
-         * @param passwords Password Data
-         */
         @Override
         protected void onPostExecute(List<Password> passwords) {
             super.onPostExecute(passwords);

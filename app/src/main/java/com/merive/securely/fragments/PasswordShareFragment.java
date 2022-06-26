@@ -30,22 +30,6 @@ public class PasswordShareFragment extends Fragment {
     TypingTextView title;
     ImageView QRCode, copy, cancel;
 
-    /**
-     * PasswordShareFragment Constructor.
-     * Using for creating DialogFragment in MainActivity.
-     *
-     * @see DialogFragment
-     * @see MainActivity
-     */
-    public PasswordShareFragment() {
-    }
-
-    /**
-     * This method is setting PasswordShareFragment Arguments.
-     *
-     * @param name Password Name.
-     * @return PasswordShareFragment with necessary arguments.
-     */
     public static PasswordShareFragment newInstance(String name) {
         PasswordShareFragment frag = new PasswordShareFragment();
         Bundle args = new Bundle();
@@ -54,30 +38,11 @@ public class PasswordShareFragment extends Fragment {
         return frag;
     }
 
-    /**
-     * This method is creating PasswordShareFragment.
-     *
-     * @param inflater           Needs for getting Fragment View.
-     * @param parent             Argument of inflater.inflate().
-     * @param savedInstanceState Saving Fragment Values.
-     * @return Fragment View.
-     * @see View
-     * @see Bundle
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_password_share, parent, false);
     }
 
-    /**
-     * This method is executing after Fragment View was created.
-     * In this method will be setting DialogAnimation, layout variables will be initializing.
-     *
-     * @param view               Fragment View Value.
-     * @param savedInstanceState Saving Fragment Values.
-     * @see View
-     * @see Bundle
-     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -90,9 +55,6 @@ public class PasswordShareFragment extends Fragment {
         QRCode.setImageBitmap(makeQRCode(((MainActivity) getActivity()).getEncryptedValues(getArguments().getString("name"))));
     }
 
-    /**
-     * This method is initializing layout variables.
-     */
     private void initVariables() {
         title = getView().findViewById(R.id.password_share_title);
         copy = getView().findViewById(R.id.password_share_copy_button);
@@ -105,16 +67,10 @@ public class PasswordShareFragment extends Fragment {
         cancel.setOnClickListener(v -> clickCancel());
     }
 
-    /**
-     * This method is setting title.
-     */
     private void setTitle() {
         typingAnimation(title, getArguments().getString("name"));
     }
 
-    /**
-     * This method add password value to clipboard.
-     */
     private void clickCopy() {
         ((MainActivity) getActivity()).addToClipboard(getArguments().getString("name"));
         ((MainActivity) getActivity()).makeVibration();
@@ -126,12 +82,6 @@ public class PasswordShareFragment extends Fragment {
         ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
-    /**
-     * This method generates QR-Code.
-     *
-     * @return QR-Code Bitmap image.
-     * @see Bitmap
-     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Bitmap makeQRCode(String value) {
         try {
