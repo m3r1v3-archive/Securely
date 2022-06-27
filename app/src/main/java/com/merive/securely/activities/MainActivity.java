@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks QR result pattern, if pattern is okay, add password to database.
+     * Check QR result pattern, if pattern is okay, add password to database.
      * Else make error toast message
      *
      * @param result QR Code result
@@ -118,14 +118,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes basic layout components
+     * Initialize basic layout components
      */
     private void initComponents() {
         passwords = findViewById(R.id.password_recycler_view);
     }
 
     /**
-     * Initializes basic variables
+     * Initialize basic variables
      */
     private void initVariables() {
         preferencesManager = new PreferencesManager(this.getBaseContext());
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets fragment to main_fragment component
+     * Set fragment to main_fragment component
      *
      * @param fragment A fragment, that will be set to main_fragment
      * @see Fragment
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets BarFragment to bar_fragment component
+     * Set BarFragment to bar_fragment component
      *
      * @see Fragment
      */
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets fragment to bar_fragment component
+     * Set fragment to bar_fragment component
      *
      * @param fragment A fragment, that will be set to bar_fragment
      * @see Fragment
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks login status, if intent "delete_all" extra is true, deletes all passwords and finish MainActivity
+     * Check login status, if intent "delete_all" extra is true, delete all passwords and finish MainActivity
      */
     private void checkLoginStatus() {
         if (getIntent().getBooleanExtra("delete_all", false)) {
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks version on website and opens UpdateFragment if installed version and version on website isn't the same
+     * Check version on website and open UpdateFragment if installed version and version on website isn't the same
      *
      * @see UpdateFragment
      */
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Gets Securely version on website
+     * Get Securely version on website
      *
      * @return Version from website
      * @throws IOException Ignored
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets UpdateFragment to bar_fragment component
+     * Set UpdateFragment to bar_fragment component
      *
      * @param version New application version
      * @see UpdateFragment
@@ -233,9 +233,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks PasswordDB on empty.
-     * If database is empty, sets EmptyFragment to main_fragment component and makes component visible.
-     * Else makes component invisible
+     * Check PasswordDB on empty.
+     * If database is empty, set EmptyFragment to main_fragment component and make component visible.
+     * Else make component invisible
      *
      * @see PasswordDB
      * @see EmptyFragment
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Makes vibration effect if Ringer Mode isn't Mute
+     * Make vibration effect if Ringer Mode isn't Mute
      */
     public void makeVibration() {
         if ((((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0))
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Makes toast message
+     * Make toast message
      *
      * @param message Toast message value
      */
@@ -265,8 +265,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Adds password to PasswordDB using bundle.
-     * If "name" isn't in database, executes addPassword() method
+     * Add password to PasswordDB using bundle.
+     * If "name" isn't in database, execute addPassword() method
      *
      * @param data Bundle with new password data
      */
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Returns string value by name from Bundle data
+     * Return string value by name from Bundle data
      *
      * @param data Bundle with data
      * @param name Name of extra in Bundle
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Adds password to database, makes toast message, reloads password_recycler_view and check on empty database
+     * Add password to database, make toast message, reload password_recycler_view and check on empty database
      *
      * @param data Bundle with new password data
      */
@@ -298,8 +298,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Adds Password data from Bundle to database.
-     * If preferencesManager.getEncrypt() returns true, encrypts login and password data
+     * Add Password data from Bundle to database.
+     * If preferencesManager.getEncrypt() return true, encrypt login and password data
      *
      * @param data Bundle with new password data
      */
@@ -316,8 +316,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Executes when click on password row in password_recycler_view.
-     * Makes vibration effect and sets PasswordFragment in edit mode to BarFragment
+     * Execute when click on password row in password_recycler_view.
+     * Make vibration effect and set PasswordFragment in edit mode to BarFragment
      *
      * @param name Password name what has clicked
      */
@@ -335,8 +335,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Edits password in PasswordDB using bundle.
-     * If "name_before" equals "edited_name" or "edited_name" isn't in database, executes editPassword() method
+     * Edit password in PasswordDB using bundle.
+     * If "name_before" equals "edited_name" or "edited_name" isn't in database, execute editPassword() method
      *
      * @param data Bundle with edited password data
      */
@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Edits password in database, makes toast message, reloads password_recycler_view and check on empty database
+     * Edit password in database, make toast message, reload password_recycler_view and check on empty database
      *
      * @param data Bundle with new password data
      */
@@ -357,8 +357,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Adds Password data from Bundle to database.
-     * If preferencesManager.getEncrypt() returns true, encrypts login and password data
+     * Add Password data from Bundle to database.
+     * If preferencesManager.getEncrypt() return true, encrypt login and password data
      *
      * @param data Bundle with new password data
      */
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Deletes password in database using name, reload password_recycler_view, executes checkEmpty() method and makes toast message
+     * Delete password in database using name, reload password_recycler_view, execute checkEmpty() method and make toast message
      *
      * @param name Password name, what will be deleted
      */
@@ -387,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates settings data in SharedPreferences and makes toast
+     * Update setting data in SharedPreferences and make toast
      *
      * @param length  Password length for generator value
      * @param show    Show password value
@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Deletes all passwords, reloads password_recycler_view, executes checkEmpty() method and makes toast message
+     * Delete all passwords, reload password_recycler_view, execute checkEmpty() method and make toast message
      */
     public void deleteAllPasswords() {
         db.passwordDao().deleteAll();
@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates password length for generator value in SharedPreferences
+     * Update password length for generator value in SharedPreferences
      *
      * @param length Password length for generator value
      */
@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates show password value in SharedPreferences
+     * Update show password value in SharedPreferences
      *
      * @param show Show password value
      */
@@ -432,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates delete password value in LoginActivity
+     * Update delete password value in LoginActivity
      *
      * @param delete Delete password after login errors value
      */
@@ -445,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates encrypt password data value in SharedPreferences
+     * Update encrypt password data value in SharedPreferences
      *
      * @param encrypt Encrypt password data value
      */
@@ -458,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Encrypts data in database
+     * Encrypt data in database
      */
     private void encryptData() {
         encryptAllLogins();
@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Decrypts data in database
+     * Decrypt data in database
      */
     private void decryptData() {
         decryptAllLogins();
@@ -474,63 +474,63 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Encrypts all login values in database
+     * Encrypt all login values in database
      */
     private void encryptAllLogins() {
         for (String s : db.passwordDao().getAllNames()) encryptLogin(s);
     }
 
     /**
-     * Encrypts login value in database
+     * Encrypt login value in database
      */
     private void encryptLogin(String name) {
         db.passwordDao().updateLoginByName(name, new Crypt(key).encrypt(db.passwordDao().getLoginByName(name)));
     }
 
     /**
-     * Encrypts all password values in database
+     * Encrypt all password values in database
      */
     private void encryptAllPasswords() {
         for (String s : db.passwordDao().getAllNames()) encryptPassword(s);
     }
 
     /**
-     * Encrypts password value in database
+     * Encrypt password value in database
      */
     private void encryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
     }
 
     /**
-     * Decrypts all login values in database
+     * Decrypt all login values in database
      */
     private void decryptAllLogins() {
         for (String s : db.passwordDao().getAllNames()) decryptLogin(s);
     }
 
     /**
-     * Decrypts login value in database
+     * Decrypt login value in database
      */
     private void decryptLogin(String name) {
         db.passwordDao().updateLoginByName(name, new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)));
     }
 
     /**
-     * Decrypts all password values in database
+     * Decrypt all password values in database
      */
     private void decryptAllPasswords() {
         for (String s : db.passwordDao().getAllNames()) decryptPassword(s);
     }
 
     /**
-     * Decrypts password value in database
+     * Decrypt password value in database
      */
     private void decryptPassword(String name) {
         db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
     /**
-     * Adds password value to clipboard and makes toast message
+     * Add password value to clipboard and makes toast message
      *
      * @param name Password name, that will be added to clipboard
      */
@@ -544,8 +544,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks what password name isn't in database
-     * Makes toast message if it's in database
+     * Check what password name isn't in database
+     * Make toast message if it's in database
      *
      * @param name Password name to check
      * @return Password name is in database or isn't (true/false value)
@@ -556,7 +556,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Encrypts password data for QR Code
+     * Encrypt password data for QR Code
      *
      * @param name Password what will be encrypted
      * @return Encrypted password data for QR Code
@@ -569,7 +569,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Loads password data to password_recycler_view component and sets listeners for it
+     * Load password data to password_recycler_view component and sets listeners for it
      *
      * @param passwordList List of password data
      */
@@ -579,7 +579,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens PasswordShareFragment by password name
+     * Open PasswordShareFragment by password name
      *
      * @param name Password name what will show in PasswordShareFragment
      * @see PasswordShareFragment
@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {
 
         /**
-         * Loads password data
+         * Load password data
          *
          * @param params Ignored
          * @return Password data in List object
@@ -603,7 +603,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /**
-         * Executes after doInBackground() method and loads password data to password_recycler_view component
+         * Execute after doInBackground() method and loads password data to password_recycler_view component
          *
          * @param passwords Password data in List object
          */

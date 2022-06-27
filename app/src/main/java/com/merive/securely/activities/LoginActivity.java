@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes basic layout components
+     * Initialize basic layout components
      */
     private void initComponents() {
         titleTypingText = findViewById(R.id.login_title_text);
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets components listeners (onClickListener for loginButton and onEditorActionListener for keyEditText)
+     * Set components listeners (onClickListener for loginButton and onEditorActionListener for keyEditText)
      */
     private void setListeners() {
         loginButton.setOnClickListener(v -> clickLogin());
@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets texts to TypingTextView components using typingAnimation() method
+     * Set texts to TypingTextView components using typingAnimation() method
      */
     private void setTexts() {
         typingAnimation(titleTypingText, getResources().getString(R.string.welcome_to_securely));
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets hint message if hash in SharedPreferences value is "-1" (Default value)
+     * Set hint message if hash in SharedPreferences value is "-1" (Default value)
      */
     private void checkKeyOnAbsence() {
         if (preferencesManager.getHash().equals("-1"))
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Changes delete value in SharedPreferences and close Activity if intent "delete_edit" boolean extra is true
+     * Change delete value in SharedPreferences and close Activity if intent "delete_edit" boolean extra is true
      */
     private void checkDeleteEdit() {
         if (getIntent().getBooleanExtra("delete_edit", false)) {
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets hintTypingText message and change keyEdit variable value to true if intent "key_edit" boolean extra is true
+     * Set hintTypingText message and change keyEdit variable value to true if intent "key_edit" boolean extra is true
      */
     private void checkKeyEdit() {
         if (getIntent().getBooleanExtra("key_edit", false)) {
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Makes vibration, checks keyEdit value: if true start editKey() method, else login() method
+     * Make vibration, check keyEdit value: if true start editKey() method, else start login() method
      *
      * @see LoginActivity
      */
@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Makes vibration effect if Ringer Mode isn't Mute
+     * Make vibration effect if Ringer Mode isn't Mute
      */
     private void makeVibration() {
         if ((((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0))
@@ -133,8 +133,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Resets key if checkKeyHash() returns true, starts setting the key.
-     * Else sets hintTypingText message using typingAnimation() method
+     * Reset key if checkKeyHash() return true, start setting the key.
+     * Else set hintTypingText message using typingAnimation() method
      */
     private void editKey() {
         if (checkKeyHash()) {
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks Key Hash from keyEditText and return result value.
+     * Check Key Hash from keyEditText and return result value.
      * If result is true, sets hintTypingText message using typingAnimation() method and change pressed variable value
      *
      * @return Result of hash checking
@@ -162,10 +162,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Logins in MainActivity if pressed isn't true, keyEditText isn't empty.
-     * Checks key hash value, if it is default value, sets key hash and open MainActivity, else differs keyEditText text hash and hash in SharedPreferences
-     * Else if key is invalid, checks errors value and sets message to hintTypingText.
-     * If errors count = 0, delete all passwords
+     * Login in MainActivity if pressed isn't true, keyEditText isn't empty.
+     * Check key hash value, if it is default value, set key hash and open MainActivity, else differ keyEditText text hash and hash from SharedPreferences
+     * Else if key is invalid, check errors value and set message to hintTypingText.
+     * If errors count equals 0, delete all passwords
      */
     private void login() {
         if (!pressed) {
@@ -184,8 +184,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets key hash to SharedPreferences if hash value is "-1" (Default value).
-     * Sets hintTypingText message using typingAnimation() method and change pressed value to true
+     * Set key hash to SharedPreferences if hash value is "-1" (Default value).
+     * Set hintTypingText message using typingAnimation() method and change pressed value to true
      *
      * @return True if sets new key, else false
      */
@@ -200,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Generates key hash
+     * Generate key hash
      *
      * @param key Key value, that will be hashed
      * @return Hashed String value
@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Resets error value, starts MainActivity and closes LoginActivity
+     * Reset error value, start MainActivity and close LoginActivity
      *
      * @see MainActivity
      */
@@ -226,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens MainActivity for deleting all passwords and sets hintTypingView message
+     * Open MainActivity for deleting all passwords and set hintTypingView message
      */
     private void deleteAllPasswords() {
         startActivity(new Intent(this, MainActivity.class).putExtra("delete_all", true));
@@ -234,7 +234,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Hides keyboard from screen
+     * Hide keyboard from screen
      */
     private void hideKeyboard() {
         if (this.getCurrentFocus() != null)
