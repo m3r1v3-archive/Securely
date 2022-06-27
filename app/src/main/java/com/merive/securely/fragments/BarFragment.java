@@ -48,9 +48,9 @@ public class BarFragment extends Fragment {
      * Initialize BarFragment components
      */
     private void initComponents() {
-        settingsButton = getView().findViewById(R.id.bar_settings_button);
         addButton = getView().findViewById(R.id.bar_add_button);
         lockButton = getView().findViewById(R.id.bar_lock_button);
+        settingsButton = getView().findViewById(R.id.bar_settings_button);
         mainActivity = ((MainActivity) getActivity());
     }
 
