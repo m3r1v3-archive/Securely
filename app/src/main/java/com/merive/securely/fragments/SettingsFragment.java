@@ -106,7 +106,7 @@ public class SettingsFragment extends Fragment {
         view.clearFocus();
         ((MainActivity) getActivity()).makeVibration();
         ((MainActivity) getActivity()).setBarFragment(new BarFragment());
-        ((MainActivity) getActivity()).openConfirmAllPasswordsDelete();
+        openConfirmAllPasswordsDelete();
     }
 
     private void clickSave(View view) {
@@ -119,5 +119,9 @@ public class SettingsFragment extends Fragment {
                 deletingSwitch.isChecked(),
                 encryptingSwitch.isChecked());
         ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+    }
+
+    private void openConfirmAllPasswordsDelete() {
+        ((MainActivity) getActivity()).setBarFragment(ConfirmFragment.newInstance());
     }
 }

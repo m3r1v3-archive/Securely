@@ -24,34 +24,20 @@ import com.merive.securely.utils.PasswordGenerator;
 
 public class PasswordFragment extends Fragment {
 
+    MainActivity mainActivity;
     TypingTextView title;
     EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
     ImageView save, cancel, scan, delete, generate;
     boolean edit, show;
 
-    public static PasswordFragment newInstance(int length, boolean show) {
+    public static PasswordFragment newInstance(String name, String login, String password, String description) {
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
-        args.putInt("length", length);
-        args.putBoolean("show", show);
-
-        frag.setArguments(args);
-        return frag;
-    }
-
-    public static PasswordFragment newInstance
-            (String name, String login, String password, String description, int length, boolean show) {
-        PasswordFragment frag = new PasswordFragment();
-        Bundle args = new Bundle();
-
         args.putString("name", name);
         args.putString("login", login);
         args.putString("password", password);
         args.putString("description", description);
-        args.putInt("length", length);
         args.putBoolean("edit", true);
-        args.putBoolean("show", show);
-
         frag.setArguments(args);
         return frag;
     }
@@ -70,6 +56,8 @@ public class PasswordFragment extends Fragment {
         setTitle();
         setEditMode();
         setShow();
+
+        mainActivity = mainActivity;
 
         cancel.setOnClickListener(this::clickCancel);
         delete.setOnClickListener(this::clickDeletePassword);
@@ -124,35 +112,35 @@ public class PasswordFragment extends Fragment {
     }
 
     private void setShow() {
-        show = getArguments().getBoolean("show");
+        show = mainActivity.preferencesManager.getShow();
         if (show) passwordEdit.setTransformationMethod(null);
     }
 
     private void clickCancel(View view) {
         view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+        mainActivity.makeVibration();
+        mainActivity.setBarFragment();
     }
 
     private void clickDeletePassword(View view) {
         view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
-        ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
+        mainActivity.makeVibration();
+        mainActivity.setBarFragment();
+        openConfirmPasswordDelete(getArguments().getString("name"));
     }
 
     private void clickSave(View view) {
         view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
+        mainActivity.makeVibration();
         if (edit) saveEditPassword();
         else saveNewPassword();
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+        mainActivity.setBarFragment();
     }
 
     private void saveEditPassword() {
         if (checkEditsOnEmpty())
-            ((MainActivity) getActivity()).editPassword(putEditedDataInBundle());
-        else ((MainActivity) getActivity()).makeToast("You have empty fields");
+            mainActivity.checkEditPasswordName(putEditedDataInBundle());
+        else mainActivity.makeToast("You have empty fields");
     }
 
     private boolean checkEditsOnEmpty() {
@@ -175,8 +163,8 @@ public class PasswordFragment extends Fragment {
 
     private void saveNewPassword() {
         if (checkEditsOnEmpty())
-            ((MainActivity) getActivity()).addNewPassword(putNewDataInBundle());
-        else ((MainActivity) getActivity()).makeToast("You have empty fields");
+            mainActivity.checkPasswordName(putNewDataInBundle());
+        else mainActivity.makeToast("You have empty fields");
     }
 
     private Bundle putNewDataInBundle() {
@@ -191,12 +179,12 @@ public class PasswordFragment extends Fragment {
     }
 
     private void clickGeneratePassword() {
-        passwordEdit.setText(new PasswordGenerator(getArguments().getInt("length", 16)).generatePassword());
-        ((MainActivity) getActivity()).makeVibration();
+        passwordEdit.setText(new PasswordGenerator(mainActivity.preferencesManager.getLength()).generatePassword());
+        mainActivity.makeVibration();
     }
 
     private void longClickPasswordEdit() {
-        ((MainActivity) getActivity()).makeVibration();
+        mainActivity.makeVibration();
         if (!show) {
             show = true;
             passwordEdit.setTransformationMethod(null);
@@ -208,9 +196,9 @@ public class PasswordFragment extends Fragment {
     }
 
     private void clickScan(View view) {
-        ((MainActivity) getActivity()).makeVibration();
+        mainActivity.makeVibration();
         openScanner();
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+        mainActivity.setBarFragment(new BarFragment());
     }
 
     private void openScanner() {
@@ -223,5 +211,9 @@ public class PasswordFragment extends Fragment {
                 .setBeepEnabled(false)
                 .setOrientationLocked(true)
                 .initiateScan();
+    }
+
+    private void openConfirmPasswordDelete(String name) {
+        mainActivity.setBarFragment(ConfirmFragment.newInstance(name));
     }
 }

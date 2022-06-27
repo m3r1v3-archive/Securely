@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.zxing.BarcodeFormat;
@@ -52,7 +51,7 @@ public class PasswordShareFragment extends Fragment {
         setTitle();
         setListeners();
 
-        QRCode.setImageBitmap(makeQRCode(((MainActivity) getActivity()).getEncryptedValues(getArguments().getString("name"))));
+        QRCode.setImageBitmap(makeQRCode(((MainActivity) getActivity()).getEncryptPasswordValues(getArguments().getString("name"))));
     }
 
     private void initVariables() {

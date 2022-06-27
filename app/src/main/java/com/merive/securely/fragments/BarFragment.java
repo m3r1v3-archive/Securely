@@ -1,5 +1,6 @@
 package com.merive.securely.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,14 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 
 public class BarFragment extends Fragment {
 
     ImageView settings, add, lock;
+    MainActivity mainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -23,10 +26,8 @@ public class BarFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initVariables(view);
-
-        setSettings();
-        setAdd();
-        setLock();
+        setListeners();
+        mainActivity = ((MainActivity) getActivity());
     }
 
     private void initVariables(View view) {
@@ -35,19 +36,37 @@ public class BarFragment extends Fragment {
         lock = view.findViewById(R.id.bar_lock_button);
     }
 
-    private void setSettings() {
-        settings.setOnClickListener(v -> ((MainActivity) getActivity()).clickSettings());
-    }
-
-    private void setAdd() {
-        add.setOnClickListener(v -> ((MainActivity) getActivity()).clickAdd());
-    }
-
-    private void setLock() {
-        lock.setOnClickListener(v -> ((MainActivity) getActivity()).clickLock());
+    private void setListeners() {
+        add.setOnClickListener(v -> clickAdd());
+        settings.setOnClickListener(v -> clickSettings());
+        lock.setOnClickListener(v -> clickLock());
         lock.setOnLongClickListener(v -> {
-            ((MainActivity) getActivity()).longClickLock();
+            longClickLock();
             return true;
         });
+    }
+
+    private void clickAdd() {
+        mainActivity.makeVibration();
+        mainActivity.setBarFragment(new PasswordFragment());
+    }
+
+    private void clickLock() {
+        mainActivity.makeVibration();
+        startActivity(new Intent(mainActivity, LoginActivity.class));
+        mainActivity.finish();
+    }
+
+    private void longClickLock() {
+        mainActivity.setBarFragment(ConfirmFragment.newInstance(true));
+    }
+
+    public void clickSettings() {
+        mainActivity.makeVibration();
+        mainActivity.setBarFragment(SettingsFragment.newInstance(
+                mainActivity.preferencesManager.getLength(),
+                mainActivity.preferencesManager.getShow(),
+                mainActivity.getIntent().getBooleanExtra("delete_value", false),
+                mainActivity.preferencesManager.getEncrypt()));
     }
 }

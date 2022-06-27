@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.merive.securely.BuildConfig;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
@@ -23,11 +24,10 @@ public class UpdateFragment extends Fragment {
     TypingTextView title, version;
     ImageView download, cancel;
 
-    public static UpdateFragment newInstance(String oldVersion, String newVersion) {
+    public static UpdateFragment newInstance(String version) {
         UpdateFragment frag = new UpdateFragment();
         Bundle args = new Bundle();
-        args.putString("oldVersion", oldVersion);
-        args.putString("newVersion", newVersion);
+        args.putString("version", version);
         frag.setArguments(args);
         return frag;
     }
@@ -64,17 +64,17 @@ public class UpdateFragment extends Fragment {
     }
 
     private void setVersion() {
-        typingAnimation(version, ("Old: " + getArguments().getString("oldVersion") + " / New: " + getArguments().getString("newVersion")));
+        typingAnimation(version, ("Current - " + BuildConfig.VERSION_NAME + " / New - " + getArguments().getString("version")));
     }
 
     private void clickDownload() {
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
         ((MainActivity) getActivity()).makeVibration();
+        ((MainActivity) getActivity()).setBarFragment();
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website))));
     }
 
     private void clickCancel() {
         ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+        ((MainActivity) getActivity()).setBarFragment();
     }
 }

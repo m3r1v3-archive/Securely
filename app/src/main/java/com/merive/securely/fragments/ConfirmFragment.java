@@ -95,7 +95,7 @@ public class ConfirmFragment extends Fragment {
     }
 
     private void changeKey() {
-        ((MainActivity) getActivity()).updateEncrypting(false);
+        ((MainActivity) getActivity()).updateEncrypt(false);
         startActivity(new Intent(getActivity(), LoginActivity.class)
                 .putExtra("changeKey", true));
     }
