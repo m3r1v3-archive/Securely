@@ -6,15 +6,15 @@ import java.util.Random;
 
 public class PasswordGenerator {
 
-    final int lowerLength;
-    final int upperLength;
-    final int numberLength;
-    final int symbolsLength;
+    private final int lowerLength;
+    private final int upperLength;
+    private final int numberLength;
+    private final int symbolsLength;
 
-    final String[] lowerAlf = "abcdefghijklmnopqrstuvwxyz".split("");
-    final String[] upperAlf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    final String[] numberAlf = "0123456789".split("");
-    final String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
+    private final String[] lowerAlf = "abcdefghijklmnopqrstuvwxyz".split("");
+    private final String[] upperAlf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    private final String[] numberAlf = "0123456789".split("");
+    private final String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
 
     /**
      * PasswordGenerator constructor

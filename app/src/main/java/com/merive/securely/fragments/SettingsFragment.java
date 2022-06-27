@@ -123,6 +123,6 @@ public class SettingsFragment extends Fragment {
     }
 
     private void openConfirmAllPasswordsDelete() {
-        ((MainActivity) getActivity()).setBarFragment(ConfirmFragment.newInstance());
+        ((MainActivity) getActivity()).setBarFragment(new ConfirmFragment());
     }
 }

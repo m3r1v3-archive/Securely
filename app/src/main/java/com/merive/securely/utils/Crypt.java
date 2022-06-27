@@ -7,7 +7,7 @@ import java.util.Random;
 public class Crypt {
 
     final String shuffledPack;
-    final int seed;
+    private final int seed;
     private final String pack = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'@()*+^`-_./:;<>=?,\\[]{}|~";
 
     public Crypt(int seed) {

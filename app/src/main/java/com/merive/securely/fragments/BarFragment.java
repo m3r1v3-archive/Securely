@@ -16,52 +16,93 @@ import com.merive.securely.utils.VibrationManager;
 
 public class BarFragment extends Fragment {
 
-    ImageView settings, add, lock;
-    MainActivity mainActivity;
+    private ImageView settingsButton, addButton, lockButton;
+    private MainActivity mainActivity;
 
+    /**
+     * Called to have the fragment instantiate its user interface view
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param parent             If non-null, this is the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
+     * @return Return the View for the fragment's UI, or null
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_bar, parent, false);
     }
 
+    /**
+     * Called immediately after onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle) has returned, but before any saved state has been restored in to the view
+     *
+     * @param view               The View returned by onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        initVariables(view);
+        initComponents();
         setListeners();
+    }
+
+    /**
+     * Initialize BarFragment components
+     */
+    private void initComponents() {
+        settingsButton = getView().findViewById(R.id.bar_settings_button);
+        addButton = getView().findViewById(R.id.bar_add_button);
+        lockButton = getView().findViewById(R.id.bar_lock_button);
         mainActivity = ((MainActivity) getActivity());
     }
 
-    private void initVariables(View view) {
-        settings = view.findViewById(R.id.bar_settings_button);
-        add = view.findViewById(R.id.bar_add_button);
-        lock = view.findViewById(R.id.bar_lock_button);
-    }
-
+    /**
+     * Set onClick and onLongClick listeners for components
+     */
     private void setListeners() {
-        add.setOnClickListener(v -> clickAdd());
-        settings.setOnClickListener(v -> clickSettings());
-        lock.setOnClickListener(v -> clickLock());
-        lock.setOnLongClickListener(v -> {
+        addButton.setOnClickListener(v -> clickAdd());
+        settingsButton.setOnClickListener(v -> clickSettings());
+        lockButton.setOnClickListener(v -> clickLock());
+        lockButton.setOnLongClickListener(v -> {
             longClickLock();
             return true;
         });
     }
 
+    /**
+     * Make vibration effect and set PasswordFragment to bar_fragment
+     *
+     * @see PasswordFragment
+     */
     private void clickAdd() {
         VibrationManager.makeVibration(getContext());
         mainActivity.setBarFragment(new PasswordFragment());
     }
 
+    /**
+     * Make vibration effect and lock application (start LoginActivity and finish MainActivity)
+     *
+     * @see MainActivity
+     * @see LoginActivity
+     */
     private void clickLock() {
         VibrationManager.makeVibration(getContext());
         startActivity(new Intent(mainActivity, LoginActivity.class));
         mainActivity.finish();
     }
 
+    /**
+     * Set ConfirmFragment to bar_fragment for changing key
+     *
+     * @see ConfirmFragment
+     */
     private void longClickLock() {
-        mainActivity.setBarFragment(ConfirmFragment.newInstance(true));
+        mainActivity.setBarFragment(ConfirmFragment.newInstance());
     }
 
+    /**
+     * Make vibration effect and open SettingsFragment
+     *
+     * @see SettingsFragment
+     */
     public void clickSettings() {
         VibrationManager.makeVibration(getContext());
         mainActivity.setBarFragment(SettingsFragment.newInstance(
