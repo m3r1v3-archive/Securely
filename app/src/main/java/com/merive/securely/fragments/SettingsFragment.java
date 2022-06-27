@@ -20,6 +20,7 @@ import com.merive.securely.R;
 import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.utils.VibrationManager;
 
 
 public class SettingsFragment extends Fragment {
@@ -98,27 +99,27 @@ public class SettingsFragment extends Fragment {
 
     private void clickCancel(View view) {
         view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+        VibrationManager.makeVibration(getContext());
+        ((MainActivity) getActivity()).setBarFragment();
     }
 
     private void clickDeleteAllPasswords(View view) {
         view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+        VibrationManager.makeVibration(getContext());
+        ((MainActivity) getActivity()).setBarFragment();
         openConfirmAllPasswordsDelete();
     }
 
     private void clickSave(View view) {
         view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
+        VibrationManager.makeVibration(getContext());
         ((MainActivity) getActivity()).saveSettings(
                 passwordLengthEdit.getText().toString().isEmpty() ?
                         16 : Integer.parseInt(passwordLengthEdit.getText().toString()),
                 showPasswordSwitch.isChecked(),
                 deletingSwitch.isChecked(),
                 encryptingSwitch.isChecked());
-        ((MainActivity) getActivity()).setBarFragment(new BarFragment());
+        ((MainActivity) getActivity()).setBarFragment();
     }
 
     private void openConfirmAllPasswordsDelete() {

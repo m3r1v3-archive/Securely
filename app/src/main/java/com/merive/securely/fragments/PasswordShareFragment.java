@@ -23,6 +23,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.merive.securely.R;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.utils.VibrationManager;
 
 public class PasswordShareFragment extends Fragment {
 
@@ -72,12 +73,12 @@ public class PasswordShareFragment extends Fragment {
 
     private void clickCopy() {
         ((MainActivity) getActivity()).addToClipboard(getArguments().getString("name"));
-        ((MainActivity) getActivity()).makeVibration();
+        VibrationManager.makeVibration(getContext());
         ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     private void clickCancel() {
-        ((MainActivity) getActivity()).makeVibration();
+        VibrationManager.makeVibration(getContext());
         ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 

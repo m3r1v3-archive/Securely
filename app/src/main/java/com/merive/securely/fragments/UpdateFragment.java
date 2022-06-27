@@ -18,6 +18,7 @@ import com.merive.securely.BuildConfig;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.utils.VibrationManager;
 
 public class UpdateFragment extends Fragment {
 
@@ -68,13 +69,13 @@ public class UpdateFragment extends Fragment {
     }
 
     private void clickDownload() {
-        ((MainActivity) getActivity()).makeVibration();
+        VibrationManager.makeVibration(getContext());
         ((MainActivity) getActivity()).setBarFragment();
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website))));
     }
 
     private void clickCancel() {
-        ((MainActivity) getActivity()).makeVibration();
+        VibrationManager.makeVibration(getContext());
         ((MainActivity) getActivity()).setBarFragment();
     }
 }

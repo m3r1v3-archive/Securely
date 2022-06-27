@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
+import com.merive.securely.utils.VibrationManager;
 
 public class BarFragment extends Fragment {
 
@@ -47,12 +48,12 @@ public class BarFragment extends Fragment {
     }
 
     private void clickAdd() {
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         mainActivity.setBarFragment(new PasswordFragment());
     }
 
     private void clickLock() {
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         startActivity(new Intent(mainActivity, LoginActivity.class));
         mainActivity.finish();
     }
@@ -62,7 +63,7 @@ public class BarFragment extends Fragment {
     }
 
     public void clickSettings() {
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         mainActivity.setBarFragment(SettingsFragment.newInstance(
                 mainActivity.preferencesManager.getLength(),
                 mainActivity.preferencesManager.getShow(),

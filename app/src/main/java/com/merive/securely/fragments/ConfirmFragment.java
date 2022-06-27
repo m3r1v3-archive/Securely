@@ -17,6 +17,7 @@ import com.merive.securely.R;
 import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.utils.VibrationManager;
 
 public class ConfirmFragment extends Fragment {
 
@@ -78,12 +79,12 @@ public class ConfirmFragment extends Fragment {
     }
 
     private void clickCancel() {
-        ((MainActivity) getActivity()).makeVibration();
+        VibrationManager.makeVibration(getContext());
         ((MainActivity) getActivity()).setBarFragment(new BarFragment());
     }
 
     private void clickConfirm() {
-        ((MainActivity) getActivity()).makeVibration();
+        VibrationManager.makeVibration(getContext());
         if (getArguments().getBoolean("changeKey")) changeKey();
         else {
             if (getArguments().getString("name") == null)

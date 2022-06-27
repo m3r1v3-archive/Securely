@@ -119,17 +119,9 @@ public class LoginActivity extends AppCompatActivity {
      * @see LoginActivity
      */
     private void clickLogin() {
-        makeVibration();
+        VibrationManager.makeVibration(getApplicationContext());
         if (keyEdit) editKey();
         else login();
-    }
-
-    /**
-     * Make vibration effect if Ringer Mode isn't Mute
-     */
-    private void makeVibration() {
-        if ((((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0))
-            VibrationManager.makeVibration(getApplicationContext());
     }
 
     /**

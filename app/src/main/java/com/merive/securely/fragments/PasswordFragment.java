@@ -21,6 +21,7 @@ import com.merive.securely.activities.MainActivity;
 import com.merive.securely.activities.ScannerActivity;
 import com.merive.securely.elements.TypingTextView;
 import com.merive.securely.utils.PasswordGenerator;
+import com.merive.securely.utils.VibrationManager;
 
 public class PasswordFragment extends Fragment {
 
@@ -118,20 +119,20 @@ public class PasswordFragment extends Fragment {
 
     private void clickCancel(View view) {
         view.clearFocus();
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         mainActivity.setBarFragment();
     }
 
     private void clickDeletePassword(View view) {
         view.clearFocus();
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         mainActivity.setBarFragment();
         openConfirmPasswordDelete(getArguments().getString("name"));
     }
 
     private void clickSave(View view) {
         view.clearFocus();
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         if (edit) saveEditPassword();
         else saveNewPassword();
         mainActivity.setBarFragment();
@@ -180,11 +181,11 @@ public class PasswordFragment extends Fragment {
 
     private void clickGeneratePassword() {
         passwordEdit.setText(new PasswordGenerator(mainActivity.preferencesManager.getLength()).generatePassword());
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
     }
 
     private void longClickPasswordEdit() {
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         if (!show) {
             show = true;
             passwordEdit.setTransformationMethod(null);
@@ -196,7 +197,7 @@ public class PasswordFragment extends Fragment {
     }
 
     private void clickScan(View view) {
-        mainActivity.makeVibration();
+        VibrationManager.makeVibration(getContext());
         openScanner();
         mainActivity.setBarFragment(new BarFragment());
     }

@@ -16,6 +16,11 @@ public class PasswordGenerator {
     final String[] numberAlf = "0123456789".split("");
     final String[] symbolsAlf = "!#$%&'()*+`-_@^/:;<>=?,[]\\{}|~.".split("");
 
+    /**
+     * PasswordGenerator constructor
+     *
+     * @param length Length of future generated password
+     */
     public PasswordGenerator(int length) {
         if (length % 2 != 0) length--;
         lowerLength = (int) Math.round(0.4 * length);
@@ -24,25 +29,38 @@ public class PasswordGenerator {
         symbolsLength = (int) Math.round(0.1 * length) + ((length % 2 == 0) ? 0 : 1);
     }
 
+    /**
+     * @return Return generated password string
+     */
     public String generatePassword() {
-        return shuffle(generatePackString());
+        return shuffle(generatePack());
     }
 
-    private String generateSetString(String[] set, int length) {
+    /**
+     * @param set    String array of symbols, that will be used for generating of symbol set
+     * @param length Length of future symbol set
+     * @return Return set of selected symbols for future password
+     */
+    private String generateSet(String[] set, int length) {
         StringBuilder string = new StringBuilder();
-        while (string.length() != length)
-            string.append(set[new Random().nextInt(set.length)]);
-
+        while (string.length() != length) string.append(set[new Random().nextInt(set.length)]);
         return string.toString();
     }
 
-    private String generatePackString() {
-        return generateSetString(lowerAlf, lowerLength)
-                + generateSetString(upperAlf, upperLength)
-                + generateSetString(numberAlf, numberLength)
-                + generateSetString(symbolsAlf, symbolsLength);
+    /**
+     * @return Return symbols pack of future password
+     */
+    private String generatePack() {
+        return generateSet(lowerAlf, lowerLength) +
+                generateSet(upperAlf, upperLength) +
+                generateSet(numberAlf, numberLength) +
+                generateSet(symbolsAlf, symbolsLength);
     }
 
+    /**
+     * @param pack Symbols what using for generating password
+     * @return Return password using shuffled pack symbols
+     */
     private String shuffle(String pack) {
         List<Character> characters = new ArrayList<>();
         for (char c : pack.toCharArray()) characters.add(c);

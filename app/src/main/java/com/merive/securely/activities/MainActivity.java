@@ -248,14 +248,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Make vibration effect if Ringer Mode isn't Mute
-     */
-    public void makeVibration() {
-        if ((((AudioManager) getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0))
-            VibrationManager.makeVibration(getApplicationContext());
-    }
-
-    /**
      * Make toast message
      *
      * @param message Toast message value
@@ -322,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
      * @param name Password name what has clicked
      */
     private void clickPasswordRow(String name) {
-        makeVibration();
+        VibrationManager.makeVibration(getApplicationContext());
         setBarFragment(PasswordFragment.newInstance(
                 name,
                 preferencesManager.getEncrypt() ?
@@ -585,7 +577,7 @@ public class MainActivity extends AppCompatActivity {
      * @see PasswordShareFragment
      */
     private void openPasswordShareFragment(String name) {
-        makeVibration();
+        VibrationManager.makeVibration(getApplicationContext());
         setBarFragment(PasswordShareFragment.newInstance(name));
     }
 
