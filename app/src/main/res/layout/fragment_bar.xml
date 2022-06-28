@@ -7,8 +7,10 @@
 
     <ImageView
         android:id="@+id/bar_add_button"
-        android:layout_width="@dimen/size_112dp"
+        android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_56dp"
+        android:layout_marginStart="@dimen/margin_12dp"
+        android:layout_marginEnd="@dimen/margin_12dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
         android:padding="@dimen/padding_12dp"
@@ -21,7 +23,7 @@
 
     <ImageView
         android:id="@+id/bar_lock_button"
-        android:layout_width="@dimen/size_112dp"
+        android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_56dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
@@ -35,8 +37,10 @@
 
     <ImageView
         android:id="@+id/bar_settings_button"
-        android:layout_width="@dimen/size_112dp"
+        android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_56dp"
+        android:layout_marginStart="@dimen/margin_12dp"
+        android:layout_marginEnd="@dimen/margin_12dp"
         android:background="@xml/background"
         android:contentDescription="@string/todo"
         android:padding="@dimen/padding_12dp"

@@ -108,7 +108,7 @@ public class PasswordOptionsFragment extends Fragment {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setQRCode() {
-        QRCodeImage.setImageBitmap(makeQRCode(((MainActivity) getActivity()).getEncryptPasswordValues(getArguments().getString("name"))));
+        QRCodeImage.setImageBitmap(makeQRCode(((MainActivity) getActivity()).getEncryptPasswordValues(getArguments().getString("name_value"))));
     }
 
     /**

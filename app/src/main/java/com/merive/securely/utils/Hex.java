@@ -14,7 +14,7 @@ public class Hex {
     public static String encrypt(String value) {
         String[] encryptedSymbols = new String[value.length()];
         for (int i = 0; i < value.length(); i++)
-            encryptedSymbols[i] = Integer.toHexString((int) value.toCharArray()[i]);
+            encryptedSymbols[i] = Integer.toHexString(value.toCharArray()[i]);
         return String.join(" ", encryptedSymbols);
     }
 

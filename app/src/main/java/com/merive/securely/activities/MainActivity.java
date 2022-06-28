@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -107,10 +108,10 @@ public class MainActivity extends AppCompatActivity {
     private void checkQRPattern(String result) {
         if (result.split("-").length == 3) {
             Bundle values = new Bundle();
-            values.putString("name", Hex.decrypt(result.split("-")[0]));
-            values.putString("login", Hex.decrypt(result.split("-")[1]));
-            values.putString("password", Hex.decrypt(result.split("-")[2]));
-            values.putString("description", "");
+            values.putString("name_value", Hex.decrypt(result.split("-")[0]));
+            values.putString("login_value", Hex.decrypt(result.split("-")[1]));
+            values.putString("password_value", Hex.decrypt(result.split("-")[2]));
+            values.putString("description_value", "");
             checkPasswordName(values);
         } else makeToast(getResources().getString(R.string.error));
     }
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
      * @see Fragment
      */
     public void setBarFragment(Fragment fragment) {
+        if (fragment.getArguments() == null) fragment.setArguments(new Bundle());
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)

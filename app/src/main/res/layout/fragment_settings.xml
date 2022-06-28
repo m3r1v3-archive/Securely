@@ -182,9 +182,10 @@
 
         <ImageView
             android:id="@+id/settings_cancel_button"
-            android:layout_width="@dimen/size_112dp"
+            android:layout_width="@dimen/size_0dp"
             android:layout_height="@dimen/size_56dp"
             android:layout_marginStart="@dimen/margin_12dp"
+            android:layout_marginEnd="@dimen/margin_12dp"
             android:background="@xml/background"
             android:padding="@dimen/padding_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -196,10 +197,8 @@
 
         <ImageView
             android:id="@+id/delete_passwords_button"
-            android:layout_width="@dimen/size_112dp"
+            android:layout_width="@dimen/size_0dp"
             android:layout_height="@dimen/size_56dp"
-            android:layout_marginStart="@dimen/margin_12dp"
-            android:layout_marginEnd="@dimen/margin_12dp"
             android:background="@xml/background"
             android:padding="@dimen/padding_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -211,8 +210,9 @@
 
         <ImageView
             android:id="@+id/save_settings_button"
-            android:layout_width="@dimen/size_112dp"
+            android:layout_width="@dimen/size_0dp"
             android:layout_height="@dimen/size_56dp"
+            android:layout_marginStart="@dimen/margin_12dp"
             android:layout_marginEnd="@dimen/margin_12dp"
             android:background="@xml/background"
             android:padding="@dimen/padding_12dp"

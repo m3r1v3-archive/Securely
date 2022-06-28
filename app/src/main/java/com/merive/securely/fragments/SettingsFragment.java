@@ -97,7 +97,7 @@ public class SettingsFragment extends Fragment {
      * Set length value to lengthEdit component
      */
     private void setEdits() {
-        lengthEdit.setText(mainActivity.preferencesManager.getLength());
+        lengthEdit.setText(String.valueOf(mainActivity.preferencesManager.getLength()));
     }
 
     /**
