@@ -48,6 +48,7 @@
     <string name="delete">Delete</string>
     <string name="encrypt">Encrypt</string>
     <string name="settings_saved">Settings have saved</string>
+    <string name="securely_info">Securely / %1$s</string>
 
     <string name="find_and_scan">Find and Scan SecurelyQR</string>
 

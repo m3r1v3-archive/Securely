@@ -27,9 +27,9 @@ import com.merive.securely.utils.VibrationManager;
 
 public class PasswordOptionsFragment extends Fragment {
 
-    TypingTextView titleTypingText;
-    ImageView QRCodeImage, copyButton, cancelButton, deleteButton;
-    MainActivity mainActivity;
+    private TypingTextView titleTypingText;
+    private ImageView QRCodeImage, copyButton, cancelButton, deleteButton;
+    private MainActivity mainActivity;
 
     /**
      * Create a new instance of PasswordOptionsFragment, initialized to share password by 'name' argument

@@ -12,12 +12,10 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.merive.securely.BuildConfig;
 import com.merive.securely.R;
-import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.elements.TypingTextView;
 import com.merive.securely.utils.VibrationManager;
@@ -25,104 +23,124 @@ import com.merive.securely.utils.VibrationManager;
 
 public class SettingsFragment extends Fragment {
 
-    TypingTextView title, info;
-    EditText passwordLengthEdit;
-    SwitchCompat showPasswordSwitch, deletingSwitch, encryptingSwitch;
-    ImageView cancel, deleteAll, save;
+    private TypingTextView titleTypingText, infoTypingText;
+    private EditText lengthEdit;
+    private SwitchCompat showSwitch, deleteSwitch, encryptSwitch;
+    private ImageView cancelButton, deleteAllButton, saveButton;
+    private MainActivity mainActivity;
 
-    public static SettingsFragment newInstance(int length, boolean show,
-                                               boolean delete, boolean encrypting) {
-        SettingsFragment frag = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putInt("length", length);
-        args.putBoolean("show", show);
-        args.putBoolean("delete", delete);
-        args.putBoolean("encrypting", encrypting);
-        frag.setArguments(args);
-        return frag;
-    }
-
+    /**
+     * Called to have the fragment instantiate its user interface view
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param parent             If non-null, this is the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
+     * @return Return the View for the fragment's UI, or null
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings, parent, false);
     }
 
+    /**
+     * Called immediately after onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle) has returned, but before any saved state has been restored in to the view
+     *
+     * @param view               The View returned by onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initVariables();
+        initComponents();
+        setTypingTexts();
+        setListeners();
 
-        setTitle();
-        setInfo();
-
-        setLengthEdit();
+        setEdits();
         setSwitches();
-
-        cancel.setOnClickListener(this::clickCancel);
-        deleteAll.setOnClickListener(this::clickDeleteAllPasswords);
-        save.setOnClickListener(this::clickSave);
     }
 
-    private void initVariables() {
-        title = getView().findViewById(R.id.settings_title);
-        info = getView().findViewById(R.id.settings_info_text);
-
-        passwordLengthEdit = getView().findViewById(R.id.settings_password_length_edit);
-
-        showPasswordSwitch = getView().findViewById(R.id.settings_show_switch);
-        deletingSwitch = getView().findViewById(R.id.settings_delete_switch);
-        encryptingSwitch = getView().findViewById(R.id.settings_encrypt_switch);
-
-        cancel = getView().findViewById(R.id.settings_cancel_button);
-        deleteAll = getView().findViewById(R.id.delete_passwords_button);
-        save = getView().findViewById(R.id.save_settings_button);
+    /**
+     * Initialize SettingsFragment components
+     */
+    private void initComponents() {
+        titleTypingText = getView().findViewById(R.id.settings_title);
+        infoTypingText = getView().findViewById(R.id.settings_info_text);
+        lengthEdit = getView().findViewById(R.id.settings_password_length_edit);
+        showSwitch = getView().findViewById(R.id.settings_show_switch);
+        deleteSwitch = getView().findViewById(R.id.settings_delete_switch);
+        encryptSwitch = getView().findViewById(R.id.settings_encrypt_switch);
+        cancelButton = getView().findViewById(R.id.settings_cancel_button);
+        deleteAllButton = getView().findViewById(R.id.delete_passwords_button);
+        saveButton = getView().findViewById(R.id.save_settings_button);
+        mainActivity = (MainActivity) getActivity();
     }
 
-    private void setTitle() {
-        typingAnimation(title, getResources().getString(R.string.settings));
+    /**
+     * Set texts to TypingTextView components
+     */
+    private void setTypingTexts() {
+        typingAnimation(titleTypingText, getResources().getString(R.string.settings));
+        typingAnimation(infoTypingText, getString(R.string.securely_info, BuildConfig.VERSION_NAME));
     }
 
-    private void setInfo() {
-        typingAnimation(info, "Securely / " + BuildConfig.VERSION_NAME);
+    /**
+     * Set onClick listeners for components
+     */
+    private void setListeners() {
+        cancelButton.setOnClickListener(v -> clickCancel());
+        deleteAllButton.setOnClickListener(v -> clickDeletePasswords());
+        saveButton.setOnClickListener(v -> clickSave());
     }
 
-    private void setLengthEdit() {
-        passwordLengthEdit.setText(String.valueOf(getArguments().getInt("length")));
+    /**
+     * Set length value to lengthEdit component
+     */
+    private void setEdits() {
+        lengthEdit.setText(mainActivity.preferencesManager.getLength());
     }
 
+    /**
+     * Set values to SwitchCompat components
+     */
     private void setSwitches() {
-        showPasswordSwitch.setChecked(getArguments().getBoolean("show"));
-        deletingSwitch.setChecked(getArguments().getBoolean("delete"));
-        encryptingSwitch.setChecked(getArguments().getBoolean("encrypting"));
+        showSwitch.setChecked(mainActivity.preferencesManager.getShow());
+        deleteSwitch.setChecked(mainActivity.preferencesManager.getDelete());
+        encryptSwitch.setChecked(mainActivity.preferencesManager.getEncrypt());
     }
 
-    private void clickCancel(View view) {
-        view.clearFocus();
+    /**
+     * Make vibration and set BarFragment to bar_fragment component
+     *
+     * @see BarFragment
+     */
+    private void clickCancel() {
         VibrationManager.makeVibration(getContext());
-        ((MainActivity) getActivity()).setBarFragment();
+        mainActivity.setBarFragment();
     }
 
-    private void clickDeleteAllPasswords(View view) {
-        view.clearFocus();
+    /**
+     * Make vibration effect and set ConfirmFragment to bar_fragment component for confirm delete all password
+     *
+     * @see ConfirmFragment
+     */
+    private void clickDeletePasswords() {
         VibrationManager.makeVibration(getContext());
-        ((MainActivity) getActivity()).setBarFragment();
-        openConfirmAllPasswordsDelete();
+        mainActivity.setBarFragment(new ConfirmFragment());
     }
 
-    private void clickSave(View view) {
-        view.clearFocus();
+    /**
+     * Make vibration effect and save settings in SharedPreferences
+     *
+     * @see android.content.SharedPreferences
+     */
+    private void clickSave() {
         VibrationManager.makeVibration(getContext());
-        ((MainActivity) getActivity()).saveSettings(
-                passwordLengthEdit.getText().toString().isEmpty() ?
-                        16 : Integer.parseInt(passwordLengthEdit.getText().toString()),
-                showPasswordSwitch.isChecked(),
-                deletingSwitch.isChecked(),
-                encryptingSwitch.isChecked());
-        ((MainActivity) getActivity()).setBarFragment();
-    }
-
-    private void openConfirmAllPasswordsDelete() {
-        ((MainActivity) getActivity()).setBarFragment(new ConfirmFragment());
+        mainActivity.saveSettings(
+                lengthEdit.getText().toString().isEmpty() ? 16 : Integer.parseInt(lengthEdit.getText().toString()),
+                showSwitch.isChecked(),
+                deleteSwitch.isChecked(),
+                encryptSwitch.isChecked());
+        mainActivity.setBarFragment();
     }
 }

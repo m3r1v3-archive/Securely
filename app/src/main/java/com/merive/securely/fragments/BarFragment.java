@@ -105,10 +105,6 @@ public class BarFragment extends Fragment {
      */
     public void clickSettings() {
         VibrationManager.makeVibration(getContext());
-        mainActivity.setBarFragment(SettingsFragment.newInstance(
-                mainActivity.preferencesManager.getLength(),
-                mainActivity.preferencesManager.getShow(),
-                mainActivity.getIntent().getBooleanExtra("delete_value", false),
-                mainActivity.preferencesManager.getEncrypt()));
+        mainActivity.setBarFragment(new SettingsFragment());
     }
 }
