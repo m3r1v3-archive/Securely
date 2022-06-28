@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
      * @param data Bundle with new password data
      */
     public void checkPasswordName(Bundle data) {
-        if (checkNotExist(getData(data, "name"))) addPassword(data);
+        if (checkNotExist(getData(data, "name_value"))) addPassword(data);
     }
 
     /**
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void addPassword(Bundle data) {
         addPasswordToDatabase(data);
-        makeToast(getData(data, "name") + " was " + "added");
+        makeToast(getString(R.string.password_added, getData(data, "name_value")));
         new GetPasswordData().execute();
         checkEmpty();
     }
@@ -297,14 +297,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void addPasswordToDatabase(Bundle data) {
         db.passwordDao().insertItem(new Password(
-                getData(data, "name"),
+                getData(data, "name_value"),
                 preferencesManager.getEncrypt() ?
-                        new Crypt(key).encrypt(getData(data, "login")) :
-                        getData(data, "login"),
+                        new Crypt(key).encrypt(getData(data, "login_value")) :
+                        getData(data, "login_value"),
                 preferencesManager.getEncrypt() ?
-                        new Crypt(key).encrypt(getData(data, "password")) :
-                        getData(data, "password"),
-                getData(data, "description")));
+                        new Crypt(key).encrypt(getData(data, "password_value")) :
+                        getData(data, "password_value"),
+                getData(data, "description_value")));
     }
 
     /**
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
      * @param data Bundle with edited password data
      */
     public void checkEditPasswordName(Bundle data) {
-        if (getData(data, "name_before").equals(getData(data, "edited_name")) || checkNotExist(getData(data, "edited_name")))
+        if (getData(data, "name_before_value").equals(getData(data, "edited_name_value")) || checkNotExist(getData(data, "edited_name_value")))
             editPassword(data);
     }
 
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void editPassword(Bundle data) {
         editPasswordInDatabase(data);
-        makeToast(getData(data, "edited_name") + " was " + "edited");
+        makeToast(getString(R.string.password_edited, getData(data, "edited_name_value")));
         new GetPasswordData().execute();
     }
 
@@ -356,13 +356,13 @@ public class MainActivity extends AppCompatActivity {
      */
     private void editPasswordInDatabase(Bundle data) {
         db.passwordDao().updateItem(
-                getData(data, "name_before"),
-                getData(data, "edited_name"),
-                preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "edited_login"))
-                        : getData(data, "edited_login"),
-                preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "edited_password"))
-                        : getData(data, "edited_password"),
-                getData(data, "edited_description")
+                getData(data, "name_before_value"),
+                getData(data, "edited_name_value"),
+                preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "edited_login_value"))
+                        : getData(data, "edited_login_value"),
+                preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "edited_password_value"))
+                        : getData(data, "edited_password_value"),
+                getData(data, "edited_description_value")
         );
     }
 
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
         db.passwordDao().deleteByName(name);
         new GetPasswordData().execute();
         checkEmpty();
-        makeToast(name + " was deleted");
+        makeToast(getString(R.string.password_deleted, name));
     }
 
     /**
@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
         updateLength(length);
         updateDelete(delete);
         updateEncrypt(encrypt);
-        makeToast("Settings saved");
+        makeToast(getString(R.string.settings_saved));
     }
 
     /**
@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
         db.passwordDao().deleteAll();
         new GetPasswordData().execute();
         checkEmpty();
-        makeToast("All passwords have been deleted");
+        makeToast(getString(R.string.all_passwords_deleted));
     }
 
     /**
@@ -532,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
                         preferencesManager.getEncrypt() ?
                                 new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) :
                                 db.passwordDao().getPasswordByName(name)));
-        makeToast(name + " added to clipboard");
+        makeToast(getString(R.string.password_added_to_clipboard, name));
     }
 
     /**
@@ -543,7 +543,8 @@ public class MainActivity extends AppCompatActivity {
      * @return Password name is in database or isn't (true/false value)
      */
     private boolean checkNotExist(String name) {
-        if (!db.passwordDao().checkNotExist(name)) makeToast("Password name already taken");
+        if (!db.passwordDao().checkNotExist(name))
+            makeToast(getResources().getString(R.string.password_name_already_taken));
         return db.passwordDao().checkNotExist(name);
     }
 
@@ -555,8 +556,8 @@ public class MainActivity extends AppCompatActivity {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getEncryptPasswordValues(String name) {
-        return ("Securely:" + Hex.encrypt(name) + "-" +
-                Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name)) + "-" +
+        return getString(R.string.securely_hex, Hex.encrypt(name),
+                Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name)),
                 Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
     }
 

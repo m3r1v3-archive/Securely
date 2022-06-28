@@ -3,6 +3,14 @@
     <string name="app_name">Securely</string>
     <string name="error">Something went wrong!</string>
 
+    <!--  MainActivity  -->
+    <string name="password_name_already_taken">Password name already taken</string>
+    <string name="password_added_to_clipboard">%1$s added to clipboard</string>
+    <string name="securely_hex">Securely:%1$s-%2$s-%3$s</string>
+    <string name="password_deleted">%1$s has been deleted</string>
+    <string name="password_edited">%1$s has been edited</string>
+    <string name="password_added">%1$s has been added</string>
+
     <!--  EmptyFragment  -->
     <string name="list_is_empty">List is Empty</string>
     <string name="empty_hint">Click <b>+</b> button\nfor add new password</string>
@@ -11,7 +19,7 @@
     <string name="welcome_to_securely">Welcome to Securely</string>
     <string name="enter_the_key_in_the_field">Enter the key to the field</string>
     <string name="create_new_key">Create new key\nTip: Use more than 4 numbers</string>
-    <string name="all_passwords_deleted">All passwords has been deleted</string>
+    <string name="all_passwords_deleted">All passwords have been deleted</string>
     <string name="invalid_key">Invalid key</string>
     <string name="enter_old_key">Enter old key</string>
     <string name="key_set">Key has been set</string>
@@ -28,6 +36,9 @@
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="description_optional">Description (Optional)</string>
+    <string name="add_password">Add password</string>
+    <string name="edit_password">Edit password</string>
+    <string name="you_have_empty_fields">You have empty fields</string>
 
     <!--  SettingsFragment  -->
     <string name="settings">Settings</string>
@@ -36,6 +47,9 @@
     <string name="def">DEFAULT</string>
     <string name="delete">Delete</string>
     <string name="encrypt">Encrypt</string>
+    <string name="settings_saved">Settings have saved</string>
+
+    <string name="find_and_scan">Find and Scan SecurelyQR</string>
 
     <!--  UpdateFragment  -->
     <string name="update">Update</string>
