@@ -53,6 +53,7 @@
 
     <!--  UpdateFragment  -->
     <string name="update">Update</string>
+    <string name="version_current_and_new">Current - %1$s / New - %2$s</string>
 
     <!--  Website Link  -->
     <string name="website">https://merive.herokuapp.com/Securely/Download/</string>
