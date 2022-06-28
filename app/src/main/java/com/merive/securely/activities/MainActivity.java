@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,10 +24,9 @@ import com.merive.securely.adapter.PasswordAdapter;
 import com.merive.securely.database.Password;
 import com.merive.securely.database.PasswordDB;
 import com.merive.securely.fragments.BarFragment;
-import com.merive.securely.fragments.ConfirmFragment;
 import com.merive.securely.fragments.EmptyFragment;
 import com.merive.securely.fragments.PasswordFragment;
-import com.merive.securely.fragments.PasswordShareFragment;
+import com.merive.securely.fragments.PasswordOptionsFragment;
 import com.merive.securely.fragments.UpdateFragment;
 import com.merive.securely.preferences.PreferencesManager;
 import com.merive.securely.utils.Crypt;
@@ -575,11 +573,11 @@ public class MainActivity extends AppCompatActivity {
      * Open PasswordShareFragment by password name
      *
      * @param name Password name what will show in PasswordShareFragment
-     * @see PasswordShareFragment
+     * @see PasswordOptionsFragment
      */
     private void openPasswordShareFragment(String name) {
         VibrationManager.makeVibration(getApplicationContext());
-        setBarFragment(PasswordShareFragment.newInstance(name));
+        setBarFragment(PasswordOptionsFragment.newInstance(name));
     }
 
     private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {
