@@ -1,9 +1,7 @@
-name: Build Release APK
+name: Android Build APK
 
 on:
-  pull_request:
-    branches:
-      - 'main'
+  [pull_request, push]
 
 jobs:
   build:
