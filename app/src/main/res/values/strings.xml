@@ -50,6 +50,7 @@
     <string name="settings_saved">Settings have saved</string>
     <string name="securely_info">Securely / %1$s</string>
 
+    <!--  ScannerActivity  -->
     <string name="find_and_scan">Find and Scan SecurelyQR</string>
 
     <!--  UpdateFragment  -->
