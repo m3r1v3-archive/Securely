@@ -1,18 +1,16 @@
 package com.merive.securely.utils;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.os.Vibrator;
 
 public class VibrationManager {
 
     /**
-     * This method is making vibration.
-     *
-     * @param context Needs for getting System Service.
-     * @see Context
+     * @param context Context object
      */
     public static void makeVibration(Context context) {
-        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(100);
+        if ((((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).getRingerMode() > 0))
+            ((Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(75);
     }
 }

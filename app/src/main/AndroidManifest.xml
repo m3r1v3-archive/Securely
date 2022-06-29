@@ -20,7 +20,7 @@
         tools:ignore="AllowBackup">
 
         <activity
-            android:name="com.merive.securely.SplashActivity"
+            android:name="com.merive.securely.activities.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name="com.merive.securely.LoginActivity"
+            android:name="com.merive.securely.activities.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Securely">
@@ -42,7 +42,7 @@
         </activity>
 
         <activity
-            android:name="com.merive.securely.MainActivity"
+            android:name="com.merive.securely.activities.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Securely">
@@ -52,7 +52,7 @@
         </activity>
 
         <activity
-            android:name="com.merive.securely.ScannerActivity"
+            android:name="com.merive.securely.activities.ScannerActivity"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />

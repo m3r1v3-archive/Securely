@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_empty"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?colorPrimary"
-    tools:context=".activities.LoginActivity">
+    android:layout_height="match_parent">
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/login_title_text"
+        android:id="@+id/empty_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/share_tech_mono"
@@ -24,32 +22,33 @@
         app:layout_constraintVertical_bias="0.075" />
 
     <ImageView
-        android:id="@+id/login_text_separator"
-        android:layout_width="match_parent"
+        android:id="@+id/empty_text_separator"
+        android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_12dp"
         android:layout_marginStart="@dimen/margin_48dp"
         android:layout_marginEnd="@dimen/margin_48dp"
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@xml/horizontal_line"
-        app:layout_constraintBottom_toTopOf="@id/login_hint_text"
+        app:layout_constraintBottom_toTopOf="@id/empty_label_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.merive.securely.elements.TypingTextView
-        android:id="@+id/login_hint_text"
+        android:id="@+id/empty_label_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_36dp"
         android:fontFamily="@font/share_tech_mono"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="?colorAccent"
         android:textSize="@dimen/font_medium_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_title_text" />
+        app:layout_constraintTop_toBottomOf="@id/empty_title_text" />
 
     <ImageView
-        android:id="@+id/login_logo_image"
+        android:id="@+id/empty_logo_image"
         android:layout_width="@dimen/size_128dp"
         android:layout_height="@dimen/size_128dp"
         android:background="@xml/background"
@@ -60,38 +59,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/login_key_edit"
-        android:layout_width="@dimen/size_224dp"
-        android:layout_height="@dimen/size_56dp"
+    <com.merive.securely.elements.TypingTextView
+        android:id="@+id/empty_hint_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_36dp"
-        android:background="@xml/background"
         android:fontFamily="@font/share_tech_mono"
-        android:gravity="center"
-        android:hint="@string/enter_key"
-        android:imeOptions="actionDone"
-        android:inputType="numberPassword"
-        android:maxLength="10"
-        android:singleLine="true"
+        android:textAlignment="center"
         android:textColor="?colorAccent"
-        android:textColorHint="?colorAccent"
-        android:textSize="@dimen/font_small_size"
-        app:layout_constraintBottom_toTopOf="@id/login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/login_button"
-        android:layout_width="@dimen/size_112dp"
-        android:layout_height="@dimen/size_56dp"
-        android:background="@xml/background"
-        android:padding="@dimen/padding_12dp"
+        android:textSize="@dimen/font_medium_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.925"
-        app:srcCompat="@drawable/ic_confirm"
-        app:tint="?colorAccent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,57 +2,48 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorPrimary"
-    tools:context=".MainActivity">
+    android:background="@color/color_black"
+    tools:context=".activities.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/password_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_margin="12sp"
+        android:layout_height="@dimen/size_0dp"
+        android:layout_margin="@dimen/margin_12dp"
         android:background="@xml/background"
-        app:layout_constraintBottom_toTopOf="@+id/bar_fragment"
+        android:padding="@dimen/padding_8dp"
+        app:layout_constraintBottom_toTopOf="@id/bar_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/row_password" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/password_recycler_view"
-            android:layout_width="0sp"
-            android:layout_height="0sp"
-            android:layout_margin="8sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/password_row" />
-
-        <com.merive.securely.elements.TypingTextView
-            android:id="@+id/main_empty_message"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_margin="24sp"
-            android:background="@xml/background"
-            android:fontFamily="@font/share_tech_mono"
-            android:padding="12sp"
-            android:singleLine="true"
-            android:textAlignment="center"
-            android:textColor="?colorAccent"
-            android:textSize="32sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/main_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_0dp"
+        android:layout_margin="@dimen/margin_12dp"
+        android:background="@xml/background"
+        android:clickable="true"
+        android:padding="@dimen/padding_8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/bar_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/bar_fragment"
-        android:layout_width="0sp"
-        android:layout_height="60sp"
-        android:layout_marginBottom="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_12dp"
+        android:background="@xml/background"
+        android:clickable="true"
+        android:paddingTop="@dimen/padding_12dp"
+        android:paddingBottom="@dimen/padding_12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

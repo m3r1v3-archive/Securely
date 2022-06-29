@@ -1,13 +1,13 @@
 <resources>
     <!--    Base application theme    -->
-    <style name="Theme.Securely" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Securely" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!--    App Theme   -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_black</item>
+        <item name="colorPrimaryDark">@color/color_dark_gray</item>
+        <item name="colorAccent">@color/color_green</item>
 
         <!--    Set action bar color    -->
-        <item name="android:actionBarStyle">@color/colorPrimary</item>
+        <item name="android:actionBarStyle">@color/color_black</item>
     </style>
 
     <!--    Splash theme    -->
@@ -16,9 +16,9 @@
         <item name="android:windowBackground">@xml/splash</item>
 
         <!--    Theme colors    -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_black</item>
+        <item name="colorPrimaryDark">@color/color_dark_gray</item>
+        <item name="colorAccent">@color/color_green</item>
 
         <!--    Hide action bar    -->
         <item name="android:windowFullscreen">true</item>
@@ -26,7 +26,7 @@
 
     <!--    DialogFragment Animation    -->
     <style name="DialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
+        <item name="android:windowEnterAnimation">@anim/breath_in</item>
+        <item name="android:windowExitAnimation">@anim/breath_out</item>
     </style>
 </resources>

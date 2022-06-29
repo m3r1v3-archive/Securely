@@ -3,8 +3,6 @@ package com.merive.securely.fragments;
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,33 +11,25 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
-import com.merive.securely.LoginActivity;
-import com.merive.securely.MainActivity;
 import com.merive.securely.R;
+import com.merive.securely.activities.LoginActivity;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.utils.VibrationManager;
 
-public class ConfirmFragment extends DialogFragment {
+public class ConfirmFragment extends Fragment {
 
-    TypingTextView title;
-    ImageView cancel, confirm;
-
-    /**
-     * ConfirmFragment Constructor.
-     * Using for creating DialogFragment in MainActivity.
-     *
-     * @see DialogFragment
-     * @see MainActivity
-     */
-    public ConfirmFragment() {
-    }
+    private TypingTextView titleTypingText;
+    private ImageView cancelButton, confirmButton;
+    private MainActivity mainActivity;
 
     /**
-     * This method is setting ConfirmFragment Arguments for deleting one password.
+     * Create a new instance of ConfirmFragment, initialized to delete password by 'name'
      *
-     * @param name Deleting Password Name.
-     * @return ConfirmFragment with necessary arguments.
+     * @param name Password name that will be deleted
+     * @return ConfirmFragment object
      */
     public static ConfirmFragment newInstance(String name) {
         ConfirmFragment frag = new ConfirmFragment();
@@ -50,135 +40,104 @@ public class ConfirmFragment extends DialogFragment {
     }
 
     /**
-     * This method is setting ConfirmFragment Arguments for deleting all passwords.
+     * Create a new instance of ConfirmFragment, initialized to edit key
      *
-     * @return ConfirmFragment with necessary arguments.
+     * @return ConfirmFragment object
      */
     public static ConfirmFragment newInstance() {
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
-        args.putString("name", null);
+        args.putBoolean("key_edit", true);
         frag.setArguments(args);
         return frag;
     }
 
     /**
-     * This method is setting ConfirmFragment Arguments for deleting all passwords.
+     * Called to have the fragment instantiate its user interface view
      *
-     * @return ConfirmFragment.
-     */
-    public static ConfirmFragment newInstance(boolean changeKey) {
-        ConfirmFragment frag = new ConfirmFragment();
-        Bundle args = new Bundle();
-        args.putBoolean("changeKey", changeKey);
-        frag.setArguments(args);
-        return frag;
-    }
-
-    /**
-     * This method is creating ConfirmFragment.
-     *
-     * @param inflater           Needs for getting Fragment View.
-     * @param parent             Argument of inflater.inflate().
-     * @param savedInstanceState Saving Fragment Values.
-     * @return Fragment View.
-     * @see View
-     * @see Bundle
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param parent             If non-null, this is the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
+     * @return Return the View for the fragment's UI, or null
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_confirm, parent);
+        return inflater.inflate(R.layout.fragment_confirm, parent, false);
     }
 
     /**
-     * This method is executing after Fragment View was created.
-     * In this method will be setting DialogAnimation, layout variables will be initializing.
+     * Called immediately after onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle) has returned, but before any saved state has been restored in to the view
      *
-     * @param view               Fragment View Value.
-     * @param savedInstanceState Saving Fragment Values.
-     * @see View
-     * @see Bundle
+     * @param view               The View returned by onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        initVariables(view);
+        initComponents();
         setTitle();
-
-        cancel.setOnClickListener(v -> clickCancel());
-        confirm.setOnClickListener(v -> clickConfirm());
+        setListeners();
     }
 
     /**
-     * This method is initializing layout variables.
-     *
-     * @param view Needs for finding elements on Layout.
-     * @see View
+     * Initialize ConfirmFragment components
      */
-    private void initVariables(View view) {
-        title = view.findViewById(R.id.confirm_title);
-        cancel = view.findViewById(R.id.confirm_cancel_button);
-        confirm = view.findViewById(R.id.confirm_okay_button);
+    private void initComponents() {
+        titleTypingText = getView().findViewById(R.id.confirm_title_text);
+        cancelButton = getView().findViewById(R.id.confirm_cancel_button);
+        confirmButton = getView().findViewById(R.id.confirm_confirm_button);
+        mainActivity = ((MainActivity) getActivity());
     }
 
     /**
-     * This method is setting special title.
-     * If changeKey argument is true, will set title for key changing.
-     * Else if name argument is null, will set title for deleting all passwords.
-     * Else will set title for deleting password with name "name".
+     * Set onClick listeners for components
+     */
+    private void setListeners() {
+        cancelButton.setOnClickListener(v -> clickCancel());
+        confirmButton.setOnClickListener(v -> clickConfirm());
+    }
+
+    /**
+     * Set title text to titleTypingText
      */
     private void setTitle() {
-        if (getArguments().getBoolean("changeKey", false))
-            typingAnimation(title, getResources().getString(R.string.change_key));
-        else if (getArguments().getString("name") == null)
-            typingAnimation(title, getResources().getString(R.string.delete_all_passwords));
-        else typingAnimation(title, getResources().getString(R.string.delete_password));
+        if (getArguments().getBoolean("key_edit", false))
+            typingAnimation(titleTypingText, getResources().getString(R.string.change_key));
+        else if (getArguments().getString("name", null) == null)
+            typingAnimation(titleTypingText, getResources().getString(R.string.delete_all_passwords));
+        else typingAnimation(titleTypingText, getResources().getString(R.string.delete_password));
     }
 
     /**
-     * This method is executing after clicking on Cancel Button.
-     *
-     * @see MainActivity
-     * @see View
-     * @see ImageView
+     * Make vibration effect and set BarFragment to bar_fragment
      */
     private void clickCancel() {
-        ((MainActivity) getActivity()).makeVibration();
-        dismiss();
+        VibrationManager.makeVibration(getContext());
+        mainActivity.setBarFragment();
     }
 
     /**
-     * This method is executing after clicking on Confirm Button.
-     * If changeKey in Fragment Arguments is True, will start changeKey() method.
-     * Else if name in Fragment Arguments is null, will start deleteAllPassword() method.
-     * Else will start deletePasswordByName() method.
-     *
-     * @see MainActivity
-     * @see View
-     * @see ImageView
+     * Make vibration effect and check if 'key_edit' argument is true, start changing key.
+     * Else if 'name' isn't null delete password by 'name'.
+     * Else delete all passwords
      */
     private void clickConfirm() {
-        ((MainActivity) getActivity()).makeVibration();
-        if (getArguments().getBoolean("changeKey")) changeKey();
-        else {
-            if (getArguments().getString("name") == null)
-                ((MainActivity) getActivity()).deleteAllPasswords();
-            else ((MainActivity) getActivity())
-                    .deletePasswordByName(getArguments().getString("name"));
-        }
-        dismiss();
+        VibrationManager.makeVibration(getContext());
+        if (getArguments().getBoolean("key_edit")) changeKey();
+        else if (getArguments().getString("name") == null) mainActivity.deleteAllPasswords();
+        else mainActivity.deletePasswordByName(getArguments().getString("name"));
+        mainActivity.setBarFragment();
     }
 
     /**
-     * This method is disable encrypting (to prevent errors)
-     * and starting LoginActivity for key changing.
+     * Disable date encrypt and start changing key in LoginActivity
+     *
+     * @see LoginActivity
      */
     private void changeKey() {
-        ((MainActivity) getActivity()).updateEncrypting(false);
+        mainActivity.updateEncrypt(false);
         startActivity(new Intent(getActivity(), LoginActivity.class)
-                .putExtra("changeKey", true));
+                .putExtra("key_edit", true));
     }
 }

@@ -1,4 +1,4 @@
-package com.merive.securely;
+package com.merive.securely.activities;
 
 import com.journeyapps.barcodescanner.CaptureActivity;
 

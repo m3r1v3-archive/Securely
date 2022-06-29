@@ -17,99 +17,86 @@ import java.util.List;
 
 public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.ViewHolder> {
 
-    public final ClickListener copyListener;
     public final ClickListener rowListener;
-    private final List<Password> mPasswords;
+    public final ClickListener shareListener;
+    private final List<Password> passwordsList;
 
     /**
-     * PasswordAdapter Constructor
+     * Initialize the dataset of the Adapter
      *
-     * @param passwords    List of Password items.
-     * @param rowListener  Row click listener.
-     * @param copyListener Copy of row click listener.
+     * @param passwordsList List of password names
+     * @param rowListener   Row click listener
+     * @param shareListener Share click listener
      */
-    public PasswordAdapter(List<Password> passwords, ClickListener rowListener, ClickListener copyListener) {
-        mPasswords = passwords;
+    public PasswordAdapter(List<Password> passwordsList, ClickListener rowListener, ClickListener shareListener) {
+        this.passwordsList = passwordsList;
         this.rowListener = rowListener;
-        this.copyListener = copyListener;
+        this.shareListener = shareListener;
     }
 
     /**
-     * This method is executing when ViewHolder is creating.
+     * Create new views (invoked by the layout manager)
      *
-     * @param parent   View group.
-     * @param viewType View type.
-     * @return View holder.
+     * @param parent   ViewGroup parent element
+     * @param viewType Type of view
+     * @return New ViewHolder
      */
     @NonNull
     @Override
     public PasswordAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.password_row, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_password, parent, false));
     }
 
+
     /**
-     * This method is setting name values to rows.
+     * Sets password names to nameText for rows by position
      *
-     * @param holder   ViewHolder.
-     * @param position Row position.
+     * @param viewHolder ViewHolder object
+     * @param position   Position of list item
      */
     @Override
-    public void onBindViewHolder(PasswordAdapter.ViewHolder holder, int position) {
-        holder.name.setText(mPasswords.get(position).getName());
+    public void onBindViewHolder(PasswordAdapter.ViewHolder viewHolder, int position) {
+        viewHolder.nameText.setText(passwordsList.get(position).getName());
     }
 
     /**
-     * This method is getting count of Password Items.
-     *
-     * @return Item count.
+     * Return size of passwordList
      */
     @Override
     public int getItemCount() {
-        return mPasswords.size();
+        return passwordsList.size();
     }
 
-    public class ViewHolder
-            extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    /**
+     * Provide a reference to the type of views that you are using (custom ViewHolder)
+     */
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView name;
-        private final ImageButton sharing;
-        private final WeakReference<ClickListener> copyListenerRef;
-        private final WeakReference<ClickListener> rowListenerRef;
+        private final TextView nameText;
+        private final ImageButton shareButton;
+        private final WeakReference<ClickListener> rowListenerReference;
+        private final WeakReference<ClickListener> shareListenerReference;
 
-        /**
-         * ViewHolder Constructor
-         *
-         * @param itemView RecyclerView item.
-         */
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            copyListenerRef = new WeakReference<>(copyListener);
-            rowListenerRef = new WeakReference<>(rowListener);
+            rowListenerReference = new WeakReference<>(rowListener);
+            shareListenerReference = new WeakReference<>(shareListener);
 
-            name = itemView.findViewById(R.id.password_name);
-            sharing = itemView.findViewById(R.id.password_sharing_button);
+            nameText = itemView.findViewById(R.id.row_password_name);
+            shareButton = itemView.findViewById(R.id.row_options_button);
 
             itemView.setOnClickListener(this);
-            sharing.setOnClickListener(this);
+            shareButton.setOnClickListener(this);
         }
 
-        /**
-         * This method is executing after clicking on row or copy button.
-         * If was clicked row, will open PasswordFragment in edit mode.
-         * Else will be coping password value by name.
-         *
-         * @param view View value.
-         */
         @Override
         public void onClick(View view) {
             try {
-                if (view.getId() == sharing.getId())
-                    copyListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
+                if (view.getId() == shareButton.getId())
+                    shareListenerReference.get().onItemClick(passwordsList.get(getAdapterPosition()).getName());
                 else
-                    rowListenerRef.get().onItemClick(mPasswords.get(getAdapterPosition()).getName());
+                    rowListenerReference.get().onItemClick(passwordsList.get(getAdapterPosition()).getName());
             } catch (Exception ignored) {
             }
         }
