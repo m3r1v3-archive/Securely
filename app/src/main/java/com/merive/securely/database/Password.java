@@ -9,8 +9,7 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(indices = {@Index(value = {"name"},
-        unique = true)})
+@Entity(indices = {@Index(value = {"name"}, unique = true)})
 public class Password implements Serializable {
 
     @PrimaryKey
@@ -28,7 +27,7 @@ public class Password implements Serializable {
     private String description;
 
     /**
-     * Password Constructor
+     * Password empty constructor
      */
     public Password() {
         this.name = "name";
@@ -38,12 +37,7 @@ public class Password implements Serializable {
     }
 
     /**
-     * Password Constructor with arguments.
-     *
-     * @param name        Item name.
-     * @param login       Login value.
-     * @param password    Password value.
-     * @param description Description value.
+     * Password constructor with parameters
      */
     @Ignore
     public Password(String name, String login, String password, String description) {
@@ -54,72 +48,72 @@ public class Password implements Serializable {
     }
 
     /**
-     * This method returns item name value.
+     * Return password name value
      *
-     * @return Item name.
+     * @return Password name value
      */
     public String getName() {
         return name;
     }
 
     /**
-     * This method is setting name value.
+     * Set name value of password
      *
-     * @param name Item name.
+     * @param name Password name value
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * This method returns item login value.
+     * Return password login value
      *
-     * @return Login value.
+     * @return Password login value
      */
     public String getLogin() {
         return login;
     }
 
     /**
-     * This method is setting item login value.
+     * Set login value of password
      *
-     * @param login Login value.
+     * @param login Password login value
      */
     public void setLogin(String login) {
         this.login = login;
     }
 
     /**
-     * This method returns item password value.
+     * Return password value
      *
-     * @return Password value.
+     * @return Password value
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * This method is setting item password value.
+     * Set password value
      *
-     * @param password Password value.
+     * @param password Password value
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * This method returns item description value.
+     * Return description value of password
      *
-     * @return Description value.
+     * @return Password description value
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * This method is setting item description value.
+     * Set description value of password
      *
-     * @param description Description value.
+     * @param description Password description value
      */
     public void setDescription(String description) {
         this.description = description;

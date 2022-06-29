@@ -2,8 +2,6 @@ package com.merive.securely.fragments;
 
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.PasswordTransformationMethod;
@@ -15,125 +13,104 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.merive.securely.MainActivity;
 import com.merive.securely.R;
-import com.merive.securely.ScannerActivity;
+import com.merive.securely.activities.MainActivity;
+import com.merive.securely.activities.ScannerActivity;
 import com.merive.securely.elements.TypingTextView;
 import com.merive.securely.utils.PasswordGenerator;
+import com.merive.securely.utils.VibrationManager;
 
-public class PasswordFragment extends DialogFragment {
+public class PasswordFragment extends Fragment {
 
-    TypingTextView title;
-    EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
-    ImageView save, cancel, scan, delete, generate;
-    boolean edit, show;
-
-
-    /**
-     * PasswordFragment Constructor.
-     * Using for creating DialogFragment in MainActivity.
-     *
-     * @see DialogFragment
-     * @see MainActivity
-     */
-    public PasswordFragment() {
-    }
+    private MainActivity mainActivity;
+    private TypingTextView titleTypingText;
+    private EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
+    private ImageView saveButton, cancelButton, scanButton, deleteButton, generateButton;
 
     /**
-     * This method is setting PasswordFragment Arguments for adding new password.
+     * Create a new instance of PasswordFragment, initialized to edit password data
      *
-     * @param length Password Generator Length.
-     * @param show   Always show password.
-     * @return PasswordFragment with necessary arguments.
+     * @param name Password name that will be deleted
+     * @return PasswordFragment object
      */
-    public static PasswordFragment newInstance(int length, boolean show) {
+    public static PasswordFragment newInstance(String name, String login, String password, String description) {
         PasswordFragment frag = new PasswordFragment();
         Bundle args = new Bundle();
-        args.putInt("length", length);
-        args.putBoolean("show", show);
-
+        args.putString("name_value", name);
+        args.putString("login_value", login);
+        args.putString("password_value", password);
+        args.putString("description_value", description);
+        args.putBoolean("edit_mode", true);
         frag.setArguments(args);
         return frag;
     }
 
     /**
-     * This method is setting PasswordFragment Arguments for editing password.
+     * Called to have the fragment instantiate its user interface view
      *
-     * @param name        Name of Password in Database.
-     * @param login       Login Value in Database.
-     * @param password    Password Value in Database.
-     * @param description Description Value in Database.
-     * @param length      Password Generator Length.
-     * @param show        Always show password.
-     * @return PasswordFragment with necessary arguments.
-     */
-    public static PasswordFragment newInstance
-    (String name, String login, String password, String description, int length, boolean show) {
-        PasswordFragment frag = new PasswordFragment();
-        Bundle args = new Bundle();
-
-        args.putString("name", name);
-        args.putString("login", login);
-        args.putString("password", password);
-        args.putString("description", description);
-        args.putInt("length", length);
-        args.putBoolean("edit", true);
-        args.putBoolean("show", show);
-
-        frag.setArguments(args);
-        return frag;
-    }
-
-    /**
-     * This method is creating PasswordFragment.
-     *
-     * @param inflater           Needs for getting Fragment View.
-     * @param parent             Argument of inflater.inflate().
-     * @param savedInstanceState Saving Fragment Values.
-     * @return Fragment View.
-     * @see View
-     * @see Bundle
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param parent             If non-null, this is the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
+     * @return Return the View for the fragment's UI, or null
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_password, parent);
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_password, parent, false);
     }
 
     /**
-     * This method is executing after Fragment View was created.
-     * In this method will be setting DialogAnimation, layout variables will be initializing,
-     * will be setting values to edits if it necessary,
-     * will be setting title, will be setting delete button visibility is PasswordFragment opened in edit mode
-     * and will be setting password show in password field if show argument is true.
-     * Also will be setting click listeners for buttons.
+     * Called immediately after onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle) has returned, but before any saved state has been restored in to the view
      *
-     * @param view               Fragment View Value.
-     * @param savedInstanceState Saving Fragment Values.
-     * @see View
-     * @see Bundle
+     * @param view               The View returned by onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        initVariables();
-        setEdit();
+        initComponents();
         setTitle();
-        setEditMode();
+        setListeners();
+        checkEdit();
         setShow();
+    }
 
-        cancel.setOnClickListener(this::clickCancel);
-        delete.setOnClickListener(this::clickDeletePassword);
-        save.setOnClickListener(this::clickSave);
-        scan.setOnClickListener(this::clickScan);
+    /**
+     * Initialize PasswordFragment components
+     */
+    private void initComponents() {
+        titleTypingText = getView().findViewById(R.id.password_title_text);
+        nameEdit = getView().findViewById(R.id.password_name_edit);
+        loginEdit = getView().findViewById(R.id.password_login_edit);
+        passwordEdit = getView().findViewById(R.id.password_password_edit);
+        descriptionEdit = getView().findViewById(R.id.password_description_edit);
+        deleteButton = getView().findViewById(R.id.password_delete_button);
+        scanButton = getView().findViewById(R.id.password_scan_button);
+        cancelButton = getView().findViewById(R.id.password_cancel_button);
+        saveButton = getView().findViewById(R.id.password_save_button);
+        generateButton = getView().findViewById(R.id.password_generate_button);
+        mainActivity = ((MainActivity) getActivity());
+    }
 
-        generate.setOnClickListener(v -> clickGeneratePassword());
+    /**
+     * Set title string to titleTypingText: if 'edit_mode' argument is true, set title for edit mode, else for add mode
+     */
+    private void setTitle() {
+        typingAnimation(titleTypingText, getArguments().getBoolean("edit_mode", false) ? getString(R.string.edit_password) : getString(R.string.add_password));
+    }
+
+    /**
+     * Set onClick and onLongClick listeners for components
+     */
+    private void setListeners() {
+        cancelButton.setOnClickListener(v -> clickCancel());
+        deleteButton.setOnClickListener(v -> clickDeletePassword());
+        saveButton.setOnClickListener(v -> clickSave());
+        scanButton.setOnClickListener(v -> clickScan());
+        generateButton.setOnClickListener(v -> clickGeneratePassword());
         passwordEdit.setOnLongClickListener(v -> {
             longClickPasswordEdit();
             return false;
@@ -141,223 +118,148 @@ public class PasswordFragment extends DialogFragment {
     }
 
     /**
-     * This method is initializing layout variables.
+     * Check 'edit_mode' argument: if it's true, make deleteButton visible, make scanButton invisible and set password data to edits
      */
-    private void initVariables() {
-        title = getView().findViewById(R.id.password_title);
-
-        nameEdit = getView().findViewById(R.id.name_edit);
-        loginEdit = getView().findViewById(R.id.login_edit);
-        passwordEdit = getView().findViewById(R.id.password_edit);
-        descriptionEdit = getView().findViewById(R.id.description_edit);
-
-        delete = getView().findViewById(R.id.password_delete_button);
-        scan = getView().findViewById(R.id.password_scan_button);
-        cancel = getView().findViewById(R.id.password_cancel_button);
-        save = getView().findViewById(R.id.password_save_button);
-
-        generate = getView().findViewById(R.id.generate_password_button);
-    }
-
-    /**
-     * This method is setting edit value from arguments to class variable.
-     */
-    private void setEdit() {
-        edit = getArguments().getBoolean("edit", false);
-    }
-
-    /**
-     * This method is setting edit or add title.
-     */
-    private void setTitle() {
-        String titleText = edit ? "Edit" : "Add";
-        typingAnimation(title, titleText + " password");
-    }
-
-    /**
-     * This method is setting edit mode.
-     * If PasswordFragment opened in Edit Mode,
-     * Delete Button will be visible and will be setting values to edits.
-     */
-    private void setEditMode() {
-        if (edit) {
-            delete.setVisibility(View.VISIBLE);
-            scan.setVisibility(View.INVISIBLE);
-            setEditsData();
+    private void checkEdit() {
+        if (getArguments().getBoolean("edit_mode", false)) {
+            deleteButton.setVisibility(View.VISIBLE);
+            scanButton.setVisibility(View.INVISIBLE);
+            setPasswordData();
         }
     }
 
     /**
-     * This method is setting values from Arguments to Edit Fields.
+     * Set password data to EditText components
      */
-    private void setEditsData() {
-        nameEdit.setText(getArguments().getString("name"));
-        loginEdit.setText(getArguments().getString("login"));
-        passwordEdit.setText(getArguments().getString("password"));
-        descriptionEdit.setText(getArguments().getString("description"));
+    private void setPasswordData() {
+        nameEdit.setText(getArguments().getString("name_value"));
+        loginEdit.setText(getArguments().getString("login_value"));
+        passwordEdit.setText(getArguments().getString("password_value"));
+        descriptionEdit.setText(getArguments().getString("description_value"));
     }
 
     /**
-     * This method is setting Show Password for Password Field.
-     *
-     * @see SettingsFragment
+     * Make showing password in passwordEdit, if getShow() method return true
      */
     private void setShow() {
-        show = getArguments().getBoolean("show");
-        if (show) passwordEdit.setTransformationMethod(null);
+        if (mainActivity.preferencesManager.getShow()) passwordEdit.setTransformationMethod(null);
     }
 
     /**
-     * This method is executing after clicking on Cancel Button.
+     * Makes vibration effect and set BarFragment to bar_fragment component
      *
-     * @param view Needs for clear focus from Fragment.
-     * @see MainActivity
+     * @see BarFragment
      */
-    private void clickCancel(View view) {
-        view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
-        dismiss();
+    private void clickCancel() {
+        VibrationManager.makeVibration(getContext());
+        mainActivity.setBarFragment();
     }
 
     /**
-     * This method is executing after clicking on Delete Password Button.
-     * The method is making vibration and start confirming password deleting.
+     * Makes vibration effect and set ConfirmFragment to bar_fragment component for confirm password delete
      *
-     * @param view Needs for clear focus from Fragment.
      * @see ConfirmFragment
-     * @see MainActivity
      */
-    private void clickDeletePassword(View view) {
-        view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
-        ((MainActivity) getActivity()).openConfirmPasswordDelete(getArguments().getString("name"));
-        dismiss();
+    private void clickDeletePassword() {
+        VibrationManager.makeVibration(getContext());
+        mainActivity.setBarFragment(ConfirmFragment.newInstance(getArguments().getString("name_value")));
     }
 
     /**
-     * This method is saving added/edited password values to database.
-     * The method is making vibration and saving added/edited values to database.
+     * Makes vibration effect, check 'edit_mode' argument: if it is true, save as edited password, else save as new password.
+     * After set BarFragment to bar_fragment component
      *
-     * @param view Needs for clear focus from Fragment.
-     * @see MainActivity
-     * @see com.merive.securely.database.PasswordDB
+     * @see BarFragment
      */
-    private void clickSave(View view) {
-        view.clearFocus();
-        ((MainActivity) getActivity()).makeVibration();
-        if (edit) saveEditPassword();
+    private void clickSave() {
+        VibrationManager.makeVibration(getContext());
+        if (getArguments().getBoolean("edit_mode", false)) saveEditedPassword();
         else saveNewPassword();
-        dismiss();
+        mainActivity.setBarFragment();
     }
 
     /**
-     * This method is saving edited values to database and make Toast message.
-     *
-     * @see com.merive.securely.database.PasswordDB
-     */
-    private void saveEditPassword() {
-        if (checkEditsOnEmpty())
-            ((MainActivity) getActivity()).editPassword(putEditedDataInBundle());
-        else ((MainActivity) getActivity()).makeToast("You have empty fields");
-    }
-
-    /**
-     * This method is checking what fields aren't empty.
-     *
-     * @return True if no one field is empty (Description is optional (Not checking)).
-     */
-    private boolean checkEditsOnEmpty() {
-        return !nameEdit.getText().toString().isEmpty() &&
-                !loginEdit.getText().toString().isEmpty() &&
-                !passwordEdit.getText().toString().isEmpty();
-    }
-
-    /**
-     * This method is putting edited values to Bundle for MainActivity.
-     *
-     * @return Bundle with edited values.
-     * @see MainActivity
-     */
-    private Bundle putEditedDataInBundle() {
-        Bundle data = new Bundle();
-
-        data.putString("name_before", getArguments().getString("name"));
-        data.putString("edited_name", nameEdit.getText().toString());
-        data.putString("edited_login", loginEdit.getText().toString());
-        data.putString("edited_password", passwordEdit.getText().toString());
-        data.putString("edited_description", descriptionEdit.getText().toString());
-
-        return data;
-    }
-
-    /**
-     * This method is saving added values to database and make Toast message.
-     *
-     * @see com.merive.securely.database.PasswordDB
+     * Checks EditText fields on empty and if they aren't empty, execute checkPasswordName() method
      */
     private void saveNewPassword() {
-        if (checkEditsOnEmpty())
-            ((MainActivity) getActivity()).addNewPassword(putNewDataInBundle());
-        else ((MainActivity) getActivity()).makeToast("You have empty fields");
+        if (checkOnEmpty()) mainActivity.checkPasswordName(getNewPasswordBundle());
+        else mainActivity.makeToast(getString(R.string.you_have_empty_fields));
     }
 
     /**
-     * This method is putting added values to Bundle for MainActivity.
-     *
-     * @return Bundle with added values.
-     * @see MainActivity
+     * @return Return bundle with password data
      */
-    private Bundle putNewDataInBundle() {
+    private Bundle getNewPasswordBundle() {
         Bundle data = new Bundle();
-
-        data.putString("name", nameEdit.getText().toString());
-        data.putString("login", loginEdit.getText().toString());
-        data.putString("password", passwordEdit.getText().toString());
-        data.putString("description", descriptionEdit.getText().toString());
-
+        data.putString("name_value", nameEdit.getText().toString());
+        data.putString("login_value", loginEdit.getText().toString());
+        data.putString("password_value", passwordEdit.getText().toString());
+        data.putString("description_value", descriptionEdit.getText().toString());
         return data;
     }
 
     /**
-     * This method is executing after clicking Generate Password Button.
-     * The method is generating and putting password to Password Edit and make vibration.
+     * Checks EditText fields on empty and if they aren't empty, execute checkEditPasswordName() method
      */
-    private void clickGeneratePassword() {
-        passwordEdit.setText(new PasswordGenerator(getArguments().getInt("length", 16)).generatePassword());
-        ((MainActivity) getActivity()).makeVibration();
+    private void saveEditedPassword() {
+        if (checkOnEmpty()) mainActivity.checkEditPasswordName(getEditedPasswordBundle());
+        else mainActivity.makeToast(getString(R.string.you_have_empty_fields));
+    }
+
+    private Bundle getEditedPasswordBundle() {
+        Bundle data = new Bundle();
+        data.putString("name_before_value", getArguments().getString("name_value"));
+        data.putString("edited_name_value", nameEdit.getText().toString());
+        data.putString("edited_login_value", loginEdit.getText().toString());
+        data.putString("edited_password_value", passwordEdit.getText().toString());
+        data.putString("edited_description_value", descriptionEdit.getText().toString());
+        return data;
     }
 
     /**
-     * This method is showing entered password in Password Edit after long clicking on Password Edit field.
+     * @return Return true if nameEdit, loginEdit, passwordEdit EditTexts isn't empty
+     */
+    private boolean checkOnEmpty() {
+        return !nameEdit.getText().toString().isEmpty() && !loginEdit.getText().toString().isEmpty() && !passwordEdit.getText().toString().isEmpty();
+    }
+
+    /**
+     * Makes vibration effect and set generated password to passwordEdit component
+     */
+    private void clickGeneratePassword() {
+        VibrationManager.makeVibration(getContext());
+        passwordEdit.setText(new PasswordGenerator(mainActivity.preferencesManager.getLength()).generatePassword());
+    }
+
+    /**
+     * Makes vibration effect and make password in passwordEdit visible on 5 seconds
      */
     private void longClickPasswordEdit() {
-        ((MainActivity) getActivity()).makeVibration();
-        if (!show) {
-            show = true;
+        VibrationManager.makeVibration(getContext());
+        if (!mainActivity.preferencesManager.getShow()) {
             passwordEdit.setTransformationMethod(null);
             new Handler().postDelayed(() -> {
                 passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
             }, 5000);
-            show = false;
         }
     }
 
     /**
-     * This method executes when clicking Scan Button.
+     * Make vibration effect, set BarFragment to bar_fragment component and open QR scanner for scanning Securely QR
      */
-    private void clickScan(View view) {
-        ((MainActivity) getActivity()).makeVibration();
+    private void clickScan() {
+        VibrationManager.makeVibration(getContext());
+        mainActivity.setBarFragment();
         openScanner();
-        dismiss();
     }
 
     /**
-     * This method opens QR scanner.
+     * Open QR scanner for scanning Securely QR
      */
     private void openScanner() {
         new IntentIntegrator(getActivity())
                 .setBarcodeImageEnabled(false)
-                .setPrompt("Find and Scan SecurelyQR")
+                .setPrompt(getString(R.string.find_and_scan))
                 .setCameraId(0)
                 .setCaptureActivity(ScannerActivity.class)
                 .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)

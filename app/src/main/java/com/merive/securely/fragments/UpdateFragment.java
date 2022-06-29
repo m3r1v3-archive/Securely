@@ -3,8 +3,6 @@ package com.merive.securely.fragments;
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,112 +12,104 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
-import com.merive.securely.MainActivity;
+import com.merive.securely.BuildConfig;
+import com.merive.securely.activities.MainActivity;
 import com.merive.securely.R;
 import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.utils.VibrationManager;
 
-public class UpdateFragment extends DialogFragment {
+public class UpdateFragment extends Fragment {
 
-    TypingTextView title, version;
-    ImageView download;
-
-    /**
-     * UpdateFragment Constructor.
-     * Using for creating DialogFragment in MainActivity.
-     *
-     * @see DialogFragment
-     * @see MainActivity
-     */
-    public UpdateFragment() {
-    }
+    private TypingTextView titleTypingText, versionTypingText;
+    private ImageView downloadButton, cancelButton;
 
     /**
-     * This method is setting UpdateFragment Arguments.
+     * Create a new instance of UpdateFragment
      *
-     * @param oldVersion Using Securely' Version
-     * @param newVersion Actual Version on Website
-     * @return UpdateFragment with necessary arguments.
+     * @return UpdateFragment object
      */
-    public static UpdateFragment newInstance(String oldVersion, String newVersion) {
+    public static UpdateFragment newInstance(String version) {
         UpdateFragment frag = new UpdateFragment();
         Bundle args = new Bundle();
-        args.putString("oldVersion", oldVersion);
-        args.putString("newVersion", newVersion);
+        args.putString("version_value", version);
         frag.setArguments(args);
         return frag;
     }
 
     /**
-     * This method is creating UpdateFragment.
+     * Called to have the fragment instantiate its user interface view
      *
-     * @param inflater           Needs for getting Fragment View.
-     * @param parent             Argument of inflater.inflate().
-     * @param savedInstanceState Save Fragment Values.
-     * @return Fragment View.
-     * @see View
-     * @see Bundle
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param parent             If non-null, this is the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
+     * @return Return the View for the fragment's UI, or null
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return inflater.inflate(R.layout.fragment_update, parent);
+        return inflater.inflate(R.layout.fragment_update, parent, false);
     }
 
     /**
-     * This method is executing after Fragment View was created.
-     * In this method will be setting DialogAnimation, layout variables will be initializing,
-     * will be setting UpdateFragment title and version text.
-     * Also will be setting onClickListener for Download Button.
+     * Called immediately after onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle) has returned, but before any saved state has been restored in to the view
      *
-     * @param view               Fragment View Value.
-     * @param savedInstanceState Saving Fragment Values.
-     * @see View
-     * @see Bundle
+     * @param view               The View returned by onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        initVariables();
-        setTitle();
-        setVersion();
-
-        download.setOnClickListener(v -> clickDownload());
+        initComponents();
+        setListeners();
+        setTypingTexts();
     }
 
     /**
-     * This method is initializing layout variables.
+     * Initialize UpdateFragment components
      */
-    private void initVariables() {
-        title = getView().findViewById(R.id.update_title);
-        version = getView().findViewById(R.id.update_version_title);
-        download = getView().findViewById(R.id.download_update_button);
+    private void initComponents() {
+        titleTypingText = getView().findViewById(R.id.update_title_text);
+        versionTypingText = getView().findViewById(R.id.update_label_text);
+        downloadButton = getView().findViewById(R.id.update_download_button);
+        cancelButton = getView().findViewById(R.id.update_cancel_button);
     }
 
     /**
-     * This method is setting Title of UpdateFragment.
+     * Set onClick listeners for components
      */
-    private void setTitle() {
-        typingAnimation(title, getResources().getString(R.string.update_released));
+    private void setListeners() {
+        downloadButton.setOnClickListener(v -> clickDownload());
+        cancelButton.setOnClickListener(v -> clickCancel());
     }
 
     /**
-     * This method is setting text to version_text element.
+     * Set texts to titleTypingText and versionTypingText
      */
-    private void setVersion() {
-        typingAnimation(version, ("Old: " + getArguments().getString("oldVersion") + " / New: " + getArguments().getString("newVersion")));
+    private void setTypingTexts() {
+        typingAnimation(titleTypingText, getResources().getString(R.string.update));
+        typingAnimation(versionTypingText, getResources().getString(R.string.version_current_and_new, BuildConfig.VERSION_NAME, getArguments().getString("version_value")));
     }
 
     /**
-     * This method is open Securely Download Page in Browser.
+     * Make vibration effect, set BarFragment to bar_fragment component and open Securely download page in web browser
+     *
+     * @see BarFragment
      */
     private void clickDownload() {
-        dismiss();
-        ((MainActivity) getActivity()).makeVibration();
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website)));
-        startActivity(browserIntent);
+        VibrationManager.makeVibration(getContext());
+        ((MainActivity) getActivity()).setBarFragment();
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website))));
+    }
+
+    /**
+     * Make vibration and set BarFragment to bar_fragment component
+     *
+     * @see BarFragment
+     */
+    private void clickCancel() {
+        VibrationManager.makeVibration(getContext());
+        ((MainActivity) getActivity()).setBarFragment();
     }
 }
