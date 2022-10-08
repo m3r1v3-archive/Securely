@@ -18,8 +18,8 @@ android {
         applicationId "com.merive.securely"
         minSdkVersion 24
         targetSdkVersion 32
-        versionCode 39
-        versionName "1.5.0"
+        versionCode 40
+        versionName "1.5.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
 
     implementation 'com.google.zxing:core:3.4.1'
@@ -45,7 +45,7 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation "androidx.room:room-runtime:2.4.2"
+    implementation "androidx.room:room-runtime:2.4.3"
     implementation "androidx.transition:transition:1.4.1"
 
     implementation "android.arch.persistence.room:runtime:1.1.1"
