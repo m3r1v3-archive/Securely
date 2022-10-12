@@ -11,13 +11,13 @@ android {
             keyPassword System.getenv("SIGNING_KEY_PASSWORD")
         }
     }
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.merive.securely"
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 40
         versionName "1.5.1"
 
