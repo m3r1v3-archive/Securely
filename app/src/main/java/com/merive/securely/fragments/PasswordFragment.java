@@ -28,7 +28,7 @@ public class PasswordFragment extends Fragment {
     private TypingTextView titleTypingText;
     private EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
     private ImageView saveButton, cancelButton, scanButton, deleteButton, generateButton, showButton;
-    private boolean show = false;
+    private boolean show;
 
     /**
      * Create a new instance of PasswordFragment, initialized to edit password data
@@ -140,7 +140,9 @@ public class PasswordFragment extends Fragment {
      * Make showing password in passwordEdit, if getShow() method return true
      */
     private void setShow() {
-        if (mainActivity.preferencesManager.getShow()) passwordEdit.setTransformationMethod(null);
+        if (mainActivity.preferencesManager.getShow())
+            passwordEdit.setTransformationMethod(null);
+        show = mainActivity.preferencesManager.getShow();
     }
 
     /**
@@ -235,11 +237,11 @@ public class PasswordFragment extends Fragment {
     private void clickShowPassword() {
         VibrationManager.makeVibration(getContext());
         if (show) {
-            passwordEdit.setTransformationMethod(null);
-            showButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_eye_crossed));
-        } else {
             passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
-            showButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_eye));
+            showButton.setImageResource(R.drawable.ic_eye);
+        } else {
+            passwordEdit.setTransformationMethod(null);
+            showButton.setImageResource(R.drawable.ic_eye_crossed);
         }
         show = !show;
     }
