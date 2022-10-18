@@ -3,7 +3,6 @@ package com.merive.securely.fragments;
 import static com.merive.securely.elements.TypingTextView.typingAnimation;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,8 @@ public class PasswordFragment extends Fragment {
     private MainActivity mainActivity;
     private TypingTextView titleTypingText;
     private EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
-    private ImageView saveButton, cancelButton, scanButton, deleteButton, generateButton;
+    private ImageView saveButton, cancelButton, scanButton, deleteButton, generateButton, showButton;
+    private boolean show = false;
 
     /**
      * Create a new instance of PasswordFragment, initialized to edit password data
@@ -92,6 +92,7 @@ public class PasswordFragment extends Fragment {
         cancelButton = getView().findViewById(R.id.password_cancel_button);
         saveButton = getView().findViewById(R.id.password_save_button);
         generateButton = getView().findViewById(R.id.password_generate_button);
+        showButton = getView().findViewById(R.id.password_show_button);
         mainActivity = ((MainActivity) getActivity());
     }
 
@@ -111,10 +112,7 @@ public class PasswordFragment extends Fragment {
         saveButton.setOnClickListener(v -> clickSave());
         scanButton.setOnClickListener(v -> clickScan());
         generateButton.setOnClickListener(v -> clickGeneratePassword());
-        passwordEdit.setOnLongClickListener(v -> {
-            longClickPasswordEdit();
-            return false;
-        });
+        showButton.setOnClickListener(v -> clickShowPassword());
     }
 
     /**
@@ -234,14 +232,16 @@ public class PasswordFragment extends Fragment {
     /**
      * Makes vibration effect and make password in passwordEdit visible on 5 seconds
      */
-    private void longClickPasswordEdit() {
+    private void clickShowPassword() {
         VibrationManager.makeVibration(getContext());
-        if (!mainActivity.preferencesManager.getShow()) {
+        if (show) {
             passwordEdit.setTransformationMethod(null);
-            new Handler().postDelayed(() -> {
-                passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
-            }, 5000);
+            showButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_eye_crossed));
+        } else {
+            passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
+            showButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_eye));
         }
+        show = !show;
     }
 
     /**
