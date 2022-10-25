@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     private void setFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.main_fragment, fragment, null)
                 .commit();
     }
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
     public void setBarFragment() {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.bar_fragment, new BarFragment(), null)
                 .commit();
     }
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         if (fragment.getArguments() == null) fragment.setArguments(new Bundle());
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .setCustomAnimations(R.anim.breath_in, R.anim.breath_out)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.bar_fragment, fragment, null)
                 .commit();
     }
