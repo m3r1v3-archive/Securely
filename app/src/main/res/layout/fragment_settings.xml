@@ -31,37 +31,34 @@
         android:layout_marginEnd="@dimen/margin_36dp"
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@xml/horizontal_line"
-        app:layout_constraintBottom_toTopOf="@id/settings_password_length"
+        app:layout_constraintBottom_toTopOf="@id/settings_length_edit_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/settings_password_length"
+        android:id="@+id/settings_length_edit_view"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginStart="@dimen/margin_12dp"
         android:layout_marginTop="@dimen/margin_36dp"
         android:layout_marginEnd="@dimen/margin_6dp"
         android:background="@xml/background_dark"
-        app:layout_constraintEnd_toStartOf="@id/settings_show_switch"
+        app:layout_constraintEnd_toStartOf="@id/settings_show_switch_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/settings_title">
 
-        <TextView
-            android:id="@+id/settings_password_length_text"
-            android:layout_width="@dimen/size_0dp"
-            android:layout_height="@dimen/size_0dp"
-            android:layout_marginStart="@dimen/margin_12dp"
-            android:fontFamily="@font/share_tech_mono"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:text="@string/symbols"
-            android:textColor="?colorAccent"
-            android:textSize="@dimen/font_small_size"
+        <ImageView
+            android:id="@+id/settings_length_edit_image"
+            android:layout_width="@dimen/size_56dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background_dark"
+            android:padding="@dimen/padding_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/settings_password_length_edit"
+            app:layout_constraintEnd_toStartOf="@+id/settings_password_length_edit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_generate"
+            app:tint="?colorAccent" />
 
         <EditText
             android:id="@+id/settings_password_length_edit"
@@ -73,78 +70,138 @@
             android:gravity="center|end"
             android:hint="@string/def"
             android:inputType="number"
-            android:maxLength="2"
             android:textColor="?colorAccent"
             android:textColorHint="?colorAccent"
             android:textSize="@dimen/font_small_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/settings_password_length_text"
+            app:layout_constraintStart_toEndOf="@+id/settings_length_edit_image"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/settings_show_switch"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_show_switch_view"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginStart="@dimen/margin_6dp"
         android:layout_marginTop="@dimen/margin_36dp"
         android:layout_marginEnd="@dimen/margin_12dp"
         android:background="@xml/background_dark"
-        android:fontFamily="@font/share_tech_mono"
-        android:gravity="center_vertical"
-        android:padding="@dimen/padding_12dp"
-        android:singleLine="true"
-        android:text="@string/show"
-        android:textColor="?colorAccent"
-        android:textSize="@dimen/font_small_size"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/settings_password_length"
-        app:layout_constraintTop_toBottomOf="@id/settings_title"
-        app:thumbTint="?colorAccent"
-        app:trackTint="?colorAccent" />
+        app:layout_constraintStart_toEndOf="@id/settings_length_edit_view"
+        app:layout_constraintTop_toBottomOf="@id/settings_title">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/settings_delete_switch"
+        <ImageView
+            android:id="@+id/settings_show_switch_image"
+            android:layout_width="@dimen/size_56dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background_dark"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/settings_show_switch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_eye"
+            app:tint="?colorAccent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settings_show_switch"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="@dimen/size_56dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:gravity="center_vertical"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/settings_show_switch_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbTint="?colorAccent"
+            app:trackTint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_delete_switch_view"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginStart="@dimen/margin_12dp"
         android:layout_marginTop="@dimen/margin_12dp"
         android:layout_marginEnd="@dimen/margin_6dp"
         android:background="@xml/background_dark"
-        android:fontFamily="@font/share_tech_mono"
-        android:gravity="center_vertical"
-        android:padding="@dimen/padding_12dp"
-        android:singleLine="true"
-        android:text="@string/delete"
-        android:textColor="?colorAccent"
-        android:textSize="@dimen/font_small_size"
-        app:layout_constraintEnd_toStartOf="@id/settings_encrypt_switch"
+        app:layout_constraintEnd_toStartOf="@id/settings_encrypt_switch_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/settings_password_length"
-        app:thumbTint="?colorAccent"
-        app:trackTint="?colorAccent" />
+        app:layout_constraintTop_toBottomOf="@id/settings_length_edit_view">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/settings_encrypt_switch"
+        <ImageView
+            android:id="@+id/settings_delete_switch_image"
+            android:layout_width="@dimen/size_56dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background_dark"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/settings_delete_switch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_delete"
+            app:tint="?colorAccent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settings_delete_switch"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="@dimen/size_56dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:gravity="center_vertical"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/settings_delete_switch_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbTint="?colorAccent"
+            app:trackTint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_encrypt_switch_view"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginStart="@dimen/margin_6dp"
         android:layout_marginTop="@dimen/margin_12dp"
         android:layout_marginEnd="@dimen/margin_12dp"
         android:background="@xml/background_dark"
-        android:fontFamily="@font/share_tech_mono"
-        android:gravity="center_vertical"
-        android:padding="@dimen/padding_12dp"
-        android:singleLine="true"
-        android:text="@string/encrypt"
-        android:textColor="?colorAccent"
-        android:textSize="@dimen/font_small_size"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/settings_delete_switch"
-        app:layout_constraintTop_toBottomOf="@id/settings_show_switch"
-        app:thumbTint="?colorAccent"
-        app:trackTint="?colorAccent" />
+        app:layout_constraintStart_toEndOf="@id/settings_delete_switch_view"
+        app:layout_constraintTop_toBottomOf="@id/settings_show_switch_view">
+
+        <ImageView
+            android:id="@+id/settings_encrypt_switch_image"
+            android:layout_width="@dimen/size_56dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background_dark"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/settings_encrypt_switch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_encrypt"
+            app:tint="?colorAccent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/settings_encrypt_switch"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="@dimen/size_56dp"
+            android:fontFamily="@font/share_tech_mono"
+            android:gravity="center_vertical"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/settings_encrypt_switch_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbTint="?colorAccent"
+            app:trackTint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.merive.securely.components.TypingTextView
         android:id="@+id/settings_info_text"
@@ -160,7 +217,7 @@
         android:textSize="@dimen/font_medium_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/settings_delete_switch" />
+        app:layout_constraintTop_toBottomOf="@id/settings_delete_switch_view" />
 
     <ImageView
         android:id="@+id/settings_switch_separator"
