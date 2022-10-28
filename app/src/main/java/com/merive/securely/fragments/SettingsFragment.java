@@ -1,6 +1,6 @@
 package com.merive.securely.fragments;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.merive.securely.BuildConfig;
 import com.merive.securely.R;
 import com.merive.securely.activities.MainActivity;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 import com.merive.securely.utils.VibrationManager;
 
 

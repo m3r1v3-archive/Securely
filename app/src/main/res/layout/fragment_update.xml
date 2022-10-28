@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/padding_12dp"
     android:paddingBottom="@dimen/padding_12dp">
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/update_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/update_label_text"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="wrap_content"

@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/padding_12dp"
     android:paddingBottom="@dimen/padding_12dp">
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
         app:thumbTint="?colorAccent"
         app:trackTint="?colorAccent" />
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/settings_info_text"
         android:layout_width="@dimen/size_0dp"
         android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 package com.merive.securely.fragments;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -18,7 +18,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.merive.securely.R;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.activities.ScannerActivity;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 import com.merive.securely.utils.PasswordGenerator;
 import com.merive.securely.utils.VibrationManager;
 

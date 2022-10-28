@@ -1,6 +1,6 @@
 package com.merive.securely.fragments;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.merive.securely.R;
 import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 import com.merive.securely.utils.VibrationManager;
 
 public class ConfirmFragment extends Fragment {

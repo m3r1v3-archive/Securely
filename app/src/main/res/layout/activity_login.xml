@@ -7,7 +7,7 @@
     android:background="?colorPrimary"
     tools:context=".activities.LoginActivity">
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/login_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/login_hint_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
