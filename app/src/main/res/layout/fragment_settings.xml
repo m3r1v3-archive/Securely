@@ -203,21 +203,48 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.merive.securely.components.TypingTextView
-        android:id="@+id/settings_info_text"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_info_view"
         android:layout_width="@dimen/size_0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_24dp"
-        android:layout_marginTop="@dimen/margin_24dp"
-        android:layout_marginEnd="@dimen/margin_24dp"
-        android:fontFamily="@font/share_tech_mono"
-        android:gravity="center"
-        android:singleLine="true"
-        android:textColor="?colorAccent"
-        android:textSize="@dimen/font_medium_size"
+        android:layout_height="@dimen/size_56dp"
+        android:layout_marginStart="@dimen/margin_12dp"
+        android:layout_marginTop="@dimen/margin_12dp"
+        android:layout_marginEnd="@dimen/margin_12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/settings_delete_switch_view" />
+        app:layout_constraintTop_toBottomOf="@id/settings_delete_switch_view">
+
+        <com.merive.securely.components.TypingTextView
+            android:id="@+id/settings_info_text"
+            android:layout_width="@dimen/size_0dp"
+            android:layout_height="@dimen/size_56dp"
+            android:layout_marginEnd="@dimen/margin_6dp"
+            android:background="@xml/background_dark"
+            android:fontFamily="@font/share_tech_mono"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="?colorAccent"
+            android:textSize="@dimen/font_medium_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/settings_reload_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/settings_reload_button"
+            android:layout_width="@dimen/size_56dp"
+            android:layout_height="@dimen/size_56dp"
+            android:layout_marginStart="@dimen/margin_6dp"
+            android:background="@xml/background_dark"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/settings_info_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_reload"
+            app:tint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/settings_switch_separator"
@@ -229,7 +256,7 @@
         android:src="@xml/horizontal_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/settings_info_text" />
+        app:layout_constraintTop_toBottomOf="@id/settings_info_view" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/settings_bar"
@@ -238,7 +265,7 @@
         android:layout_marginTop="@dimen/margin_36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_info_text">
+        app:layout_constraintTop_toBottomOf="@+id/settings_info_view">
 
         <ImageView
             android:id="@+id/settings_cancel_button"
