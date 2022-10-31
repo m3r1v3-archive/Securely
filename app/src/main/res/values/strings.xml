@@ -22,8 +22,11 @@
     <string name="all_passwords_deleted">All passwords have been deleted</string>
     <string name="invalid_key">Invalid key</string>
     <string name="enter_old_key">Enter old key</string>
+    <string name="enter_code_to_restore">Enter <b>0000</b> code to restore to default</string>
+    <string name="restore_canceled">Restore was canceled\nEnter the key to the field</string>
     <string name="key_set">Key has been set</string>
     <string name="successful_login">Successful login</string>
+    <string name="successful_restore">Successful restore\nEnter new key to the field</string>
     <string name="enter_key">Enter key</string>
 
     <!--  ConfirmFragment  -->
