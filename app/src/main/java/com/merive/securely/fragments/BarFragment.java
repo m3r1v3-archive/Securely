@@ -9,9 +9,9 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.merive.securely.R;
 import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
-import com.merive.securely.R;
 import com.merive.securely.utils.VibrationManager;
 
 public class BarFragment extends Fragment {
@@ -55,16 +55,12 @@ public class BarFragment extends Fragment {
     }
 
     /**
-     * Set onClick and onLongClick listeners for components
+     * Set onClick listeners for components
      */
     private void setListeners() {
         addButton.setOnClickListener(v -> clickAdd());
         settingsButton.setOnClickListener(v -> clickSettings());
         lockButton.setOnClickListener(v -> clickLock());
-        lockButton.setOnLongClickListener(v -> {
-            longClickLock();
-            return true;
-        });
     }
 
     /**
@@ -87,15 +83,6 @@ public class BarFragment extends Fragment {
         VibrationManager.makeVibration(getContext());
         startActivity(new Intent(mainActivity, LoginActivity.class));
         mainActivity.finish();
-    }
-
-    /**
-     * Set ConfirmFragment to bar_fragment for changing key
-     *
-     * @see ConfirmFragment
-     */
-    private void longClickLock() {
-        mainActivity.setBarFragment(ConfirmFragment.newInstance());
     }
 
     /**
