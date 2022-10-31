@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -44,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     public PreferencesManager preferencesManager;
 
-    private RecyclerView passwords;
+    private RecyclerView passwordsRecycler;
+    private FrameLayout mainFragment;
 
     private PasswordDB db;
     private int key;
@@ -74,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkEmpty();
         new GetPasswordData().execute();
+        checkEmpty();
     }
 
     /**
@@ -118,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
      * Initialize basic layout components
      */
     private void initComponents() {
-        passwords = findViewById(R.id.password_recycler_view);
+        passwordsRecycler = findViewById(R.id.password_recycler_view);
+        mainFragment = findViewById(R.id.main_fragment);
     }
 
     /**
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initVariables() {
         preferencesManager = new PreferencesManager(this.getBaseContext());
-        db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords").allowMainThreadQueries().build();
+        db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwordsRecycler").allowMainThreadQueries().build();
         key = getIntent().getIntExtra("key_value", 0);
     }
 
@@ -161,11 +164,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Check login status, if intent "delete_all" extra is true, delete all passwords and finish MainActivity
+     * Check login status, if intent "delete_all" extra is true, delete all passwordsRecycler and finish MainActivity
      */
     private void checkLoginStatus() {
         if (getIntent().getBooleanExtra("delete_all", false)) {
             db.passwordDao().deleteAll();
+            finish();
+        } else if (getIntent().getBooleanExtra("encrypt_value", false)) {
+            updateEncrypt(false);
             finish();
         }
     }
@@ -228,8 +234,8 @@ public class MainActivity extends AppCompatActivity {
     private void checkEmpty() {
         if (db.passwordDao().checkEmpty()) {
             setFragment(new EmptyFragment());
-            findViewById(R.id.main_fragment).setVisibility(View.VISIBLE);
-        } else findViewById(R.id.main_fragment).setVisibility(View.INVISIBLE);
+            mainFragment.setVisibility(View.VISIBLE);
+        } else mainFragment.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -356,7 +362,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Delete all passwords, reload password_recycler_view, execute checkEmpty() method and make toast message
+     * Delete all passwordsRecycler, reload password_recycler_view, execute checkEmpty() method and make toast message
      */
     public void deleteAllPasswords() {
         db.passwordDao().deleteAll();
@@ -520,8 +526,8 @@ public class MainActivity extends AppCompatActivity {
      * @param passwordList List of password data
      */
     private void loadRecyclerView(List<Password> passwordList) {
-        passwords.setLayoutManager(new LinearLayoutManager(this));
-        passwords.setAdapter(new PasswordAdapter(passwordList, this::clickPasswordRow, this::openPasswordShareFragment));
+        passwordsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        passwordsRecycler.setAdapter(new PasswordAdapter(passwordList, this::clickPasswordRow, this::openPasswordShareFragment));
     }
 
     /**
