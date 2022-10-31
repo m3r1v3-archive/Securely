@@ -62,7 +62,7 @@
 
     <EditText
         android:id="@+id/login_key_edit"
-        android:layout_width="@dimen/size_224dp"
+        android:layout_width="@dimen/size_256dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginBottom="@dimen/margin_36dp"
         android:background="@xml/background"
@@ -76,22 +76,59 @@
         android:textColor="?colorAccent"
         android:textColorHint="?colorAccent"
         android:textSize="@dimen/font_small_size"
-        app:layout_constraintBottom_toTopOf="@id/login_button"
+        app:layout_constraintBottom_toTopOf="@+id/login_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/login_button"
-        android:layout_width="@dimen/size_112dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/login_buttons"
+        android:layout_width="@dimen/size_256dp"
         android:layout_height="@dimen/size_56dp"
-        android:background="@xml/background"
-        android:padding="@dimen/padding_12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.925"
-        app:srcCompat="@drawable/ic_confirm"
-        app:tint="?colorAccent" />
+        app:layout_constraintVertical_bias="0.925">
+
+        <ImageView
+            android:id="@+id/login_button"
+            android:layout_width="@dimen/size_112dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_confirm"
+            app:tint="?colorAccent" />
+
+        <ImageView
+            android:id="@+id/password_button"
+            android:layout_width="@dimen/size_56dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background"
+            android:padding="@dimen/padding_12dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_password"
+            app:tint="?colorAccent" />
+
+        <ImageView
+            android:id="@+id/restore_button"
+            android:layout_width="@dimen/size_56dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background"
+            android:padding="@dimen/padding_12dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_restore"
+            app:tint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
