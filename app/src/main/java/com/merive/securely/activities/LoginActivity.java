@@ -126,11 +126,13 @@ public class LoginActivity extends AppCompatActivity {
     private void clickPassword() {
         typingAnimation(hintTypingText, getResources().getString(R.string.enter_old_key));
         keyEdit = true;
+        restore = false;
     }
 
     private void clickRestore() {
         typingAnimation(hintTypingText, getResources().getString(R.string.enter_code_to_restore));
         restore = true;
+        keyEdit = false;
     }
 
     private void cancelRestore() {

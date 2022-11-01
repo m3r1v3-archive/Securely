@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initVariables() {
         preferencesManager = new PreferencesManager(this.getBaseContext());
-        db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwordsRecycler").allowMainThreadQueries().build();
+        db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords").allowMainThreadQueries().build();
         key = getIntent().getIntExtra("key_value", 0);
     }
 
