@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+        <OnSwipe
+            motion:dragDirection="dragDown"
+            motion:touchAnchorId="@id/bar_separator"
+            motion:touchAnchorSide="bottom" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@id/bar"
+            android:layout_height="@dimen/size_0dp">
+            <Layout
+                android:layout_width="@dimen/size_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_0dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent" />
+            <CustomAttribute
+                motion:attributeName="crossfade"
+                motion:customFloatValue="1.0" />
+            <CustomAttribute
+                motion:attributeName="alpha"
+                motion:customFloatValue="1.0" />
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint android:id="@id/bar">
+            <Layout
+                android:layout_width="@dimen/size_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_0dp"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="parent" />
+            <CustomAttribute
+                motion:attributeName="crossfade"
+                motion:customFloatValue="0.0" />
+            <CustomAttribute
+                motion:attributeName="alpha"
+                motion:customFloatValue="0.0" />
+        </Constraint>
+    </ConstraintSet>
+</MotionScene>

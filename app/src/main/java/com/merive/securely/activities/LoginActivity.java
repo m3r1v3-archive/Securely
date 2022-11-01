@@ -1,12 +1,12 @@
 package com.merive.securely.activities;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.merive.securely.R;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 import com.merive.securely.preferences.PreferencesManager;
 import com.merive.securely.utils.VibrationManager;
 
@@ -25,10 +25,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public static PreferencesManager preferencesManager;
 
-    private ImageView loginButton;
+    private ImageView loginButton, restoreButton, passwordButton;
     private TypingTextView titleTypingText, hintTypingText;
     private EditText keyEditText;
-    private boolean pressed = false, keyEdit = false;
+    private boolean pressed = false, keyEdit = false, restore = false;
 
     /**
      * Called by the system when the service is first created
@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
         checkKeyOnAbsence();
         checkDeleteEdit();
-        checkKeyEdit();
     }
 
     /**
@@ -60,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
         hintTypingText = findViewById(R.id.login_hint_text);
         keyEditText = findViewById(R.id.login_key_edit);
         loginButton = findViewById(R.id.login_button);
+        restoreButton = findViewById(R.id.restore_button);
+        passwordButton = findViewById(R.id.password_button);
     }
 
     /**
@@ -75,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
             }
             return true;
         });
+        restoreButton.setOnClickListener(v -> clickRestore());
+        passwordButton.setOnClickListener(v -> clickPassword());
     }
 
     /**
@@ -91,6 +94,10 @@ public class LoginActivity extends AppCompatActivity {
     private void checkKeyOnAbsence() {
         if (preferencesManager.getHash().equals("-1"))
             typingAnimation(hintTypingText, getResources().getString(R.string.create_new_key));
+        else {
+            restoreButton.setVisibility(View.VISIBLE);
+            passwordButton.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -104,16 +111,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Set hintTypingText message and change keyEdit variable value to true if intent "key_edit" boolean extra is true
-     */
-    private void checkKeyEdit() {
-        if (getIntent().getBooleanExtra("key_edit", false)) {
-            typingAnimation(hintTypingText, getResources().getString(R.string.enter_old_key));
-            keyEdit = true;
-        }
-    }
-
-    /**
      * Make vibration, check keyEdit value: if true start editKey() method, else start login() method
      *
      * @see LoginActivity
@@ -121,7 +118,26 @@ public class LoginActivity extends AppCompatActivity {
     private void clickLogin() {
         VibrationManager.makeVibration(getApplicationContext());
         if (keyEdit) editKey();
+        else if (restore && keyEditText.getText().toString().equals("0000")) restore();
+        else if (restore) cancelRestore();
         else login();
+    }
+
+    private void clickPassword() {
+        typingAnimation(hintTypingText, getResources().getString(R.string.enter_old_key));
+        keyEdit = true;
+        restore = false;
+    }
+
+    private void clickRestore() {
+        typingAnimation(hintTypingText, getResources().getString(R.string.enter_code_to_restore));
+        restore = true;
+        keyEdit = false;
+    }
+
+    private void cancelRestore() {
+        typingAnimation(hintTypingText, getResources().getString(R.string.restore_canceled));
+        restore = false;
     }
 
     /**
@@ -130,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void editKey() {
         if (checkKeyHash()) {
+            openMainToDisableEncrypt(keyEditText.getText().toString());
             preferencesManager.setHash();
             checkKeyOnAbsence();
             keyEditText.setText("");
@@ -151,6 +168,14 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void restore() {
+        deleteAllPasswords();
+        preferencesManager.setHash();
+        typingAnimation(hintTypingText, getResources().getString(R.string.successful_restore));
+        keyEditText.setText("");
+        restore = false;
     }
 
     /**
@@ -211,9 +236,21 @@ public class LoginActivity extends AppCompatActivity {
             preferencesManager.setErrors();
             startActivity(new Intent(this, MainActivity.class)
                     .putExtra("delete_all", false)
+                    .putExtra("encrypt_value", false)
                     .putExtra("delete_value", preferencesManager.getDelete())
                     .putExtra("key_value", Integer.parseInt(keyEditText.getText().toString())));
             finish();
+        }, 3250);
+    }
+
+    private void openMainToDisableEncrypt(String key) {
+        new Handler().postDelayed(() -> {
+            preferencesManager.setErrors();
+            startActivity(new Intent(this, MainActivity.class)
+                    .putExtra("delete_all", false)
+                    .putExtra("encrypt_value", true)
+                    .putExtra("delete_value", preferencesManager.getDelete())
+                    .putExtra("key_value", Integer.parseInt(key)));
         }, 3250);
     }
 

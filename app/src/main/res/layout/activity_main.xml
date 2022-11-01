@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_black"
+    app:layoutDescription="@xml/activity_main_scene"
     tools:context=".activities.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,7 @@
         android:layout_margin="@dimen/margin_12dp"
         android:background="@xml/background"
         android:padding="@dimen/padding_8dp"
-        app:layout_constraintBottom_toTopOf="@id/bar_fragment"
+        app:layout_constraintBottom_toTopOf="@id/bar_separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,22 +31,42 @@
         android:clickable="true"
         android:padding="@dimen/padding_8dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/bar_fragment"
+        app:layout_constraintBottom_toTopOf="@id/bar_separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/bar_fragment"
+    <ImageView
+        android:id="@+id/bar_separator"
+        android:layout_width="@dimen/size_0dp"
+        android:layout_height="@dimen/size_12dp"
+        android:layout_marginStart="@dimen/margin_36dp"
+        android:layout_marginTop="@dimen/margin_12dp"
+        android:layout_marginEnd="@dimen/margin_36dp"
+        android:layout_marginBottom="@dimen/margin_12dp"
+        android:src="@xml/horizontal_line"
+        app:layout_constraintBottom_toTopOf="@id/bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_fragment" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_12dp"
-        android:background="@xml/background"
         android:clickable="true"
-        android:paddingTop="@dimen/padding_12dp"
-        android:paddingBottom="@dimen/padding_12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/bar_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_12dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

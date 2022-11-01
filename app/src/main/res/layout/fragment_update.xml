@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:background="@xml/background"
+    android:paddingTop="@dimen/padding_12dp"
+    android:paddingBottom="@dimen/padding_12dp">
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/update_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,12 +34,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/update_label_text"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/size_0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_12dp"
         android:layout_marginTop="@dimen/margin_36dp"
+        android:layout_marginRight="@dimen/margin_12dp"
+        android:layout_marginBottom="@dimen/margin_12dp"
+        android:background="@xml/background_dark"
         android:fontFamily="@font/share_tech_mono"
+        android:padding="@dimen/padding_12dp"
         android:singleLine="true"
         android:textAlignment="center"
         android:textAllCaps="false"
@@ -48,29 +55,52 @@
         app:layout_constraintTop_toBottomOf="@id/update_title_text" />
 
     <ImageView
-        android:id="@+id/update_cancel_button"
-        android:layout_width="@dimen/size_112dp"
-        android:layout_height="@dimen/size_56dp"
+        android:id="@+id/password_options_qr_code_separator"
+        android:layout_width="@dimen/size_0dp"
+        android:layout_height="@dimen/size_12dp"
+        android:layout_marginStart="@dimen/margin_36dp"
         android:layout_marginTop="@dimen/margin_12dp"
-        android:background="@xml/background"
-        android:padding="@dimen/padding_12dp"
-        app:layout_constraintEnd_toStartOf="@id/update_download_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_label_text"
-        app:srcCompat="@drawable/ic_cancel"
-        app:tint="?colorAccent" />
-
-    <ImageView
-        android:id="@+id/update_download_button"
-        android:layout_width="@dimen/size_112dp"
-        android:layout_height="@dimen/size_56dp"
-        android:layout_marginTop="@dimen/margin_12dp"
-        android:background="@xml/background"
-        android:padding="@dimen/padding_12dp"
+        android:layout_marginEnd="@dimen/margin_36dp"
+        android:src="@xml/horizontal_line"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/update_cancel_button"
-        app:layout_constraintTop_toBottomOf="@+id/update_label_text"
-        app:srcCompat="@drawable/ic_download"
-        app:tint="?colorAccent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/update_label_text" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/options_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/update_label_text">
+
+        <ImageView
+            android:id="@+id/update_cancel_button"
+            android:layout_width="@dimen/size_112dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background_dark"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/update_download_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_cancel"
+            app:tint="?colorAccent" />
+
+        <ImageView
+            android:id="@+id/update_download_button"
+            android:layout_width="@dimen/size_112dp"
+            android:layout_height="@dimen/size_56dp"
+            android:background="@xml/background_dark"
+            android:padding="@dimen/padding_12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/update_cancel_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_download"
+            app:tint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

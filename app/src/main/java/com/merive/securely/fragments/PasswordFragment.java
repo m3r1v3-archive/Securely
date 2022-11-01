@@ -1,9 +1,8 @@
 package com.merive.securely.fragments;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.merive.securely.R;
 import com.merive.securely.activities.MainActivity;
 import com.merive.securely.activities.ScannerActivity;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 import com.merive.securely.utils.PasswordGenerator;
 import com.merive.securely.utils.VibrationManager;
 
@@ -28,7 +27,8 @@ public class PasswordFragment extends Fragment {
     private MainActivity mainActivity;
     private TypingTextView titleTypingText;
     private EditText nameEdit, loginEdit, passwordEdit, descriptionEdit;
-    private ImageView saveButton, cancelButton, scanButton, deleteButton, generateButton;
+    private ImageView saveButton, cancelButton, scanButton, deleteButton, generateButton, showButton;
+    private boolean show;
 
     /**
      * Create a new instance of PasswordFragment, initialized to edit password data
@@ -92,6 +92,7 @@ public class PasswordFragment extends Fragment {
         cancelButton = getView().findViewById(R.id.password_cancel_button);
         saveButton = getView().findViewById(R.id.password_save_button);
         generateButton = getView().findViewById(R.id.password_generate_button);
+        showButton = getView().findViewById(R.id.password_show_button);
         mainActivity = ((MainActivity) getActivity());
     }
 
@@ -111,10 +112,7 @@ public class PasswordFragment extends Fragment {
         saveButton.setOnClickListener(v -> clickSave());
         scanButton.setOnClickListener(v -> clickScan());
         generateButton.setOnClickListener(v -> clickGeneratePassword());
-        passwordEdit.setOnLongClickListener(v -> {
-            longClickPasswordEdit();
-            return false;
-        });
+        showButton.setOnClickListener(v -> clickShowPassword());
     }
 
     /**
@@ -142,7 +140,9 @@ public class PasswordFragment extends Fragment {
      * Make showing password in passwordEdit, if getShow() method return true
      */
     private void setShow() {
-        if (mainActivity.preferencesManager.getShow()) passwordEdit.setTransformationMethod(null);
+        if (mainActivity.preferencesManager.getShow())
+            passwordEdit.setTransformationMethod(null);
+        show = mainActivity.preferencesManager.getShow();
     }
 
     /**
@@ -234,14 +234,16 @@ public class PasswordFragment extends Fragment {
     /**
      * Makes vibration effect and make password in passwordEdit visible on 5 seconds
      */
-    private void longClickPasswordEdit() {
+    private void clickShowPassword() {
         VibrationManager.makeVibration(getContext());
-        if (!mainActivity.preferencesManager.getShow()) {
+        if (show) {
+            passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
+            showButton.setImageResource(R.drawable.ic_eye);
+        } else {
             passwordEdit.setTransformationMethod(null);
-            new Handler().postDelayed(() -> {
-                passwordEdit.setTransformationMethod(new PasswordTransformationMethod());
-            }, 5000);
+            showButton.setImageResource(R.drawable.ic_eye_crossed);
         }
+        show = !show;
     }
 
     /**

@@ -1,8 +1,7 @@
 package com.merive.securely.fragments;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.merive.securely.R;
-import com.merive.securely.activities.LoginActivity;
 import com.merive.securely.activities.MainActivity;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 import com.merive.securely.utils.VibrationManager;
 
 public class ConfirmFragment extends Fragment {
@@ -35,19 +33,6 @@ public class ConfirmFragment extends Fragment {
         ConfirmFragment frag = new ConfirmFragment();
         Bundle args = new Bundle();
         args.putString("name", name);
-        frag.setArguments(args);
-        return frag;
-    }
-
-    /**
-     * Create a new instance of ConfirmFragment, initialized to edit key
-     *
-     * @return ConfirmFragment object
-     */
-    public static ConfirmFragment newInstance() {
-        ConfirmFragment frag = new ConfirmFragment();
-        Bundle args = new Bundle();
-        args.putBoolean("key_edit", true);
         frag.setArguments(args);
         return frag;
     }
@@ -102,9 +87,7 @@ public class ConfirmFragment extends Fragment {
      * Set title text to titleTypingText
      */
     private void setTitle() {
-        if (getArguments().getBoolean("key_edit", false))
-            typingAnimation(titleTypingText, getResources().getString(R.string.change_key));
-        else if (getArguments().getString("name", null) == null)
+        if (getArguments().getString("name", null) == null)
             typingAnimation(titleTypingText, getResources().getString(R.string.delete_all_passwords));
         else typingAnimation(titleTypingText, getResources().getString(R.string.delete_password));
     }
@@ -124,20 +107,8 @@ public class ConfirmFragment extends Fragment {
      */
     private void clickConfirm() {
         VibrationManager.makeVibration(getContext());
-        if (getArguments().getBoolean("key_edit")) changeKey();
-        else if (getArguments().getString("name") == null) mainActivity.deleteAllPasswords();
+        if (getArguments().getString("name") == null) mainActivity.deleteAllPasswords();
         else mainActivity.deletePasswordByName(getArguments().getString("name"));
         mainActivity.setBarFragment();
-    }
-
-    /**
-     * Disable date encrypt and start changing key in LoginActivity
-     *
-     * @see LoginActivity
-     */
-    private void changeKey() {
-        mainActivity.updateEncrypt(false);
-        startActivity(new Intent(getActivity(), LoginActivity.class)
-                .putExtra("key_edit", true));
     }
 }

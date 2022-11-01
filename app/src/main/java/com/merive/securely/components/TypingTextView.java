@@ -1,4 +1,4 @@
-package com.merive.securely.elements;
+package com.merive.securely.components;
 
 import android.content.Context;
 import android.os.Handler;

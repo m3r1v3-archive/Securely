@@ -1,6 +1,6 @@
 package com.merive.securely.fragments;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.merive.securely.BuildConfig;
 import com.merive.securely.R;
 import com.merive.securely.activities.MainActivity;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 import com.merive.securely.utils.VibrationManager;
 
 
@@ -26,7 +26,7 @@ public class SettingsFragment extends Fragment {
     private TypingTextView titleTypingText, infoTypingText;
     private EditText lengthEdit;
     private SwitchCompat showSwitch, deleteSwitch, encryptSwitch;
-    private ImageView cancelButton, deleteAllButton, saveButton;
+    private ImageView cancelButton, deleteAllButton, saveButton, reloadButton;
     private MainActivity mainActivity;
 
     /**
@@ -73,6 +73,7 @@ public class SettingsFragment extends Fragment {
         cancelButton = getView().findViewById(R.id.settings_cancel_button);
         deleteAllButton = getView().findViewById(R.id.delete_passwords_button);
         saveButton = getView().findViewById(R.id.save_settings_button);
+        reloadButton = getView().findViewById(R.id.settings_reload_button);
         mainActivity = (MainActivity) getActivity();
     }
 
@@ -91,6 +92,7 @@ public class SettingsFragment extends Fragment {
         cancelButton.setOnClickListener(v -> clickCancel());
         deleteAllButton.setOnClickListener(v -> clickDeletePasswords());
         saveButton.setOnClickListener(v -> clickSave());
+        reloadButton.setOnClickListener(v -> clickReload());
     }
 
     /**
@@ -117,6 +119,11 @@ public class SettingsFragment extends Fragment {
     private void clickCancel() {
         VibrationManager.makeVibration(getContext());
         mainActivity.setBarFragment();
+    }
+
+    private void clickReload() {
+        VibrationManager.makeVibration(getContext());
+        mainActivity.checkVersion();
     }
 
     /**

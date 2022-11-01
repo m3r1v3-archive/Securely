@@ -2,9 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@xml/background"
+    android:paddingTop="@dimen/padding_12dp"
+    android:paddingBottom="@dimen/padding_12dp">
 
-    <com.merive.securely.elements.TypingTextView
+    <com.merive.securely.components.TypingTextView
         android:id="@+id/confirm_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,7 +39,7 @@
         android:layout_width="@dimen/size_112dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginTop="@dimen/margin_36dp"
-        android:background="@xml/background"
+        android:background="@xml/background_dark"
         android:contentDescription="@string/todo"
         android:padding="@dimen/padding_12dp"
         app:layout_constraintEnd_toStartOf="@id/confirm_confirm_button"
@@ -50,7 +53,7 @@
         android:layout_width="@dimen/size_112dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginTop="@dimen/margin_36dp"
-        android:background="@xml/background"
+        android:background="@xml/background_dark"
         android:contentDescription="@string/todo"
         android:padding="@dimen/padding_12dp"
         app:layout_constraintEnd_toEndOf="parent"

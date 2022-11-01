@@ -1,6 +1,6 @@
 package com.merive.securely.fragments;
 
-import static com.merive.securely.elements.TypingTextView.typingAnimation;
+import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.merive.securely.R;
-import com.merive.securely.elements.TypingTextView;
+import com.merive.securely.components.TypingTextView;
 
 public class EmptyFragment extends Fragment {
 
