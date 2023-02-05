@@ -18,8 +18,8 @@ android {
         applicationId "com.merive.securely"
         minSdkVersion 26
         targetSdkVersion 33
-        versionCode 41
-        versionName "1.5.2"
+        versionCode 42
+        versionName "1.6.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
