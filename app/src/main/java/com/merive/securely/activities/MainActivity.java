@@ -22,6 +22,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.merive.securely.BuildConfig;
 import com.merive.securely.R;
 import com.merive.securely.adapter.PasswordAdapter;
+import com.merive.securely.api.API;
 import com.merive.securely.database.Password;
 import com.merive.securely.database.PasswordDB;
 import com.merive.securely.fragments.BarFragment;
@@ -33,6 +34,9 @@ import com.merive.securely.preferences.PreferencesManager;
 import com.merive.securely.utils.Crypt;
 import com.merive.securely.utils.Hex;
 import com.merive.securely.utils.VibrationManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -177,50 +181,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Check version on website and open UpdateFragment if installed version and version on website isn't the same
+     * Checks installed version and compares it with actual version on website
+     * If Securely have new version on website, will have opened UpdateFragment
      *
      * @see UpdateFragment
      */
     public void checkVersion() {
         new Thread(() -> {
             try {
-                if (!getVersionOnSite().equals(BuildConfig.VERSION_NAME))
-                    setUpdateFragment(getVersionOnSite());
-                else makeToast("Actual version already installed");
-            } catch (Exception ignored) {
+                if (!(new JSONObject(new API().get()).get("version")).toString().substring(1).equals(BuildConfig.VERSION_NAME))
+                    setBarFragment(UpdateFragment.newInstance(new JSONObject(new API().get())));
+            } catch (IOException | JSONException ignored) {
             }
         }).start();
-    }
-
-    /**
-     * Get Securely version on website
-     *
-     * @return Version from website
-     * @throws IOException Ignored
-     */
-    private String getVersionOnSite() throws IOException {
-        BufferedReader reader = null;
-        StringBuilder builder = new StringBuilder();
-        try {
-            reader = new BufferedReader(new InputStreamReader(new URL(getResources().getString(R.string.website)).openStream(), StandardCharsets.UTF_8));
-            for (String line; (line = reader.readLine()) != null; ) builder.append(line.trim());
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException ignored) {
-            }
-        }
-        return builder.substring(builder.indexOf("<i>") + "<i>".length()).substring(1, builder.substring(builder.indexOf("<i>") + "<i>".length()).indexOf("</i>"));
-    }
-
-    /**
-     * Set UpdateFragment to bar_fragment component
-     *
-     * @param version New application version
-     * @see UpdateFragment
-     */
-    private void setUpdateFragment(String version) {
-        setBarFragment(UpdateFragment.newInstance(version));
     }
 
     /**
