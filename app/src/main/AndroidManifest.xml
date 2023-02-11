@@ -18,7 +18,7 @@
         <activity
             android:name="com.merive.securely.activities.SplashActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
         <activity
             android:name="com.merive.securely.activities.LoginActivity"
             android:exported="false"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.Securely">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -40,7 +40,7 @@
         <activity
             android:name="com.merive.securely.activities.MainActivity"
             android:exported="false"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.Securely">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
