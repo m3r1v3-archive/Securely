@@ -4,30 +4,23 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.merive.securely.BuildConfig;
 import com.merive.securely.R;
-import com.merive.securely.adapter.PasswordAdapter;
 import com.merive.securely.api.API;
 import com.merive.securely.database.Password;
 import com.merive.securely.database.PasswordDB;
 import com.merive.securely.fragments.BarFragment;
 import com.merive.securely.fragments.EmptyFragment;
 import com.merive.securely.fragments.PasswordFragment;
+import com.merive.securely.fragments.PasswordListFragment;
 import com.merive.securely.fragments.PasswordOptionsFragment;
 import com.merive.securely.fragments.UpdateFragment;
 import com.merive.securely.preferences.PreferencesManager;
@@ -38,21 +31,14 @@ import com.merive.securely.utils.VibrationManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public PreferencesManager preferencesManager;
 
-    private RecyclerView passwordsRecycler;
-    private FrameLayout mainFragment;
 
-    private PasswordDB db;
+    public PasswordDB db;
     private int key;
 
     /**
@@ -66,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_main);
 
-        initComponents();
         initVariables();
 
+        setFragment(new PasswordListFragment());
         setBarFragment();
 
         checkLoginStatus();
@@ -80,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new GetPasswordData().execute();
         checkEmpty();
     }
 
@@ -121,14 +106,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Initialize basic layout components
-     */
-    private void initComponents() {
-        passwordsRecycler = findViewById(R.id.password_recycler_view);
-        mainFragment = findViewById(R.id.main_fragment);
-    }
-
-    /**
      * Initialize basic variables
      */
     private void initVariables() {
@@ -144,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
      * @see Fragment
      */
     private void setFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.main_fragment, fragment, null).commit();
+        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.frame_layout, fragment, null).commit();
     }
 
     /**
@@ -153,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
      * @see Fragment
      */
     public void setBarFragment() {
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.bar_fragment, new BarFragment(), null).commit();
+        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.bar_frame_layout, new BarFragment(), null).commit();
     }
 
     /**
@@ -164,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void setBarFragment(Fragment fragment) {
         if (fragment.getArguments() == null) fragment.setArguments(new Bundle());
-        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.bar_fragment, fragment, null).commit();
+        getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.bar_frame_layout, fragment, null).commit();
     }
 
     /**
@@ -205,10 +182,7 @@ public class MainActivity extends AppCompatActivity {
      * @see EmptyFragment
      */
     private void checkEmpty() {
-        if (db.passwordDao().checkEmpty()) {
-            setFragment(new EmptyFragment());
-            mainFragment.setVisibility(View.VISIBLE);
-        } else mainFragment.setVisibility(View.INVISIBLE);
+        if (db.passwordDao().checkEmpty()) setFragment(new EmptyFragment());
     }
 
     /**
@@ -249,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
     private void addPassword(Bundle data) {
         addPasswordToDatabase(data);
         makeToast(getString(R.string.password_added, getData(data, "name_value")));
-        new GetPasswordData().execute();
+        setFragment(new PasswordListFragment());
         checkEmpty();
     }
 
@@ -269,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param name Password name what has clicked
      */
-    private void clickPasswordRow(String name) {
+    public void clickPasswordRow(String name) {
         VibrationManager.makeVibration(getApplicationContext());
         setBarFragment(PasswordFragment.newInstance(name, preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name), preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name), db.passwordDao().getDescriptionByName(name)));
     }
@@ -293,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
     private void editPassword(Bundle data) {
         editPasswordInDatabase(data);
         makeToast(getString(R.string.password_edited, getData(data, "edited_name_value")));
-        new GetPasswordData().execute();
+        setFragment(new PasswordListFragment());
     }
 
     /**
@@ -313,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void deletePasswordByName(String name) {
         db.passwordDao().deleteByName(name);
-        new GetPasswordData().execute();
+        setFragment(new PasswordListFragment());
         checkEmpty();
         makeToast(getString(R.string.password_deleted, name));
     }
@@ -339,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void deleteAllPasswords() {
         db.passwordDao().deleteAll();
-        new GetPasswordData().execute();
+        setFragment(new PasswordListFragment());
         checkEmpty();
         makeToast(getString(R.string.all_passwords_deleted));
     }
@@ -488,54 +462,18 @@ public class MainActivity extends AppCompatActivity {
      * @param name Password what will be encrypted
      * @return Encrypted password data for QR Code
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public String getEncryptPasswordValues(String name) {
         return getString(R.string.securely_hex, Hex.encrypt(name), Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name)), Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
     }
 
     /**
-     * Load password data to password_recycler_view component and sets listeners for it
+     * Open PasswordOptionsFragment by password name
      *
-     * @param passwordList List of password data
-     */
-    private void loadRecyclerView(List<Password> passwordList) {
-        passwordsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        passwordsRecycler.setAdapter(new PasswordAdapter(passwordList, this::clickPasswordRow, this::openPasswordShareFragment));
-    }
-
-    /**
-     * Open PasswordShareFragment by password name
-     *
-     * @param name Password name what will show in PasswordShareFragment
+     * @param name Password name what will show in PasswordOptionsFragment
      * @see PasswordOptionsFragment
      */
-    private void openPasswordShareFragment(String name) {
+    public void clickPasswordOptions(String name) {
         VibrationManager.makeVibration(getApplicationContext());
         setBarFragment(PasswordOptionsFragment.newInstance(name));
-    }
-
-    private class GetPasswordData extends AsyncTask<Void, Void, List<Password>> {
-
-        /**
-         * Load password data
-         *
-         * @param params Ignored
-         * @return Password data in List object
-         */
-        @Override
-        protected List<Password> doInBackground(Void... params) {
-            return db.passwordDao().getAll();
-        }
-
-        /**
-         * Execute after doInBackground() method and loads password data to password_recycler_view component
-         *
-         * @param passwords Password data in List object
-         */
-        @Override
-        protected void onPostExecute(List<Password> passwords) {
-            super.onPostExecute(passwords);
-            loadRecyclerView(passwords);
-        }
     }
 }
