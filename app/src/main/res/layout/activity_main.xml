@@ -27,7 +27,6 @@
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_12dp"
         android:layout_marginStart="@dimen/margin_36dp"
-        android:layout_marginTop="@dimen/margin_12dp"
         android:layout_marginEnd="@dimen/margin_36dp"
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@xml/horizontal_line"
