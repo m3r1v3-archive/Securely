@@ -51,7 +51,7 @@
         android:id="@+id/empty_logo_image"
         android:layout_width="@dimen/size_128dp"
         android:layout_height="@dimen/size_128dp"
-        android:background="@xml/background_dark"
+        android:background="@xml/background"
         android:padding="@dimen/padding_12dp"
         android:src="@drawable/ic_icon"
         app:layout_constraintBottom_toBottomOf="parent"
