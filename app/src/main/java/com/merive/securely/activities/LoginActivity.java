@@ -27,8 +27,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private ImageView loginButton, restoreButton, passwordButton;
     private TypingTextView titleTypingText, hintTypingText;
-    private EditText keyEditText;
-    private boolean pressed = false, keyEdit = false, restore = false;
+    private EditText passwordEditText;
+    private boolean pressed = false, passwordEdit = false, restore = false;
 
     /**
      * Called by the system when the service is first created
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         setListeners();
         setTexts();
 
-        checkKeyOnAbsence();
+        checkPasswordOnAbsence();
         checkDeleteEdit();
     }
 
@@ -57,18 +57,18 @@ public class LoginActivity extends AppCompatActivity {
     private void initComponents() {
         titleTypingText = findViewById(R.id.login_title_text);
         hintTypingText = findViewById(R.id.login_hint_text);
-        keyEditText = findViewById(R.id.login_key_edit);
+        passwordEditText = findViewById(R.id.login_password_edit);
         loginButton = findViewById(R.id.login_button);
         restoreButton = findViewById(R.id.restore_button);
         passwordButton = findViewById(R.id.password_button);
     }
 
     /**
-     * Set components listeners (onClickListener for loginButton and onEditorActionListener for keyEditText)
+     * Set components listeners (onClickListener for loginButton and onEditorActionListener for passwordEditText()
      */
     private void setListeners() {
         loginButton.setOnClickListener(v -> clickLogin());
-        keyEditText.setOnEditorActionListener((v, actionId, event) -> {
+        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 clickLogin();
                 hideKeyboard();
@@ -85,15 +85,15 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void setTexts() {
         typingAnimation(titleTypingText, getResources().getString(R.string.welcome_to_securely));
-        typingAnimation(hintTypingText, getResources().getString(R.string.enter_the_key_in_the_field));
+        typingAnimation(hintTypingText, getResources().getString(R.string.enter_the_password_in_the_field));
     }
 
     /**
      * Set hint message if hash in SharedPreferences value is "-1" (Default value)
      */
-    private void checkKeyOnAbsence() {
+    private void checkPasswordOnAbsence() {
         if (preferencesManager.getHash().equals("-1"))
-            typingAnimation(hintTypingText, getResources().getString(R.string.create_new_key));
+            typingAnimation(hintTypingText, getResources().getString(R.string.create_new_password));
         else {
             restoreButton.setVisibility(View.VISIBLE);
             passwordButton.setVisibility(View.VISIBLE);
@@ -111,28 +111,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Make vibration, check keyEdit value: if true start editKey() method, else start login() method
+     * Make vibration, check passwordEdit value: if true start editPassword() method, else start login() method
      *
      * @see LoginActivity
      */
     private void clickLogin() {
         VibrationManager.makeVibration(getApplicationContext());
-        if (keyEdit) editKey();
-        else if (restore && keyEditText.getText().toString().equals("0000")) restore();
+        if (passwordEdit) editPassword();
+        else if (restore && passwordEditText.getText().toString().equals("0000")) restore();
         else if (restore) cancelRestore();
         else login();
     }
 
     private void clickPassword() {
-        typingAnimation(hintTypingText, getResources().getString(R.string.enter_old_key));
-        keyEdit = true;
+        typingAnimation(hintTypingText, getResources().getString(R.string.enter_old_password));
+        passwordEdit = true;
         restore = false;
     }
 
     private void clickRestore() {
         typingAnimation(hintTypingText, getResources().getString(R.string.enter_code_to_restore));
         restore = true;
-        keyEdit = false;
+        passwordEdit = false;
     }
 
     private void cancelRestore() {
@@ -141,28 +141,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Reset key if checkKeyHash() return true, start setting the key.
+     * Reset password if checkPasswordHash() return true, start setting the password.
      * Else set hintTypingText message using typingAnimation() method
      */
-    private void editKey() {
-        if (checkKeyHash()) {
-            openMainToDisableEncrypt(keyEditText.getText().toString());
+    private void editPassword() {
+        if (checkPasswordHash()) {
+            openMainToDisableEncrypt(passwordEditText.getText().toString());
             preferencesManager.setHash();
-            checkKeyOnAbsence();
-            keyEditText.setText("");
-            keyEdit = false;
+            checkPasswordOnAbsence();
+            passwordEditText.setText("");
+            passwordEdit = false;
             pressed = false;
-        } else typingAnimation(hintTypingText, getResources().getString(R.string.invalid_key));
+        } else typingAnimation(hintTypingText, getResources().getString(R.string.invalid_password));
     }
 
     /**
-     * Check Key Hash from keyEditText and return result value.
+     * Check password hash from passwordEditText and return result value.
      * If result is true, sets hintTypingText message using typingAnimation() method and change pressed variable value
      *
      * @return Result of hash checking
      */
-    private boolean checkKeyHash() {
-        if (BCrypt.checkpw(keyEditText.getText().toString(), preferencesManager.getHash())) {
+    private boolean checkPasswordHash() {
+        if (BCrypt.checkpw(passwordEditText.getText().toString(), preferencesManager.getHash())) {
             typingAnimation(hintTypingText, getResources().getString(R.string.successful_login));
             pressed = true;
             return true;
@@ -174,24 +174,24 @@ public class LoginActivity extends AppCompatActivity {
         deleteAllPasswords();
         preferencesManager.setHash();
         typingAnimation(hintTypingText, getResources().getString(R.string.successful_restore));
-        keyEditText.setText("");
+        passwordEditText.setText("");
         restore = false;
     }
 
     /**
-     * Login in MainActivity if pressed isn't true, keyEditText isn't empty.
-     * Check key hash value, if it is default value, set key hash and open MainActivity, else differ keyEditText text hash and hash from SharedPreferences
-     * Else if key is invalid, check errors value and set message to hintTypingText.
+     * Login in MainActivity if pressed isn't true, passwordEditText isn't empty.
+     * Check password hash value, if it is default value, set password hash and open MainActivity, else differ passwordEditText text hash and hash from SharedPreferences
+     * Else if password is invalid, check errors value and set message to hintTypingText.
      * If errors count equals 0, delete all passwords
      */
     private void login() {
         if (!pressed) {
-            if (!keyEditText.getText().toString().isEmpty()) {
-                if (setKey()) openMain();
-                else if (checkKeyHash()) openMain();
+            if (!passwordEditText.getText().toString().isEmpty()) {
+                if (setPassword()) openMain();
+                else if (checkPasswordHash()) openMain();
                 else {
                     if (preferencesManager.getErrors() > 0) {
-                        typingAnimation(hintTypingText, getResources().getString(R.string.invalid_key));
+                        typingAnimation(hintTypingText, getResources().getString(R.string.invalid_password));
                         if (preferencesManager.getDelete())
                             preferencesManager.setErrors(preferencesManager.getErrors() - 1);
                     } else deleteAllPasswords();
@@ -201,15 +201,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Set key hash to SharedPreferences if hash value is "-1" (Default value).
+     * Set password hash to SharedPreferences if hash value is "-1" (Default value).
      * Set hintTypingText message using typingAnimation() method and change pressed value to true
      *
-     * @return True if sets new key, else false
+     * @return True if sets new password, else false
      */
-    private boolean setKey() {
+    private boolean setPassword() {
         if (preferencesManager.getHash().equals("-1")) {
-            preferencesManager.setHash(generateHash(keyEditText.getText().toString()));
-            typingAnimation(hintTypingText, getResources().getString(R.string.key_set));
+            preferencesManager.setHash(generateHash(passwordEditText.getText().toString()));
+            typingAnimation(hintTypingText, getResources().getString(R.string.password_set));
             pressed = true;
             return true;
         }
@@ -217,13 +217,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Generate key hash
+     * Generate password hash
      *
-     * @param key Key value, that will be hashed
+     * @param password Password value, that will be hashed
      * @return Hashed String value
      */
-    private String generateHash(String key) {
-        return BCrypt.hashpw(key, BCrypt.gensalt());
+    private String generateHash(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     /**
@@ -238,19 +238,19 @@ public class LoginActivity extends AppCompatActivity {
                     .putExtra("delete_all", false)
                     .putExtra("encrypt_value", false)
                     .putExtra("delete_value", preferencesManager.getDelete())
-                    .putExtra("key_value", Integer.parseInt(keyEditText.getText().toString())));
+                    .putExtra("password_value", passwordEditText.getText().toString()));
             finish();
         }, 3250);
     }
 
-    private void openMainToDisableEncrypt(String key) {
+    private void openMainToDisableEncrypt(String password) {
         new Handler().postDelayed(() -> {
             preferencesManager.setErrors();
             startActivity(new Intent(this, MainActivity.class)
                     .putExtra("delete_all", false)
                     .putExtra("encrypt_value", true)
                     .putExtra("delete_value", preferencesManager.getDelete())
-                    .putExtra("key_value", Integer.parseInt(key)));
+                    .putExtra("password_value", passwordEditText.getText().toString()));
         }, 3250);
     }
 

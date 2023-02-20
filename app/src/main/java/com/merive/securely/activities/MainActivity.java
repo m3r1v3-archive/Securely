@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public PasswordDB db;
-    private int key;
+    private String password;
 
     /**
      * Called by the system when the service is first created
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     private void initVariables() {
         preferencesManager = new PreferencesManager(this.getBaseContext());
         db = Room.databaseBuilder(MainActivity.this, PasswordDB.class, "passwords").allowMainThreadQueries().build();
-        key = getIntent().getIntExtra("key_value", 0);
+        password = getIntent().getStringExtra("password_value");
     }
 
     /**
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
      * @param data Bundle with new password data
      */
     private void addPasswordToDatabase(Bundle data) {
-        db.passwordDao().insertItem(new Password(getData(data, "name_value"), preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "login_value")) : getData(data, "login_value"), preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "password_value")) : getData(data, "password_value"), getData(data, "description_value")));
+        db.passwordDao().insertItem(new Password(getData(data, "name_value"), preferencesManager.getEncrypt() ? new Crypt(password).encrypt(getData(data, "login_value")) : getData(data, "login_value"), preferencesManager.getEncrypt() ? new Crypt(password).encrypt(getData(data, "password_value")) : getData(data, "password_value"), getData(data, "description_value")));
     }
 
     /**
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void clickPasswordRow(String name) {
         VibrationManager.makeVibration(getApplicationContext());
-        setBarFragment(PasswordFragment.newInstance(name, preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name), preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name), db.passwordDao().getDescriptionByName(name)));
+        setBarFragment(PasswordFragment.newInstance(name, preferencesManager.getEncrypt() ? new Crypt(password).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name), preferencesManager.getEncrypt() ? new Crypt(password).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name), db.passwordDao().getDescriptionByName(name)));
     }
 
     /**
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
      * @param data Bundle with new password data
      */
     private void editPasswordInDatabase(Bundle data) {
-        db.passwordDao().updateItem(getData(data, "name_before_value"), getData(data, "edited_name_value"), preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "edited_login_value")) : getData(data, "edited_login_value"), preferencesManager.getEncrypt() ? new Crypt(key).encrypt(getData(data, "edited_password_value")) : getData(data, "edited_password_value"), getData(data, "edited_description_value"));
+        db.passwordDao().updateItem(getData(data, "name_before_value"), getData(data, "edited_name_value"), preferencesManager.getEncrypt() ? new Crypt(password).encrypt(getData(data, "edited_login_value")) : getData(data, "edited_login_value"), preferencesManager.getEncrypt() ? new Crypt(password).encrypt(getData(data, "edited_password_value")) : getData(data, "edited_password_value"), getData(data, "edited_description_value"));
     }
 
     /**
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
      * Encrypt login value in database
      */
     private void encryptLogin(String name) {
-        db.passwordDao().updateLoginByName(name, new Crypt(key).encrypt(db.passwordDao().getLoginByName(name)));
+        db.passwordDao().updateLoginByName(name, new Crypt(password).encrypt(db.passwordDao().getLoginByName(name)));
     }
 
     /**
@@ -402,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
      * Encrypt password value in database
      */
     private void encryptPassword(String name) {
-        db.passwordDao().updatePasswordByName(name, new Crypt(key).encrypt(db.passwordDao().getPasswordByName(name)));
+        db.passwordDao().updatePasswordByName(name, new Crypt(password).encrypt(db.passwordDao().getPasswordByName(name)));
     }
 
     /**
@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
      * Decrypt login value in database
      */
     private void decryptLogin(String name) {
-        db.passwordDao().updateLoginByName(name, new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)));
+        db.passwordDao().updateLoginByName(name, new Crypt(password).decrypt(db.passwordDao().getLoginByName(name)));
     }
 
     /**
@@ -430,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
      * Decrypt password value in database
      */
     private void decryptPassword(String name) {
-        db.passwordDao().updatePasswordByName(name, new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)));
+        db.passwordDao().updatePasswordByName(name, new Crypt(password).decrypt(db.passwordDao().getPasswordByName(name)));
     }
 
     /**
@@ -439,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
      * @param name Password name, that will be added to clipboard
      */
     public void addToClipboard(String name) {
-        ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText(name, preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
+        ((ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText(name, preferencesManager.getEncrypt() ? new Crypt(password).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
         makeToast(getString(R.string.password_added_to_clipboard, name));
     }
 
@@ -463,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
      * @return Encrypted password data for QR Code
      */
     public String getEncryptPasswordValues(String name) {
-        return getString(R.string.securely_hex, Hex.encrypt(name), Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name)), Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(key).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
+        return getString(R.string.securely_hex, Hex.encrypt(name), Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(password).decrypt(db.passwordDao().getLoginByName(name)) : db.passwordDao().getLoginByName(name)), Hex.encrypt(preferencesManager.getEncrypt() ? new Crypt(password).decrypt(db.passwordDao().getPasswordByName(name)) : db.passwordDao().getPasswordByName(name)));
     }
 
     /**
