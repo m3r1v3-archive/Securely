@@ -17,20 +17,20 @@
 
     <!--  LoginActivity  -->
     <string name="welcome_to_securely">Welcome to Securely</string>
-    <string name="enter_the_key_in_the_field">Enter the key to the field</string>
-    <string name="create_new_key">Create new key\nTip: Use more than 4 numbers</string>
+    <string name="enter_the_password_in_the_field">Enter the password to the field</string>
+    <string name="create_new_password">Create new password\nTip: Use more than 4 numbers</string>
     <string name="all_passwords_deleted">All passwords have been deleted</string>
-    <string name="invalid_key">Invalid key</string>
-    <string name="enter_old_key">Enter old key</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="enter_old_password">Enter old password</string>
     <string name="enter_code_to_restore">Enter <b>0000</b> code to restore to default</string>
-    <string name="restore_canceled">Restore was canceled\nEnter the key to the field</string>
-    <string name="key_set">Key has been set</string>
+    <string name="restore_canceled">Restore was canceled\nEnter the password to the field</string>
+    <string name="password_set">Password has been set</string>
     <string name="successful_login">Successful login</string>
-    <string name="successful_restore">Successful restore\nEnter new key to the field</string>
-    <string name="enter_key">Enter key</string>
+    <string name="successful_restore">Successful restore\nEnter new password to the field</string>
+    <string name="enter_password">Enter password</string>
 
     <!--  ConfirmFragment  -->
-    <string name="change_key">Change key?</string>
+    <string name="change_password">Change password?</string>
     <string name="delete_all_passwords">Delete all passwords?</string>
     <string name="delete_password">Delete password?</string>
 
