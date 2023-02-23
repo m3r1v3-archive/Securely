@@ -10,7 +10,6 @@ public class Hex {
      * @param value String that will be encrypted
      * @return Return encrypted string of hex codes
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String encrypt(String value) {
         String[] encryptedSymbols = new String[value.length()];
         for (int i = 0; i < value.length(); i++)

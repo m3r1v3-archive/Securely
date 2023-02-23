@@ -9,28 +9,12 @@
     app:layoutDescription="@xml/activity_main_scene"
     tools:context=".activities.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/password_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_0dp"
-        android:layout_margin="@dimen/margin_12dp"
-        android:background="@xml/background"
-        android:padding="@dimen/padding_8dp"
-        app:layout_constraintBottom_toTopOf="@id/bar_separator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/row_password" />
-
     <FrameLayout
-        android:id="@+id/main_fragment"
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_0dp"
         android:layout_margin="@dimen/margin_12dp"
-        android:background="@xml/background"
         android:clickable="true"
-        android:padding="@dimen/padding_8dp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/bar_separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,14 +25,13 @@
         android:layout_width="@dimen/size_0dp"
         android:layout_height="@dimen/size_12dp"
         android:layout_marginStart="@dimen/margin_36dp"
-        android:layout_marginTop="@dimen/margin_12dp"
         android:layout_marginEnd="@dimen/margin_36dp"
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@xml/horizontal_line"
         app:layout_constraintBottom_toTopOf="@id/bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_fragment" />
+        app:layout_constraintTop_toBottomOf="@id/frame_layout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bar"
@@ -60,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="parent">
 
         <FrameLayout
-            android:id="@+id/bar_fragment"
+            android:id="@+id/bar_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_12dp"

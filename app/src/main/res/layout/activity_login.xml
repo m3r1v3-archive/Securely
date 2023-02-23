@@ -61,17 +61,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/login_key_edit"
+        android:id="@+id/login_password_edit"
         android:layout_width="@dimen/size_256dp"
         android:layout_height="@dimen/size_56dp"
         android:layout_marginBottom="@dimen/margin_36dp"
         android:background="@xml/background"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
-        android:hint="@string/enter_key"
+        android:hint="@string/enter_password"
         android:imeOptions="actionDone"
-        android:inputType="numberPassword"
-        android:maxLength="10"
+        android:inputType="textPassword"
+        android:maxLength="16"
         android:singleLine="true"
         android:textColor="?colorAccent"
         android:textColorHint="?colorAccent"

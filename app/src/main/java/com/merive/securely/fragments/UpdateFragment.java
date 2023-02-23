@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -20,20 +21,29 @@ import com.merive.securely.R;
 import com.merive.securely.components.TypingTextView;
 import com.merive.securely.utils.VibrationManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class UpdateFragment extends Fragment {
 
-    private TypingTextView titleTypingText, versionTypingText;
+    private TypingTextView titleTypingText;
+    private EditText changelogText;
     private ImageView downloadButton, cancelButton;
+    private MainActivity mainActivity;
 
     /**
-     * Create a new instance of UpdateFragment
+     * Creates new instance of UpdateFragment that will be initialized with the given arguments
      *
-     * @return UpdateFragment object
+     * @return New instance of UpdateFragment with necessary arguments
      */
-    public static UpdateFragment newInstance(String version) {
+    public static UpdateFragment newInstance(JSONObject jsonObject) throws JSONException {
         UpdateFragment frag = new UpdateFragment();
+
         Bundle args = new Bundle();
-        args.putString("version_value", version);
+        args.putString("version", (String) jsonObject.get("version"));
+        args.putString("changelog", (String) jsonObject.get("changelog"));
+        args.putString("link", (String) jsonObject.get("link"));
+
         frag.setArguments(args);
         return frag;
     }
@@ -61,23 +71,25 @@ public class UpdateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initComponents();
+        initVariables();
         setListeners();
-        setTypingTexts();
+        setTitle();
+        setChangelog();
     }
 
     /**
      * Initialize UpdateFragment components
      */
-    private void initComponents() {
+    private void initVariables() {
         titleTypingText = getView().findViewById(R.id.update_title_text);
-        versionTypingText = getView().findViewById(R.id.update_label_text);
+        changelogText = getView().findViewById(R.id.update_changelog);
         downloadButton = getView().findViewById(R.id.update_download_button);
         cancelButton = getView().findViewById(R.id.update_cancel_button);
+        mainActivity = ((MainActivity) getActivity());
     }
 
     /**
-     * Set onClick listeners for components
+     * Sets button click listeners
      */
     private void setListeners() {
         downloadButton.setOnClickListener(v -> clickDownload());
@@ -85,22 +97,27 @@ public class UpdateFragment extends Fragment {
     }
 
     /**
-     * Set texts to titleTypingText and versionTypingText
+     * Set texts to titleTypingText
      */
-    private void setTypingTexts() {
+    private void setTitle() {
         typingAnimation(titleTypingText, getResources().getString(R.string.update));
-        typingAnimation(versionTypingText, getResources().getString(R.string.version_current_and_new, BuildConfig.VERSION_NAME, getArguments().getString("version_value")));
     }
 
     /**
-     * Make vibration effect, set BarFragment to bar_fragment component and open Securely download page in web browser
-     *
-     * @see BarFragment
+     * Sets text to versionText TextView
+     */
+    private void setChangelog() {
+        changelogText.setText(String.format("Changelog (%s)\n\n%s", getArguments().getString("version"),
+                getArguments().getString("changelog").replace("\\n", "\n")));
+    }
+
+    /**
+     * Executes when clicking on downloadButton
+     * Makes vibration and opens P1MT web page in browser
      */
     private void clickDownload() {
         VibrationManager.makeVibration(getContext());
-        ((MainActivity) getActivity()).setBarFragment();
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.website))));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getArguments().getString("link"))));
     }
 
     /**

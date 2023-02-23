@@ -57,23 +57,23 @@ public class PreferencesManager {
     }
 
     /**
-     * @return Return key hash value from SharedPreferences
+     * @return Return password hash value from SharedPreferences
      */
     public String getHash() {
         return sharedPreferences.getString("hash", "-1");
     }
 
     /**
-     * Set key hash value to SharedPreferences
+     * Set password hash value to SharedPreferences
      *
-     * @param value Key hash value
+     * @param value Password hash value
      */
     public void setHash(String value) {
         sharedPreferences.edit().putString("hash", value).apply();
     }
 
     /**
-     * Set default key hash value to SharedPreferences (default value is "-1")
+     * Set default password hash value to SharedPreferences (default value is "-1")
      */
     public void setHash() {
         sharedPreferences.edit().putString("hash", "-1").apply();

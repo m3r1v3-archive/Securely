@@ -6,10 +6,6 @@
         motion:constraintSetEnd="@id/end"
         motion:constraintSetStart="@id/start"
         motion:duration="1000">
-        <OnSwipe
-            motion:dragDirection="dragDown"
-            motion:touchAnchorId="@id/bar_separator"
-            motion:touchAnchorSide="bottom" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">

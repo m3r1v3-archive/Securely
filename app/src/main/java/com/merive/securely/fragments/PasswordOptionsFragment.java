@@ -4,7 +4,6 @@ import static com.merive.securely.components.TypingTextView.typingAnimation;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.google.zxing.BarcodeFormat;
@@ -64,7 +62,6 @@ public class PasswordOptionsFragment extends Fragment {
      * @param view               The View returned by onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -106,7 +103,6 @@ public class PasswordOptionsFragment extends Fragment {
     /**
      * Set QR Code image to QRCodeImage component
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setQRCode() {
         QRCodeImage.setImageBitmap(makeQRCode(((MainActivity) getActivity()).getEncryptPasswordValues(getArguments().getString("name_value"))));
     }
@@ -142,7 +138,6 @@ public class PasswordOptionsFragment extends Fragment {
      * @param value Value for future QR Code
      * @return Return QR Code image with encrypted value in it
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private Bitmap makeQRCode(String value) {
         try {
             BitMatrix bitMatrix = new QRCodeWriter().encode(value, BarcodeFormat.QR_CODE, 512, 512);
@@ -151,7 +146,7 @@ public class PasswordOptionsFragment extends Fragment {
             int[] pixels = new int[width * height];
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
-                    pixels[y * width + x] = bitMatrix.get(x, y) ? 0xFF1D201D : Color.TRANSPARENT;
+                    pixels[y * width + x] = bitMatrix.get(x, y) ? 0xFF040d03 : Color.TRANSPARENT;
             Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             bmp.setPixels(pixels, 0, width, 0, 0, width, height);
             return bmp;
